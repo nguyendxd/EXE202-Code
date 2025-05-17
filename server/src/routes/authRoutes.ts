@@ -1,16 +1,43 @@
 import express from "express";
-import { register, login, resetPassword } from "../controller/authController";
+import { 
+    getAllUsers, 
+    addUser, 
+    getUserByEmailController, 
+    getUserByIdController, 
+    updateUserController, 
+    deleteUserController 
+} from "../controller/userManagementController";
 
 const router = express.Router();
 
 /**
  * @swagger
- * /auth/register:
- *   post:
- *     summary: Đăng ký người dùng mới
- *     description: Tạo tài khoản mới cho người dùng
+ * /users:
+ *   get:
+ *     summary: Lấy tất cả người dùng
  *     tags:
- *       - Authentication
+ *       - User Management
+ *     responses:
+ *       200:
+ *         description: Danh sách người dùng
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/", getAllUsers);
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Tạo người dùng mới
+ *     tags:
+ *       - User Management
  *     requestBody:
  *       required: true
  *       content:
@@ -36,22 +63,91 @@ const router = express.Router();
  *               socialLink:
  *                 type: string
  *                 example: "https://facebook.com/johndoe"
+ *               description:
+ *                 type: string
+ *                 example: "This is my bio"
+ *               role:
+ *                 type: string
+ *                 enum: ["guest", "customer", "shelter", "admin"]
+ *                 example: "customer"
  *     responses:
  *       201:
- *         description: User registered successfully
+ *         description: User created successfully
  *       500:
  *         description: Internal server error
  */
-router.post("/register", register);
+router.post("/", addUser);
 
 /**
  * @swagger
- * /auth/login:
- *   post:
- *     summary: Đăng nhập người dùng
- *     description: Đăng nhập người dùng với email và password
+ * /users/email/{email}:
+ *   get:
+ *     summary: Lấy người dùng qua email
  *     tags:
- *       - Authentication
+ *       - User Management
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         description: Email của người dùng
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Thông tin người dùng
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/email/:email", getUserByEmailController);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Lấy người dùng qua ID
+ *     tags:
+ *       - User Management
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID của người dùng
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Thông tin người dùng
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/:id", getUserByIdController);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   put:
+ *     summary: Cập nhật người dùng qua ID
+ *     tags:
+ *       - User Management
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID của người dùng
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -59,46 +155,51 @@ router.post("/register", register);
  *           schema:
  *             type: object
  *             properties:
- *               email:
+ *               username:
  *                 type: string
- *                 example: "johndoe@example.com"
- *               password:
+ *               phone:
  *                 type: string
- *                 example: "password123"
+ *               address:
+ *                 type: string
+ *               socialLink:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *                 enum: ["guest", "customer", "shelter", "admin"]
  *     responses:
  *       200:
- *         description: User logged in successfully
- *       401:
- *         description: Invalid email or password
+ *         description: User updated successfully
+ *       404:
+ *         description: User not found
  *       500:
  *         description: Internal server error
  */
-router.post("/login", login);
+router.put("/:id", updateUserController);
 
 /**
  * @swagger
- * /auth/reset-password:
- *   post:
- *     summary: Gửi email reset mật khẩu
- *     description: Gửi email đặt lại mật khẩu cho người dùng
+ * /users/{id}:
+ *   delete:
+ *     summary: Xóa người dùng qua ID
  *     tags:
- *       - Authentication
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 example: "johndoe@example.com"
+ *       - User Management
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID của người dùng
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Password reset email sent
+ *         description: User deleted successfully
+ *       404:
+ *         description: User not found
  *       500:
  *         description: Internal server error
  */
-router.post("/reset-password", resetPassword);
+router.delete("/:id", deleteUserController);
 
 export default router;
