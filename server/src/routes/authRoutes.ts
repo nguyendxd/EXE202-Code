@@ -1,59 +1,47 @@
-import express from "express";
-import { 
-    getAllUsers, 
-    addUser, 
-    getUserByEmailController, 
-    getUserByIdController, 
-    updateUserController, 
-    deleteUserController 
-} from "../controller/userManagementController";
+import express, { RequestHandler } from "express";
+import { register, login, resetPassword } from "../controller/authController";
 
 const router = express.Router();
 
 /**
  * @swagger
- * /users:
- *   get:
- *     summary: Lấy tất cả người dùng
- *     tags:
- *       - User Management
- *     responses:
- *       200:
- *         description: Danh sách người dùng
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
- *       500:
- *         description: Internal server error
+ * tags:
+ *   name: Authentication
+ *   description: User authentication endpoints
  */
-router.get("/", getAllUsers);
 
 /**
  * @swagger
- * /users:
+ * /auth/register:
  *   post:
- *     summary: Tạo người dùng mới
- *     tags:
- *       - User Management
+ *     summary: Register a new user
+ *     tags: [Authentication]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *               - username
+ *               - phone
+ *               - address
  *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "user@example.com"
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 minLength: 6
+ *                 description: Password is required and must be at least 6 characters long
+ *                 example: "password123"
  *               username:
  *                 type: string
  *                 example: "JohnDoe"
- *               email:
- *                 type: string
- *                 example: "johndoe@example.com"
- *               password:
- *                 type: string
- *                 example: "password123"
  *               phone:
  *                 type: string
  *                 example: "0123456789"
@@ -63,143 +51,112 @@ router.get("/", getAllUsers);
  *               socialLink:
  *                 type: string
  *                 example: "https://facebook.com/johndoe"
- *               description:
- *                 type: string
- *                 example: "This is my bio"
  *               role:
  *                 type: string
  *                 enum: ["guest", "customer", "shelter", "admin"]
+ *                 default: "customer"
  *                 example: "customer"
+ *               description:
+ *                 type: string
+ *                 example: "This is my bio"
+ *               avatar:
+ *                 type: string
+ *                 description: User's avatar URL. If not provided, a default avatar will be used.
+ *                 example: "https://example.com/avatar.jpg"
  *     responses:
  *       201:
- *         description: User created successfully
- *       500:
- *         description: Internal server error
- */
-router.post("/", addUser);
-
-/**
- * @swagger
- * /users/email/{email}:
- *   get:
- *     summary: Lấy người dùng qua email
- *     tags:
- *       - User Management
- *     parameters:
- *       - in: path
- *         name: email
- *         required: true
- *         description: Email của người dùng
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Thông tin người dùng
+ *         description: User registered successfully. Please check your email to verify your account.
+ *       400:
+ *         description: Validation error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
- *       404:
- *         description: User not found
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "User validation failed: password: Path `password` is required."
  *       500:
- *         description: Internal server error
- */
-router.get("/email/:email", getUserByEmailController);
-
-/**
- * @swagger
- * /users/{id}:
- *   get:
- *     summary: Lấy người dùng qua ID
- *     tags:
- *       - User Management
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID của người dùng
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Thông tin người dùng
+ *         description: Error registering user. Possible causes include invalid data format or server error.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
- *       404:
- *         description: User not found
- *       500:
- *         description: Internal server error
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Function setDoc() called with invalid data. Unsupported field value: undefined (found in field avatar in document users/...)"
  */
-router.get("/:id", getUserByIdController);
+router.post("/register", register as RequestHandler);
 
 /**
  * @swagger
- * /users/{id}:
- *   put:
- *     summary: Cập nhật người dùng qua ID
- *     tags:
- *       - User Management
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID của người dùng
- *         schema:
- *           type: string
+ * /auth/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [Authentication]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - email
+ *               - password
  *             properties:
- *               username:
+ *               email:
  *                 type: string
- *               phone:
+ *                 format: email
+ *                 example: "user@example.com"
+ *               password:
  *                 type: string
- *               address:
- *                 type: string
- *               socialLink:
- *                 type: string
- *               description:
- *                 type: string
- *               role:
- *                 type: string
- *                 enum: ["guest", "customer", "shelter", "admin"]
+ *                 format: password
+ *                 example: "password123"
  *     responses:
  *       200:
- *         description: User updated successfully
- *       404:
- *         description: User not found
- *       500:
- *         description: Internal server error
+ *         description: User logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User logged in successfully"
+ *                 uid:
+ *                   type: string
+ *                   example: "firebase-user-uid"
+ *       401:
+ *         description: Invalid email or password
  */
-router.put("/:id", updateUserController);
+router.post("/login", login as RequestHandler);
 
 /**
  * @swagger
- * /users/{id}:
- *   delete:
- *     summary: Xóa người dùng qua ID
- *     tags:
- *       - User Management
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID của người dùng
- *         schema:
- *           type: string
+ * /auth/reset-password:
+ *   post:
+ *     summary: Send password reset email
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "user@example.com"
  *     responses:
  *       200:
- *         description: User deleted successfully
- *       404:
- *         description: User not found
+ *         description: Password reset email sent successfully
  *       500:
- *         description: Internal server error
+ *         description: Error sending password reset email
  */
-router.delete("/:id", deleteUserController);
+router.post("/reset-password", resetPassword as RequestHandler);
 
 export default router;

@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { createUserWithEmailAndPassword, sendEmailVerification,signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth, db } from "../config/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import User from "../model/User";
+import jwt from 'jsonwebtoken';
+
 export const register = async (req: Request, res: Response) => {
     try {
         const { email, password, username, phone, address, socialLink, role, avatar, isDeleted } = req.body;
@@ -31,6 +33,7 @@ export const register = async (req: Request, res: Response) => {
                 isVerified: false,
                 isDeleted: false,
                 createdAt: new Date(),
+                password: password,
             });
 
             // Lưu vào MongoDB
@@ -44,6 +47,7 @@ export const register = async (req: Request, res: Response) => {
                 role: userRole,
                 isVerified: false,
                 createdAt: new Date(),
+                password: password,
             });
 
             await newUser.save();
@@ -68,7 +72,35 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const firebaseUser = userCredential.user;
-    res.status(200).json({ message: "User logged in successfully", uid: firebaseUser.uid });
+
+    // Get user data from Firestore
+    const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+    if (!userDoc.exists()) {
+      return res.status(404).json({ error: "User data not found" });
+    }
+
+    const userData = userDoc.data();
+    
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        uid: firebaseUser.uid,
+        role: userData.role,
+        email: userData.email
+      },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '24h' }
+    );
+
+    res.status(200).json({ 
+      message: "User logged in successfully", 
+      token,
+      user: {
+        uid: firebaseUser.uid,
+        role: userData.role,
+        email: userData.email
+      }
+    });
   } catch (error) {
     res.status(401).json({ error: "Invalid email or password" });
   }

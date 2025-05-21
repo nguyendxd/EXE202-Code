@@ -7,6 +7,8 @@ import authRoutes from "./routes/authRoutes";
 import profileRoutes from "./routes/profileRoutes";
 import userManagementRoutes from "./routes/userManagementRoutes";
 import petRoutes from "./routes/petRoutes";
+import postRoutes from "./routes/postRoutes";
+
 const app = express();
 
 app.use(express.json());
@@ -17,7 +19,8 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/profiles", profileRoutes);
 app.use("/api/users", userManagementRoutes);
-app.use("/api/pets", petRoutes); 
+app.use("/api/pets", petRoutes);
+app.use("/api/posts", postRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server is Running!");
