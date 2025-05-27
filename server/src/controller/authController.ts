@@ -8,19 +8,17 @@ import jwt from 'jsonwebtoken';
 export const register = async (req: Request, res: Response) => {
     try {
         const { email, password, username, phone, address, socialLink, role, avatar, isDeleted } = req.body;
-
-        // Kiểm tra role có tồn tại không, nếu không set mặc định là "customer"
         const userRole = role || "customer";
 
-        // Tạo tài khoản Firebase
+
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const firebaseUser = userCredential.user;
         const DEFAULT_AVATAR_URL = process.env.DEFAULT_AVATAR_URL || "https://ik.imagekit.io/nguyenn120404/default-avatar.jpg";
         if (firebaseUser) {
-            // Gửi email xác minh
+
             await sendEmailVerification(firebaseUser);
          
-            // Lưu thông tin người dùng vào Firestore
+
             const userRef = doc(db, "users", firebaseUser.uid);
             await setDoc(userRef, {
                 avatar,

@@ -1,59 +1,97 @@
 import { Request, Response, NextFunction } from "express";
 import { createUser, getUsers, getUserByEmail, getUserById, updateUserById, softDeleteUserById } from "../repository/userRepository";
 
-export const getAllUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export interface AuthenticatedRequest extends Request {
+    user?: {id: string, uid: string, role: string, email: string}
+} 
+
+export const getAllUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
+
         const users = await getUsers();
+
+        const user = req.user;
+        const userId = user?.id; 
+        if (!user || !userId || user.role !== 'admin'){
+            res.status(403).json({message: "You have no permission for this function "});
+        }
         res.json(users);
     } catch (error) {
         next(error);
     }
 };
 
-export const addUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const addUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
         const user = await createUser(req.body);
+
+        const users = req.user;
+        const userId = user?.id; 
+        if (!users || !userId || user.role !== 'admin'){
+            res.status(403).json({message: "You have no permission for this function "});
+        }
         res.status(201).json(user);
     } catch (error) {
         next(error);
     }
 };
 
-export const getUserByEmailController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const getUserByEmailController = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
         const user = await getUserByEmail(req.params.email);
-        if (!user)  res.status(404).json({ message: "Không tìm thấy người dùng" });
+        const users = req.user;
+        const userId = user?.id; 
+        if (!users || !userId || user.role !== 'admin'){
+            res.status(403).json({message: "You have no permission for this function "});
+        }
+        if (!user)  res.status(404).json({ message: "User not found" });
         res.json(user);
     } catch (error) {
         next(error);
     }
 };
 
-export const getUserByIdController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const getUserByIdController = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
         const user = await getUserById(req.params.id);
-        if (!user)  res.status(404).json({ message: "Không tìm thấy người dùng" });
+         const users = req.user;
+        const userId = user?.id; 
+        if (!users || !userId || user.role !== 'admin'){
+            res.status(403).json({message: "You have no permission for this function "});
+        }
+        if (!user)  res.status(404).json({ message: "User not found" });
         res.json(user);
     } catch (error) {
         next(error);
     }
 };
 
-export const updateUserController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const updateUserController = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
+        
         const user = await updateUserById(req.params.id, req.body);
-        if (!user)  res.status(404).json({ message: "Không tìm thấy người dùng" });
+        const users = req.user;
+        const userId = user?.id; 
+        if (!users || !userId || user.role !== 'admin'){
+            res.status(403).json({message: "You have no permission for this function "});
+        }
+        if (!user)  res.status(404).json({ message: "User not found" });
         res.json(user);
     } catch (error) {
         next(error);
     }
 };
 
-export const deleteUserController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const deleteUserController = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
         const user = await softDeleteUserById(req.params.id);
-        if (!user)  res.status(404).json({ message: "Không tìm thấy người dùng" });
-        res.json({ message: "Đã xóa người dùng" });
+        const users = req.user;
+        const userId = user?.id; 
+        if (!users || !userId || user.role !== 'admin'){
+            res.status(403).json({message: "You have no permission for this function "});
+        }
+        if (!user)  res.status(404).json({ message: "User not found" });
+        res.json({ message: "User Deleted" });
     } catch (error) {
         next(error);
     }

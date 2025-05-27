@@ -3,7 +3,7 @@ import Post, { IPost } from '../model/Post';
 import { Types } from 'mongoose';
 import  imagekit from '../config/imagekit';
 
-// Define AuthenticatedRequest inline for type safety
+
 export interface AuthenticatedRequest extends Request {
   user?: { id: string; uid: string; role: string; email: string };
 }
@@ -15,12 +15,12 @@ export const createPost = async (req: AuthenticatedRequest, res: Response) => {
     const user = req.user;
     const userId = user?.id || user?.uid;
 
-    // Phân quyền: chỉ admin hoặc shelter mới được tạo post
+  
     if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')) {
-      return res.status(403).json({ message: 'Only admin or shelter can create posts.' });
+      return res.status(403).json({ message: 'You have no permission for this function' });
     }
 
-    // Upload ảnh lên ImageKit nếu có file, không có ảnh mặc định
+   
     const files = req.files as Express.Multer.File[] | undefined;
     const imageUrls = files && files.length > 0
       ? (await Promise.all(

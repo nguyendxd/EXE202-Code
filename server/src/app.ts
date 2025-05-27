@@ -8,6 +8,8 @@ import profileRoutes from "./routes/profileRoutes";
 import userManagementRoutes from "./routes/userManagementRoutes";
 import petRoutes from "./routes/petRoutes";
 import postRoutes from "./routes/postRoutes";
+import petWishlistRoutes from "./routes/petWishlistRoutes";
+import blogRoutes from "./routes/blogRoutes";
 
 const app = express();
 
@@ -21,6 +23,8 @@ app.use("/api/profiles", profileRoutes);
 app.use("/api/users", userManagementRoutes);
 app.use("/api/pets", petRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/wishlist", petWishlistRoutes);
+app.use("/api/blogs", blogRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server is Running!");

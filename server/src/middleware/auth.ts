@@ -22,14 +22,13 @@ export const authenticateToken = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('\n\n========== AUTH MIDDLEWARE DEBUG ==========');
   console.log('Request URL:', req.url);
   console.log('Request Method:', req.method);
   console.log('Headers:', JSON.stringify(req.headers, null, 2));
   
   const authHeader = req.headers['authorization'];
   if (!authHeader) {
-    console.log('❌ No authorization header found');
+    console.log('No authorization header found');
     return res.status(401).json({ message: 'No token provided' });
   }
 
@@ -37,7 +36,7 @@ export const authenticateToken = (
   console.log('Token:', token);
 
   if (!token) {
-    console.log('❌ No token found in authorization header');
+    console.log('No token found in authorization header');
     return res.status(401).json({ message: 'No token provided' });
   }
 
@@ -59,12 +58,10 @@ export const authenticateToken = (
       email: (decoded as any).email
     };
     
-    console.log('✅ User authenticated successfully:', req.user);
-    console.log('===========================================\n\n');
+    console.log('User authenticated successfully:', req.user);
     next();
   } catch (error) {
-    console.log('❌ Token verification error:', error);
-    console.log('===========================================\n\n');
+    console.log('Token verification error:', error);
     return res.status(403).json({ message: 'Invalid token' });
   }
 };

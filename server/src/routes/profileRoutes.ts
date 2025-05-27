@@ -1,151 +1,118 @@
-import express from "express";
+import express, { RequestHandler } from 'express';
 import { 
-    getAllUsers, 
-    addUser, 
-    getUserByEmailController, 
-    getUserByIdController, 
-    updateUserController, 
-    deleteUserController 
-} from "../controller/userManagementController";
+    getAllProfile,
+    getProfile,
+    updateProfile,    
+} from "../controller/userProfile";
+import { authenticateToken } from '../middleware/auth';
 
 const router = express.Router();
 
 /**
  * @swagger
- * /users:
+ * components:
+ *   schemas:
+ *     Profile:
+ *       type: object
+ *       properties:
+ *         userId:
+ *           type: string
+ *           description: The ID of the user
+ *         fullName:
+ *           type: string
+ *           description: User's full name
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: User's email address
+ *         phone:
+ *           type: string
+ *           description: User's phone number
+ *         address:
+ *           type: string
+ *           description: User's address
+ *         avatar:
+ *           type: string
+ *           description: URL to user's avatar image
+ *         bio:
+ *           type: string
+ *           description: User's biography
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Profile creation date
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Last profile update date
+ */
+
+/**
+ * @swagger
+ * /profiles:
  *   get:
- *     summary: Lấy tất cả người dùng (Admin)
- *     tags:
- *       - Users
+ *     summary: Get all profiles
+ *     tags: [Profiles]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
- *         description: Danh sách người dùng
+ *         description: List of all profiles
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                   firebaseUID:
- *                     type: string
- *                   username:
- *                     type: string
- *                   email:
- *                     type: string
- *                   phone:
- *                     type: string
- *                   address:
- *                     type: string
- *                   socialLink:
- *                     type: string
- *                   role:
- *                     type: string
- *                     enum: ["guest", "customer", "shelter", "admin"]
- *                   description:
- *                     type: string
- *                   isAdmin:
- *                     type: boolean
- *                   isVerified:
- *                     type: boolean
- *                   createdAt:
- *                     type: string
- *                     format: date-time
- *       500:
- *         description: Internal server error
+ *                 $ref: '#/components/schemas/Profile'
+ *       401:
+ *         description: Unauthorized
  */
-router.get("/", getAllUsers);
+router.get('/', authenticateToken as RequestHandler, getAllProfile as RequestHandler);
 
 /**
  * @swagger
- * /users/{id}:
+ * /profiles/{id}:
  *   get:
- *     summary: Lấy người dùng theo ID
- *     tags:
- *       - Users
+ *     summary: Get a profile by ID
+ *     tags: [Profiles]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID của người dùng
  *         schema:
  *           type: string
+ *         description: The profile ID
  *     responses:
  *       200:
- *         description: Thông tin người dùng
+ *         description: The profile details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Profile'
+ *       401:
+ *         description: Unauthorized
  *       404:
- *         description: Không tìm thấy người dùng
- *       500:
- *         description: Lỗi khi lấy người dùng
+ *         description: Profile not found
  */
-router.get("/:id", getUserByIdController);
+router.get('/:id', authenticateToken as RequestHandler, getProfile as RequestHandler);
 
 /**
  * @swagger
- * /users:
- *   post:
- *     summary: Tạo người dùng mới
- *     tags:
- *       - Users
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               firebaseUID:
- *                 type: string
- *                 example: "abc123xyz"
- *               username:
- *                 type: string
- *                 example: "JohnDoe"
- *               email:
- *                 type: string
- *                 example: "johndoe@example.com"
- *               password:
- *                 type: string
- *                 example: "password123"
- *               phone:
- *                 type: string
- *                 example: "0123456789"
- *               address:
- *                 type: string
- *                 example: "123 Main St"
- *               socialLink:
- *                 type: string
- *                 example: "https://facebook.com/johndoe"
- *               description:
- *                 type: string
- *                 example: "This is my bio"
- *               role:
- *                 type: string
- *                 enum: ["guest", "customer", "shelter", "admin"]
- *                 example: "customer"
- *     responses:
- *       201:
- *         description: User created successfully
- *       500:
- *         description: Internal server error
- */
-router.post("/", addUser);
-
-/**
- * @swagger
- * /users/{id}:
+ * /profiles/{id}:
  *   put:
- *     summary: Cập nhật người dùng qua ID
- *     tags:
- *       - Users
+ *     summary: Update a profile
+ *     tags: [Profiles]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID của người dùng
  *         schema:
  *           type: string
+ *         description: The profile ID
  *     requestBody:
  *       required: true
  *       content:
@@ -153,57 +120,32 @@ router.post("/", addUser);
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               fullName:
  *                 type: string
- *                 example: "JohnDoeUpdated"
  *               phone:
  *                 type: string
- *                 example: "0987654321"
  *               address:
  *                 type: string
- *                 example: "456 New St"
- *               socialLink:
+ *               bio:
  *                 type: string
- *                 example: "https://instagram.com/johndoe"
- *               description:
- *                 type: string
- *                 example: "Updated bio"
- *               role:
- *                 type: string
- *                 enum: ["guest", "customer", "shelter", "admin"]
- *                 example: "customer"
  *     responses:
  *       200:
- *         description: User updated successfully
+ *         description: The updated profile
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Profile'
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Not authorized to update this profile
  *       404:
- *         description: Không tìm thấy người dùng
- *       500:
- *         description: Lỗi khi cập nhật người dùng
+ *         description: Profile not found
  */
-router.put("/:id", updateUserController);
-
-/**
- * @swagger
- * /users/{id}:
- *   delete:
- *     summary: Xóa người dùng qua ID
- *     tags:
- *       - Users
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID của người dùng
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: User deleted successfully
- *       404:
- *         description: Không tìm thấy người dùng
- *       500:
- *         description: Lỗi khi xóa người dùng
- */
-router.delete("/:id", deleteUserController);
+router.put('/:id', authenticateToken as RequestHandler, updateProfile as RequestHandler);
 
 export default router;
+
+
+
+

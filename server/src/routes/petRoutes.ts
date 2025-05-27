@@ -1,4 +1,4 @@
-import express from "express";
+import express, { RequestHandler } from "express";
 import {
   createPetController,
   getAllPetsController,
@@ -6,8 +6,14 @@ import {
   updatePetController,
   deletePetController,
 } from "../controller/petController";
-
+import { authenticateToken } from '../middleware/auth';
+import multer from 'multer';
 const router = express.Router();
+
+const upload = multer({
+  storage: multer.memoryStorage(),  
+  limits: { fileSize: 5 * 1024 * 1024 }, 
+});
 
 /**
  * @swagger
@@ -88,7 +94,12 @@ const router = express.Router();
  *       500:
  *         description: Error creating pet
  */
-router.post("/", createPetController);
+router.post(
+  "/",
+  authenticateToken as RequestHandler,
+  upload.array("images", 5),
+  createPetController as RequestHandler
+);
 
 /**
  * @swagger
@@ -103,7 +114,7 @@ router.post("/", createPetController);
  *       500:
  *         description: Error fetching pets
  */
-router.get("/", getAllPetsController);
+router.get("/", getAllPetsController as RequestHandler, authenticateToken as RequestHandler);
 
 /**
  * @swagger
@@ -127,7 +138,7 @@ router.get("/", getAllPetsController);
  *       500:
  *         description: Error fetching pet
  */
-router.get("/:id", getPetByIdController);
+router.get("/:id", upload.array("images", 5), getPetByIdController as RequestHandler, authenticateToken as RequestHandler);
 
 /**
  * @swagger
@@ -164,7 +175,7 @@ router.get("/:id", getPetByIdController);
  *       500:
  *         description: Error updating pet
  */
-router.put("/:id", updatePetController);
+router.put("/:id", updatePetController as RequestHandler, authenticateToken as RequestHandler );
 
 /**
  * @swagger
@@ -188,6 +199,6 @@ router.put("/:id", updatePetController);
  *       500:
  *         description: Error deleting pet
  */
-router.delete("/:id", deletePetController);
+router.delete("/:id", deletePetController as RequestHandler, authenticateToken as RequestHandler);
 
 export default router;

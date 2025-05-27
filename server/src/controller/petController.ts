@@ -1,16 +1,24 @@
 import { Request, Response } from "express";
 import multer from "multer";
 import * as repo from "../repository/petRepository";
+import Pet, {IPet} from '../model/Pet';
 
 const upload = multer({ storage: multer.memoryStorage() });
-
+export interface AuthenticatedRequest extends Request {
+  user?: {id: string; uid: string; role: string; email: string}
+}
 /**
  * POST /pets
  */
-export const createPetController = [
-  upload.array("images", 5),
-  async (req: Request, res: Response) => {
+export const createPetController =
+  async (req: AuthenticatedRequest, res: Response) => {
     try {
+      const user = req.user;
+      const userId = user?.id || user?.uid;
+
+      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
+        return res.status(403).json({message: "You have no permission for this function "})
+      }
       const pet = await repo.createPet(
         req.body,
         req.files as Express.Multer.File[]
@@ -19,14 +27,20 @@ export const createPetController = [
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
-  },
-];
+  };
+
 
 /**
  * GET /pets
  */
-export const getAllPetsController = async (_: Request, res: Response) => {
+export const getAllPetsController = async (req: AuthenticatedRequest, res: Response) => {
   try {
+    const user = req.user;
+      const userId = user?.id || user?.uid;
+
+      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
+        return res.status(403).json({message: "You have no permission for this function "})
+      }
     const pets = await repo.getAllPets();
     res.json(pets);
   } catch (err: any) {
@@ -37,8 +51,14 @@ export const getAllPetsController = async (_: Request, res: Response) => {
 /**
  * GET /pets/:id
  */
-export const getPetByIdController = async (req: Request, res: Response):Promise<void> => {
+export const getPetByIdController = async (req: AuthenticatedRequest, res: Response):Promise<void> => {
   try {
+     const user = req.user;
+      const userId = user?.id || user?.uid;
+
+      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
+         res.status(403).json({message: "You have no permission for this function "})
+      }
     const pet = await repo.getPetById(req.params.id);
     if (!pet) {
         res.status(404).json({ error: "Pet not found" });
@@ -53,11 +73,15 @@ export const getPetByIdController = async (req: Request, res: Response):Promise<
 /**
  * PUT /pets/:id
  */
-export const updatePetController = [
-  upload.array("images", 5),
-  async (req: Request, res: Response):Promise<void> => {
+export const updatePetController = 
+  async (req: AuthenticatedRequest, res: Response):Promise<void> => {
     try {
-      // Nếu có files, gán vào data.images để repo xử lý upload/fallback
+      const user = req.user;
+      const userId = user?.id || user?.uid;
+
+      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
+         res.status(403).json({message: "You have no permission for this function "})
+      }
       const dataWithImages = {
         ...req.body,
         images: req.files && (req.files as Express.Multer.File[]).length > 0
@@ -77,14 +101,19 @@ export const updatePetController = [
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
-  },
-];
+}
 
 /**
  * DELETE /pets/:id
  */
-export const deletePetController = async (req: Request, res: Response):Promise<void> => {
+export const deletePetController = async (req: AuthenticatedRequest, res: Response):Promise<void> => {
   try {
+    const user = req.user;
+      const userId = user?.id || user?.uid;
+
+      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
+         res.status(403).json({message: "You have no permission for this function "})
+      }
     const pet = await repo.softDeletePetById(req.params.id);
     if (!pet) {
         res.status(404).json({ error: "Pet not found" });
