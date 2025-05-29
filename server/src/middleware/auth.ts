@@ -2,12 +2,15 @@ import dotenv from "dotenv";
 dotenv.config();
 import {Request, Response, NextFunction} from "express";
 import jwt from 'jsonwebtoken';
+import { getUserByFirebaseUID } from "../repository/userRepository"; // Import the function to get user from DB by Firebase UID
+import { IUser } from "../model/User"; // Import IUser interface
 
 // Extend Express Request type to include user
 declare global {
   namespace Express {
     interface Request {
       user?: {
+        id: string; // Add MongoDB _id
         uid: string;
         role: string;
         email: string;
@@ -17,7 +20,7 @@ declare global {
   }
 }
 
-export const authenticateToken = (
+export const authenticateToken = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -46,22 +49,35 @@ export const authenticateToken = (
     const decoded = jwt.verify(token, JWT_SECRET);
     console.log('Decoded token:', JSON.stringify(decoded, null, 2));
     
-    // Ensure the decoded token has the required fields
-    if (!decoded || typeof decoded !== 'object') {
-      throw new Error('Invalid token structure');
+    // Ensure the decoded token has the required fields, specifically uid
+    if (!decoded || typeof decoded !== 'object' || !(decoded as any).uid) {
+      console.error('Invalid token structure or missing UID');
+      throw new Error('Invalid token structure or missing UID');
     }
 
-    // Set the user information in the request
+    const firebaseUID = (decoded as any).uid;
+
+    // Fetch the user from your MongoDB database using the firebaseUID
+    const userFromDB: IUser | null = await getUserByFirebaseUID(firebaseUID);
+
+    if (!userFromDB) {
+      console.error('User not found in database for UID:', firebaseUID);
+      return res.status(403).json({ message: 'User not found' });
+    }
+
+    // Set the user information in the request, including the MongoDB _id
     req.user = {
-      uid: (decoded as any).uid,
-      role: (decoded as any).role,
-      email: (decoded as any).email
+      id: (userFromDB._id as any).toString(), // Use MongoDB _id as the 'id' and cast to any to resolve unknown type error
+      uid: userFromDB.firebaseUID,
+      role: userFromDB.role,
+      email: userFromDB.email,
+      // You can include other fields from userFromDB if needed for AuthenticatedRequest
     };
     
-    console.log('User authenticated successfully:', req.user);
+    console.log('User authenticated and data loaded from DB:', req.user);
     next();
-  } catch (error) {
-    console.log('Token verification error:', error);
-    return res.status(403).json({ message: 'Invalid token' });
+  } catch (error: any) {
+    console.error('Token verification or DB fetch error:', error);
+    return res.status(403).json({ message: 'Invalid token or user data issue', error: error.message });
   }
 };

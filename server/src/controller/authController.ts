@@ -4,6 +4,7 @@ import { auth, db } from "../config/firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import User from "../model/User";
 import jwt from 'jsonwebtoken';
+import { getUserByFirebaseUID } from "../repository/userRepository";
 
 export const register = async (req: Request, res: Response) => {
     try {
@@ -34,7 +35,7 @@ export const register = async (req: Request, res: Response) => {
                 password: password,
             });
 
-            // Lưu vào MongoDB
+
             const newUser = new User({
                 firebaseUID: firebaseUser.uid,
                 username,
@@ -71,20 +72,19 @@ export const login = async (req: Request, res: Response) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const firebaseUser = userCredential.user;
 
-    // Get user data from Firestore
-    const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
-    if (!userDoc.exists()) {
-      return res.status(404).json({ error: "User data not found" });
+    // Get user data from MongoDB
+    const user = await getUserByFirebaseUID(firebaseUser.uid);
+
+    if (!user) {
+      // This case should ideally not happen if user is in Firebase Auth but good for robustness
+      return res.status(404).json({ error: "User data not found in database" });
     }
 
-    const userData = userDoc.data();
-    
-    // Generate JWT token
     const token = jwt.sign(
       { 
         uid: firebaseUser.uid,
-        role: userData.role,
-        email: userData.email
+        role: user.role, // Use role from MongoDB
+        email: user.email // Use email from MongoDB
       },
       process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '24h' }
@@ -95,8 +95,8 @@ export const login = async (req: Request, res: Response) => {
       token,
       user: {
         uid: firebaseUser.uid,
-        role: userData.role,
-        email: userData.email
+        role: user.role, // Use role from MongoDB for response
+        email: user.email // Use email from MongoDB for response
       }
     });
   } catch (error) {

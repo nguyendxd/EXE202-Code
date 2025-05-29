@@ -16,6 +16,7 @@ interface IUser extends Document {
     createdAt: Date;
     description: string;
     isDeleted: boolean;
+    fcmToken?: string; 
 }
 
 const userSchema = new Schema<IUser>({
@@ -33,6 +34,7 @@ const userSchema = new Schema<IUser>({
     createdAt: { type: Date, default: Date.now },
     isDeleted: {type: Boolean, default: false},
     description: { type: String, required: false, minlength: 0, maxlength: 100 },
+    fcmToken: { type: String, required: false },
 });
 
 const User = mongoose.model<IUser>("User", userSchema);

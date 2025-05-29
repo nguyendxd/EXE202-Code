@@ -10,6 +10,7 @@ import petRoutes from "./routes/petRoutes";
 import postRoutes from "./routes/postRoutes";
 import petWishlistRoutes from "./routes/petWishlistRoutes";
 import blogRoutes from "./routes/blogRoutes";
+import messageRoutes from "./routes/messageRoutes";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/api/pets", petRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/wishlist", petWishlistRoutes);
 app.use("/api/blogs", blogRoutes);
+app.use("/api/messages", messageRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server is Running!");
