@@ -114,7 +114,7 @@ router.post(
  *       500:
  *         description: Error fetching pets
  */
-router.get("/", getAllPetsController as RequestHandler, authenticateToken as RequestHandler);
+router.get("/", authenticateToken as RequestHandler, getAllPetsController as RequestHandler);
 
 /**
  * @swagger

@@ -13,10 +13,15 @@ export interface AuthenticatedRequest extends Request {
 export const createPetController =
   async (req: AuthenticatedRequest, res: Response) => {
     try {
+      console.log('Inside createPetController');
+      console.log('req.user:', req.user);
+      console.log('req.user?.role:', req.user?.role);
+
       const user = req.user;
       const userId = user?.id || user?.uid;
 
       if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
+        console.log('Permission check failed in createPetController');
         return res.status(403).json({message: "You have no permission for this function "})
       }
       const pet = await repo.createPet(
@@ -25,6 +30,7 @@ export const createPetController =
       );
       res.status(201).json(pet);
     } catch (err: any) {
+      console.error('Error in createPetController:', err);
       res.status(500).json({ error: err.message });
     }
   };

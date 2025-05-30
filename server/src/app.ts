@@ -13,7 +13,6 @@ import blogRoutes from "./routes/blogRoutes";
 import messageRoutes from "./routes/messageRoutes";
 
 const app = express();
-
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
