@@ -7,6 +7,7 @@ import LandingPage from './pages/LandingPage'
 // import RegisterPage from './pages/RegisterPage'
 // import AboutPage from './pages/AboutPage'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 export default function App() {
   return (
     <BrowserRouter>
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} /> */}
         </Routes>
       </div>
+      <Footer />
     </BrowserRouter>
   )
 }

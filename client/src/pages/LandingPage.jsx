@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import landingpageimage from '../assets/landingpageimage.png';
 
 const images = [
     'https://via.placeholder.com/1200x500?text=Pet+1',
@@ -10,12 +11,11 @@ const images = [
 
 export default function LandingPage() {
     const [current, setCurrent] = useState(0);
-    const [hoveredArrow, setHoveredArrow] = useState(null); // 'left' or 'right' or null
+    const [hoveredArrow, setHoveredArrow] = useState(null);
     const [hoveredDot, setHoveredDot] = useState(null);
-    const [hoveredButtons, setHoveredButtons] = useState({}); // e.g. {0: true, 1:false}
-    const [hoveredCards, setHoveredCards] = useState({}); // for pet cards and story cards
+    const [hoveredButtons, setHoveredButtons] = useState({});
+    const [hoveredCards, setHoveredCards] = useState({});
 
-    // Auto-play every 2s
     useEffect(() => {
         const interval = setInterval(() => {
             nextSlide();
@@ -35,7 +35,6 @@ export default function LandingPage() {
         setCurrent(index);
     };
 
-    // Pet data
     const pets = [{
         name: 'Bong', age: '2 years', desc: 'A gentle cat who loves cuddles and quiet evenings.', img: 'https://via.placeholder.com/300x200?text=Bong+Cat'
     }, {
@@ -44,14 +43,12 @@ export default function LandingPage() {
         name: 'Momo', age: '1 year', desc: 'A curious kitten ready to explore a new home.', img: 'https://via.placeholder.com/300x200?text=Momo+Kitten'
     }];
 
-    // Success stories data
     const stories = [{
         name: 'Luna', story: 'Rescued from the streets, Luna now enjoys a cozy home with her new family.', img: 'https://via.placeholder.com/300x200?text=Luna'
     }, {
         name: 'Max', story: 'Once abandoned, Max is now a loyal companion to a loving couple.', img: 'https://via.placeholder.com/300x200?text=Max'
     }];
 
-    // Styles for hover effects
     const arrowStyle = (side) => ({
         position: 'absolute',
         top: '50%',
@@ -130,34 +127,31 @@ export default function LandingPage() {
                             objectFit: 'cover',
                             position: 'absolute',
                             top: 0,
-                            left: 0,
+                            left: '0',
                             opacity: idx === current ? 1 : 0,
                             transition: 'opacity 0.8s ease-in-out'
                         }}
                     />
                 ))}
 
-                {/* Left Arrow */}
                 <button
                     onClick={prevSlide}
                     style={arrowStyle('left')}
                     onMouseEnter={() => setHoveredArrow('left')}
                     onMouseLeave={() => setHoveredArrow(null)}
                 >
-                    &#10094;
+                    ❮
                 </button>
 
-                {/* Right Arrow */}
                 <button
                     onClick={nextSlide}
                     style={arrowStyle('right')}
                     onMouseEnter={() => setHoveredArrow('right')}
                     onMouseLeave={() => setHoveredArrow(null)}
                 >
-                    &#10095;
+                    ❯
                 </button>
 
-                {/* Dots */}
                 <div style={{
                     position: 'absolute',
                     bottom: '20px',
@@ -177,6 +171,33 @@ export default function LandingPage() {
                     ))}
                 </div>
             </div>
+
+            <section style={{
+                padding: '60px 0 0',
+                backgroundColor: '#FFF8E7',
+                textAlign: 'center',
+                color: '#5D4037',
+            }}>
+                <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+                    <h2 style={{ fontSize: '28px', color: '#A47148', marginBottom: '20px' }}>
+                        Cứu một bé nhỏ, nhận cả bầu trời yêu thương!
+                    </h2>
+                    <p style={{ fontSize: '18px', marginBottom: '40px' }}>
+                        Một lần cứu hộ – Một đời tri kỷ!
+                    </p>
+                </div>
+                <div>
+                    <img
+                        src={landingpageimage}
+                        alt="Pet Adoption"
+                        style={{
+                            maxWidth: '800px',
+                            width: '100%',
+                            margin: '0',
+                        }}
+                    />
+                </div>
+            </section>
 
             {/* Hero Section */}
             <section style={{
@@ -273,6 +294,75 @@ export default function LandingPage() {
                 </div>
             </section>
 
+            {/* Chatbot Invitation Section */}
+            <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#F5E8C7' }}>
+                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Bạn đang có khó khăn nhận nuôi thú cưng?</h2>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '100px',
+                    maxWidth: '1200px',
+                    margin: '20px auto',
+                    flexWrap: 'wrap'
+                }}>
+                    <div style={{ flex: '1', minWidth: '300px', textAlign: 'center', color: '#5D4037', fontSize: '18px' }}>
+                        <p style={{ fontSize: '19px' }}>Danh sách vật dụng cần thiết cho người nhận nuôi mới</p>
+                        <p style={{ fontSize: '16px' }}>Giúp quá trình nhận nuôi trở nên suôn sẻ nhất có thể.</p>
+                    </div>
+                    <div style={{ flex: '1', minWidth: '300px', textAlign: 'center', color: '#5D4037', fontSize: '18px' }}>
+                        <p style={{ fontSize: '19px' }}>Các câu hỏi thường gặp về việc nhận nuôi thú cưng</p>
+                        <p style={{ fontSize: '16px' }}>Những câu trả lời cho tất cả những thắc mắc của bạn khi nhận nuôi thú cưng.</p>
+                    </div>
+                    <div style={{ flex: '1', minWidth: '300px', textAlign: 'center', color: '#5D4037', fontSize: '18px' }}>
+                        <p style={{ fontSize: '19px' }}>Trang bị kiến thức cho việc nhận nuôi thú cưng</p>
+                        <p style={{ fontSize: '16px' }}>Những kiến thức cần thiết cho việc nuôi thú cưng lần đầu.</p>
+                    </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', marginTop: '50px' }}>
+                    <p style={{ fontSize: '22px', color: '#5D4037', margin: '0' }}>
+                        Bạn còn nhiều thắc mắc khác?
+                    </p>
+                    <button
+                        style={mainButtonStyle('chat', hoveredButtons[2])}
+                        onMouseEnter={() => setHoveredButtons(prev => ({ ...prev, [2]: true }))}
+                        onMouseLeave={() => setHoveredButtons(prev => ({ ...prev, [2]: false }))}
+                    >
+                        Tìm câu trả lời ở FAQ
+                    </button>
+                </div>
+            </section>
+
+            {/* Location Map Section */}
+            <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#D7B99A' }}>
+                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Bản đồ</h2>
+                <p style={{ maxWidth: '800px', margin: '20px auto', fontSize: '18px' }}>
+                    Cửa hàng của chúng tôi nằm tại địa chỉ: FPT University HCM Campus
+                </p>
+                <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+                    <img
+                        src="https://via.placeholder.com/800x400?text=Map+of+HPT+Vietnam+FPT+University+HCM+Campus"
+                        alt="Map to HPT Vietnam FPT University HCM Campus"
+                        style={{ width: '100%', borderRadius: '10px' }}
+                    />
+                </div>
+            </section>
+
+            {/* Donation QR Code Section */}
+            <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#C8A484' }}>
+                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Hỗ trợ chúng tôi donate theo cách của bạn!</h2>
+                <div style={{ maxWidth: '300px', margin: '20px auto' }}>
+                    <img
+                        src="https://via.placeholder.com/200x200?text=QR+Code+for+Donation"
+                        alt="Donation QR Code"
+                        style={{ width: '100%', borderRadius: '10px' }}
+                    />
+                </div>
+                <p style={{ fontSize: '16px', color: '#5D4037' }}>
+                    Pawmily - Petbank: 0354698035<br />
+                    Memo: 0123456799<br />
+                    Chúng tôi rất biết ơn nếu bạn donate số tiền dù là nhỏ!
+                </p>
+            </section>
         </div>
     );
 }
