@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import registerBg from '../assets/short-cute-kitten.png'; 
-import pawLogo from '../assets/paw-logo.png'; 
+import pawLogo from '../assets/paw-logo.png';
+import pawLetter from '../assets/PawLetter.png';
 import '../styles/RegisterPage.css'; // Corresponding CSS file
 
 const RegisterPage = () => {
@@ -12,9 +13,10 @@ const RegisterPage = () => {
 
       {/* Central Form Card / Area */}
       <div className="register-card">
-        {/* Logo */}
+        {/* Logo and Letter */}
         <div className="register-logo">
-          <img src={pawLogo} alt="Pawmily Logo" />
+          {/* <img src={pawLogo} alt="Pawmily Logo" className="paw-logo-img" /> Removed Logo */}
+          <img src={pawLetter} alt="Pawmily Letter" className="paw-letter" />
         </div>
 
         {/* Title and Subtitle */}

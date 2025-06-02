@@ -1,188 +1,204 @@
+/* ===== RegisterPage.css ===== */
+
+/* 1) Container: xóa margin-top, chỉ để một padding-top rất nhỏ (hoặc bằng 0) */
 .register-container {
-    display: flex;
-    justify-content: center; /* Center the card horizontally */
-    align-items: center; /* Center the card vertically */
-    height: 100vh;
-    font-family: 'Arial', sans-serif;
-    overflow: auto; /* Allow scrolling if content overflows */
-    background-image: url('../assets/fullbganimal.jpg'); /* Changed background image */
-    background-size: 70%; 
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat;
-    padding: 60px; /* Increased padding around the container */
-    animation: fadeIn 0.3s ease-in-out;
-  }
+  display: flex;
+  justify-content: center;   /* canh card nằm chính giữa theo chiều ngang */
+  align-items: flex-start;    /* canh card ngay góc trên của container */
+  min-height: 100vh;          /* toàn bộ vùng chứa cao 100% viewport */
+  font-family: 'Arial', sans-serif;
+  overflow: auto;
 
-  .register-card {
-    background-color: rgba(255, 255, 255, 0.7); /* Reduced opacity from 0.95 to 0.7 */
-    padding: 30px; /* Reduced from 40px */
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
-    width: 100%;
-    max-width: 300px; /* Reduced from 350px */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center; /* Center text within the card */
-    animation: slideIn 0.5s ease-out;
-  }
+  /* XÓA margin‐top: 90px; chỉ cần padding‐top rất nhỏ hoặc bằng 0 */
+  padding: 0;                 /* chính xác là không cần "thụt xuống" nữa */
+  animation: fadeIn 0.3s ease-in-out;
 
-  /* Logo */
-  .register-logo img {
-    width: 80px; /* Reduced from 100px */
-    height: auto;
-    margin-bottom: 15px; /* Reduced from 20px */
-  }
+  /* Background image */
+  background-image: url('../assets/fullbganimal.jpg');
+  background-size: 70%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
-  /* Title and Subtitle */
-  .register-tagline {
-    margin-bottom: 20px; /* Reduced from 30px */
-  }
-  .register-tagline h2 {
-      font-size: 2rem;
-      color: #ffab62; /* Main color for title */
-      margin-bottom: 5px;
-  }
-  .register-tagline p {
-    margin: 0;
-    font-size: 1rem;
-    color: #555; /* Darker color for subtitle */
-  }
 
-  /* Form Group */
-  .register-form .form-group {
-      width: 100%;
-      margin-bottom: 10px; /* Reduced from 15px */
-      text-align: left; /* Align labels and inputs to the left */
-  }
+/* 2) Register card: xóa margin‐top, chỉ giữ padding nội bộ */
+.register-card {
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 8px;               /* bạn có thể giảm thêm nếu muốn */
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 
-  .register-form .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #555; /* Darker color for labels */
-      font-size: 0.9rem;
-  }
+  width: 100%;
+  max-width: 300px;
 
-  .register-form .form-group input[type="text"],
-  .register-form .form-group input[type="email"],
-  .register-form .form-group input[type="password"],
-  .register-form .form-group input[type="tel"],
-  .register-form .form-group input[type="url"],
-  .register-form .form-group textarea,
-  .register-form .form-group select {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
-      font-size: 1rem;
-      box-sizing: border-box;
-      margin-top: 4px;
-      background-color: rgba(255, 255, 255, 0.9);
-      color: #333;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
+  /* Luôn nằm sát ngay mép trên container vì align‐items: flex-start */
+  margin: 0;                  /* Đảm bảo không có margin‐top ẩn nào */
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: slideIn 0.3s ease-in-out;
+}
 
-  .register-form .form-group input[type="text"]:hover,
-  .register-form .form-group input[type="email"]:hover,
-  .register-form .form-group input[type="password"]:hover,
-  .register-form .form-group input[type="tel"]:hover,
-  .register-form .form-group input[type="url"]:hover,
-  .register-form .form-group textarea:hover,
-  .register-form .form-group select:hover {
-      border-color: #ffab62;
-      box-shadow: 0 2px 8px rgba(255, 171, 98, 0.2);
-  }
 
-  .register-form .form-group input[type="text"]:focus,
-  .register-form .form-group input[type="email"]:focus,
-  .register-form .form-group input[type="password"]:focus,
-  .register-form .form-group input[type="tel"]:focus,
-  .register-form .form-group input[type="url"]:focus,
-  .register-form .form-group textarea:focus,
-  .register-form .form-group select:focus {
-      outline: none;
-      border-color: #ffab62;
-      box-shadow: 0 2px 12px rgba(255, 171, 98, 0.3);
-      background-color: #ffffff;
-  }
+/* 3) Logo: rút gọn khoảng cách giữa paw-logo và chữ paw-letter */
+.register-logo {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
 
-  .register-form .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
-  }
+  /* Giảm tối đa khoảng cách giữa hai hình paw */
+  margin-bottom: 5px;   /* chỉ tạo 5px khoảng trống sau vùng logo */
+  gap: 0;               /* không có gap giữa các phần tử con */
+  position: relative;
+}
 
-  /* Submit Button */
-  .register-button {
-    padding: 10px 0; /* Reduced from 12px */
-    width: 100%;
-    background-color: #ffab62; /* Main color for the button */
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    font-weight: bold;
-    margin-top: 15px; /* Reduced from 20px */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
+.register-logo .paw-logo-img {
+  width: 130px;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+}
 
-  .register-button:hover {
-      background-color: #ff994f; /* Darker orange on hover */
-  }
+.register-logo .paw-letter {
+  width: 150px; /* Base width - actual size scaled visually */
+  height: auto;
+  margin: 0; /* Ensure no margin */
+  padding: 0; /* Ensure no padding */
+  display: block;
+  position: relative;
+  z-index: 1;
+  transform: scale(2); /* Phóng to ảnh Pawmily lên 1.3 lần */
+  transform-origin: center center; /* Phóng to từ tâm ảnh */
+}
 
-  /* Link to Login Page */
-  .has-account-text {
-      text-align: center;
-      margin-top: 15px; /* Reduced from 20px */
-      color: #555;
-      font-size: 0.9rem;
-  }
 
-  .has-account-text a {
-      color: #ffab62; /* Main color for links */
-      text-decoration: none;
-      font-weight: bold;
-  }
+/* 4) Tagline: rút gọn margin‐bottom */
+.register-tagline {
+  margin-bottom: 5px;   /* chỉ chừa 5px khoảng trống dưới tiêu đề */
+}
 
-  .has-account-text a:hover {
-      text-decoration: underline;
-  }
+.register-tagline h2 {
+  font-size: 1.6rem;
+  color: #ffab62;
+  margin-bottom: 1px;   /* chỉ 1px khoảng trống dưới */
+}
 
-@media (max-width: 480px) {
-    .register-card {
-        padding: 15px; /* Reduced from 20px */
-        max-width: 100%;
-    }
-    .register-logo img {
-        width: 80px;
-    }
-    .register-tagline h2 {
-        font-size: 1.5rem;
-    }
-    .register-button {
-        font-size: 1rem;
-    }
- }
+.register-tagline p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #555;
+}
 
+
+/* 5) Form Group: rút gọn các khoảng trống bên trong */
+.register-form {
+  margin-bottom: 3px;   /* rút gọn khoảng trống dưới khối form */
+}
+
+.register-form .form-group {
+  width: 100%;
+  margin-bottom: 3px;   /* rút gọn khoảng cách giữa từng nhóm input */
+  text-align: left;
+}
+
+.register-form .form-group label {
+  display: block;
+  margin-bottom: 1px;   /* rút gọn khoảng cách giữa label và input */
+  font-weight: bold;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.register-form .form-group input,
+.register-form .form-group textarea,
+.register-form .form-group select {
+  width: 100%;
+  padding: 4px;         /* rút gọn padding bên trong input */
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  margin-top: 1px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+
+/* 6) Nút Đăng ký: giảm padding và margin */
+.register-button {
+  padding: 4px 0;        /* rút gọn kích thước nút */
+  width: 100%;
+  background-color: #ffab62;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-weight: bold;
+  margin-top: 4px;       /* rút gọn khoảng trống trên nút */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.register-button:hover {
+  background-color: #ff994f;
+}
+
+
+/* 7) Link "Đã có tài khoản": rút gọn margin */
+.has-account-text {
+  text-align: center;
+  margin-top: 4px;      /* khoảng cách rất nhỏ */
+  color: #555;
+  font-size: 0.8rem;
+}
+
+.has-account-text a {
+  color: #ffab62;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.has-account-text a:hover {
+  text-decoration: underline;
+}
+
+
+/* 8) Animation (không thay đổi) */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes slideIn {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-} 
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+
+/* 9) Media Queries (nếu cần) */
+@media (max-width: 480px) {
+  .register-card {
+    padding: 6px;
+    max-width: 100%;
+  }
+  .register-logo .paw-logo-img {
+    width: 50px;
+  }
+  .register-logo .paw-letter {
+    width: 150px; /* Base width for smaller screens */
+    transform: scale(1.1); /* Phóng to ít hơn trên màn hình nhỏ */
+  }
+  .register-tagline h2 {
+    font-size: 1.2rem;
+  }
+  .register-button {
+    font-size: 0.75rem;
+  }
+}
