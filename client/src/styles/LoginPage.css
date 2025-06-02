@@ -1,0 +1,182 @@
+.login-container {
+    display: flex;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .login-left {
+    flex: 2;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .login-left .back-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #ffffff;
+    font-size: 1rem;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .login-left .back-link:hover {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+
+  .login-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fdf8f0;
+    padding: 0 40px;
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  /* Logo */
+  .login-logo img {
+    width: 120px;     /* chỉnh kích thước logo nếu cần */
+    height: auto;
+    margin-bottom: 16px;
+  }
+  
+  /* Tagline */
+  .login-tagline {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .login-tagline p {
+    margin: 2px 0;
+    font-size: 1.1rem;
+    color: #4d4d4d;
+  }
+  
+  /* Nút đăng ký Google / Phone */
+  .signup-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 280px;
+    margin-bottom: 20px;
+  }
+  .signup-buttons button {
+    padding: 12px 0;
+    border: none;
+    border-radius: 999px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-weight: bold;
+  }
+  .signup-buttons .btn-google {
+    background-color: #ffab62;
+    color: #555;
+    border: 1px solid #ccc;
+  }
+  .signup-buttons .btn-google:hover {
+    opacity: 0.9;
+  }
+  .signup-buttons .btn-phone {
+    background-color: #ffab62;
+    color: white;
+    border: none;
+  }
+  .signup-buttons .btn-phone:hover {
+    opacity: 0.9;
+  }
+  
+  /* Text điều khoản */
+  .terms-text {
+    font-size: 0.75rem;
+    color: #777;
+    text-align: center;
+    margin: 12px 0 24px 0;
+    line-height: 1.3;
+  }
+  .terms-text a {
+    color: #ff7f50;
+    text-decoration: none;
+  }
+  .terms-text a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Phần "Đã có tài khoản?" + nút đăng nhập */
+  .already-login {
+    text-align: center;
+    margin-top: 12px;
+  }
+  .already-login span {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 0.9rem;
+  }
+  .already-login .btn-login {
+    padding: 12px 0;
+    width: 100%;
+    max-width: 280px;
+    background-color: #ffab62;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-weight: bold;
+  }
+  .already-login .btn-login:hover {
+    opacity: 0.9;
+  }
+  
+  /* Đảm bảo responsive trên màn hình nhỏ */
+  @media (max-width: 768px) {
+    .login-container {
+      flex-direction: column;
+    }
+    .login-left,
+    .login-right {
+      flex: unset;
+      width: 100%;
+      height: 50vh;
+    }
+    .login-left .back-link {
+      font-size: 0.9rem;
+      padding: 4px 8px;
+    }
+    .login-right {
+      padding: 0 20px;
+    }
+    .signup-buttons,
+    .already-login .btn-login {
+      max-width: 100%;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+  }
+  

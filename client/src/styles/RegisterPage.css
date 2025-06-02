@@ -1,0 +1,188 @@
+.register-container {
+    display: flex;
+    justify-content: center; /* Center the card horizontally */
+    align-items: center; /* Center the card vertically */
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    overflow: auto; /* Allow scrolling if content overflows */
+    background-image: url('../assets/fullbganimal.jpg'); /* Changed background image */
+    background-size: 70%; 
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat;
+    padding: 60px; /* Increased padding around the container */
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .register-card {
+    background-color: rgba(255, 255, 255, 0.7); /* Reduced opacity from 0.95 to 0.7 */
+    padding: 30px; /* Reduced from 40px */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+    width: 100%;
+    max-width: 300px; /* Reduced from 350px */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Center text within the card */
+    animation: slideIn 0.5s ease-out;
+  }
+
+  /* Logo */
+  .register-logo img {
+    width: 80px; /* Reduced from 100px */
+    height: auto;
+    margin-bottom: 15px; /* Reduced from 20px */
+  }
+
+  /* Title and Subtitle */
+  .register-tagline {
+    margin-bottom: 20px; /* Reduced from 30px */
+  }
+  .register-tagline h2 {
+      font-size: 2rem;
+      color: #ffab62; /* Main color for title */
+      margin-bottom: 5px;
+  }
+  .register-tagline p {
+    margin: 0;
+    font-size: 1rem;
+    color: #555; /* Darker color for subtitle */
+  }
+
+  /* Form Group */
+  .register-form .form-group {
+      width: 100%;
+      margin-bottom: 10px; /* Reduced from 15px */
+      text-align: left; /* Align labels and inputs to the left */
+  }
+
+  .register-form .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555; /* Darker color for labels */
+      font-size: 0.9rem;
+  }
+
+  .register-form .form-group input[type="text"],
+  .register-form .form-group input[type="email"],
+  .register-form .form-group input[type="password"],
+  .register-form .form-group input[type="tel"],
+  .register-form .form-group input[type="url"],
+  .register-form .form-group textarea,
+  .register-form .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      margin-top: 4px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #333;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .register-form .form-group input[type="text"]:hover,
+  .register-form .form-group input[type="email"]:hover,
+  .register-form .form-group input[type="password"]:hover,
+  .register-form .form-group input[type="tel"]:hover,
+  .register-form .form-group input[type="url"]:hover,
+  .register-form .form-group textarea:hover,
+  .register-form .form-group select:hover {
+      border-color: #ffab62;
+      box-shadow: 0 2px 8px rgba(255, 171, 98, 0.2);
+  }
+
+  .register-form .form-group input[type="text"]:focus,
+  .register-form .form-group input[type="email"]:focus,
+  .register-form .form-group input[type="password"]:focus,
+  .register-form .form-group input[type="tel"]:focus,
+  .register-form .form-group input[type="url"]:focus,
+  .register-form .form-group textarea:focus,
+  .register-form .form-group select:focus {
+      outline: none;
+      border-color: #ffab62;
+      box-shadow: 0 2px 12px rgba(255, 171, 98, 0.3);
+      background-color: #ffffff;
+  }
+
+  .register-form .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+  }
+
+  /* Submit Button */
+  .register-button {
+    padding: 10px 0; /* Reduced from 12px */
+    width: 100%;
+    background-color: #ffab62; /* Main color for the button */
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-weight: bold;
+    margin-top: 15px; /* Reduced from 20px */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .register-button:hover {
+      background-color: #ff994f; /* Darker orange on hover */
+  }
+
+  /* Link to Login Page */
+  .has-account-text {
+      text-align: center;
+      margin-top: 15px; /* Reduced from 20px */
+      color: #555;
+      font-size: 0.9rem;
+  }
+
+  .has-account-text a {
+      color: #ffab62; /* Main color for links */
+      text-decoration: none;
+      font-weight: bold;
+  }
+
+  .has-account-text a:hover {
+      text-decoration: underline;
+  }
+
+@media (max-width: 480px) {
+    .register-card {
+        padding: 15px; /* Reduced from 20px */
+        max-width: 100%;
+    }
+    .register-logo img {
+        width: 80px;
+    }
+    .register-tagline h2 {
+        font-size: 1.5rem;
+    }
+    .register-button {
+        font-size: 1rem;
+    }
+ }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+} 
