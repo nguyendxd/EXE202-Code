@@ -4,13 +4,13 @@
 .register-container {
   display: flex;
   justify-content: center;   /* canh card nằm chính giữa theo chiều ngang */
-  align-items: flex-start;    /* canh card ngay góc trên của container */
+  align-items: center;    /* canh card ngay góc trên của container */
   min-height: 100vh;          /* toàn bộ vùng chứa cao 100% viewport */
   font-family: 'Arial', sans-serif;
   overflow: auto;
 
   /* XÓA margin‐top: 90px; chỉ cần padding‐top rất nhỏ hoặc bằng 0 */
-  padding: 0;                 /* chính xác là không cần "thụt xuống" nữa */
+  padding: 30px 0 20px 0;                 /* chính xác là không cần "thụt xuống" nữa */
   animation: fadeIn 0.3s ease-in-out;
 
   /* Background image */
@@ -23,7 +23,7 @@
 
 /* 2) Register card: xóa margin‐top, chỉ giữ padding nội bộ */
 .register-card {
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 230, 100, 0.9); /* Đổi màu nền sang vàng nhạt với độ trong suốt */
   padding: 8px;               /* bạn có thể giảm thêm nếu muốn */
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -85,6 +85,7 @@
   font-size: 1.6rem;
   color: #ffab62;
   margin-bottom: 1px;   /* chỉ 1px khoảng trống dưới */
+  font-weight: bold; /* Làm chữ đậm hơn */
 }
 
 .register-tagline p {
