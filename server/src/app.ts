@@ -11,6 +11,8 @@ import postRoutes from "./routes/postRoutes";
 import petWishlistRoutes from "./routes/petWishlistRoutes";
 import blogRoutes from "./routes/blogRoutes";
 import messageRoutes from "./routes/messageRoutes";
+import mapRoutes from './routes/mapRoutes';
+import rescueStationRoutes from './routes/rescueStationRoutes';
 
 const app = express();
 app.use(express.json());
@@ -26,6 +28,8 @@ app.use("/api/posts", postRoutes);
 app.use("/api/wishlist", petWishlistRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/map", mapRoutes);
+app.use("/api/rescue-stations", rescueStationRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server is Running!");
