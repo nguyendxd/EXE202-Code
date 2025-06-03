@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import registerBg from '../assets/short-cute-kitten.png'; 
 import pawLogo from '../assets/paw-logo.png';
@@ -6,6 +6,12 @@ import pawLetter from '../assets/PawLetter.png';
 import '../styles/RegisterPage.css'; // Corresponding CSS file
 
 const RegisterPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="register-container">
       {/* Background Image / Design Element (styled in CSS) */}
@@ -39,7 +45,20 @@ const RegisterPage = () => {
 
           <div className="form-group">
             <label htmlFor="password">Mật khẩu</label>
-            <input type="password" id="password" name="password" />
+            <div className="password-input-container">
+              <input 
+                type={showPassword ? 'text' : 'password'}
+                id="password" 
+                name="password" 
+              />
+              <span 
+                className="password-toggle-icon"
+                onClick={togglePasswordVisibility}
+              >
+                {/* Use Unicode eye icons */}
+                {showPassword ? '\u{1F441}' : '\u{1F441}\u{200D}\u{1F5E8}\u{FE0F}'} {/* Open eye / Closed eye with slash */}
+              </span>
+            </div>
           </div>
 
           <div className="form-group">
@@ -57,7 +76,7 @@ const RegisterPage = () => {
         </form>
 
         {/* Link to Login Page */}
-        <p className="has-account-text">Đã có tài khoản? <Link to="/login">Đăng nhập</Link></p>
+        <p className="has-account-text">Đã có tài khoản? <Link to="/login-form">Đăng nhập</Link></p>
       </div>
     </div>
   );

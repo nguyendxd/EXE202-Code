@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LandingPage from './pages/LandingPage'
+import LoginForm from './pages/LoginForm'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
 // import AdoptPage from './pages/AdoptPage'
 // import PostPage from './pages/PostPage'
 // import BlogPage from './pages/BlogPage'
@@ -19,6 +21,8 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login-form" element={<LoginForm />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         </Routes>
       </div>
 

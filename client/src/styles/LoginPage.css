@@ -33,7 +33,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: #fdf8f0;
     padding: 0 40px;
     animation: slideIn 0.3s ease-out;
@@ -41,9 +41,11 @@
   
   /* Logo */
   .login-logo img {
-    width: 120px;     /* chỉnh kích thước logo nếu cần */
+    width: 200px;     /* Keeping original width for layout */
     height: auto;
     margin-bottom: 16px;
+    transform: scale(1.5); /* Visually scale the logo */
+    transform-origin: center; /* Scale from the center */
   }
   
   /* Tagline */

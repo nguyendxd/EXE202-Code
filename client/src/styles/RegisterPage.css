@@ -104,6 +104,7 @@
   width: 100%;
   margin-bottom: 3px;   /* rút gọn khoảng cách giữa từng nhóm input */
   text-align: left;
+  position: relative; /* Added for positioning the password icon */
 }
 
 .register-form .form-group label {
@@ -128,6 +129,42 @@
   color: #333;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Style for the password input container */
+.register-form .form-group .password-input-container {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ensure it takes full width */
+    position: relative; /* Container for absolute positioning of icon */
+}
+
+.register-form .form-group .password-input-container input[type="password"],
+.register-form .form-group .password-input-container input[type="text"] {
+    flex-grow: 1; /* Allow input to take available space */
+    padding-right: 30px; /* Add padding to make space for the icon */
+    /* Keep existing input styles */
+    padding: 4px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    margin-top: 1px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Style for the password toggle icon */
+.register-form .form-group .password-toggle-icon {
+    position: absolute;
+    right: 8px; /* Position from the right */
+    top: 50%; /* Align vertically */
+    transform: translateY(-50%); /* Adjust for perfect vertical centering */
+    cursor: pointer;
+    color: #555; /* Icon color */
+    font-size: 0.8rem; /* Adjust icon size if needed */
 }
 
 
