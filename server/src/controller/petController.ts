@@ -57,22 +57,35 @@ export const getAllPetsController = async (req: AuthenticatedRequest, res: Respo
 /**
  * GET /pets/:id
  */
-export const getPetByIdController = async (req: AuthenticatedRequest, res: Response):Promise<void> => {
+export const getPetByIdController = async (req: AuthenticatedRequest, res: Response) => {
   try {
+     console.log('Starting getPetByIdController');
+     console.log('Request params:', req.params);
      const user = req.user;
-      const userId = user?.id || user?.uid;
+     console.log('User in getPetByIdController:', user);
+     console.log('User role:', user?.role);
+     const userId = user?.id || user?.uid;
+     console.log('UserId:', userId);
 
       if (!user || !userId || (user.role !== 'admin')){
          res.status(403).json({message: "You have no permission for this function "})
+      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
+         console.log('Permission check failed. User:', user);
+         return res.status(403).json({message: "You have no permission for this function "});
       }
-    const pet = await repo.getPetById(req.params.id);
-    if (!pet) {
-        res.status(404).json({ error: "Pet not found" });
-        return;
-    } 
-    res.json(pet);
+     console.log('Permission check passed, fetching pet with ID:', req.params.id);
+     const pet = await repo.getPetById(req.params.id);
+     console.log('Pet found:', pet);
+     if (!pet) {
+         console.log('Pet not found for ID:', req.params.id);
+         res.status(404).json({ error: "Pet not found" });
+         return;
+     } 
+     console.log('Sending pet response:', pet);
+     res.json(pet);
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+     console.error('Error in getPetByIdController:', err);
+     res.status(500).json({ error: err.message });
   }
 };
 
