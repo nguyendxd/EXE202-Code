@@ -138,7 +138,7 @@ router.get("/", authenticateToken as RequestHandler, getAllPetsController as Req
  *       500:
  *         description: Error fetching pet
  */
-router.get("/:id", upload.array("images", 5), getPetByIdController as RequestHandler, authenticateToken as RequestHandler);
+router.get("/:id", authenticateToken as RequestHandler, getPetByIdController as RequestHandler);
 
 /**
  * @swagger
@@ -153,6 +153,7 @@ router.get("/:id", upload.array("images", 5), getPetByIdController as RequestHan
  *         required: true
  *         schema:
  *           type: string
+ *         description: Pet ID
  *     requestBody:
  *       required: true
  *       content:
@@ -162,11 +163,59 @@ router.get("/:id", upload.array("images", 5), getPetByIdController as RequestHan
  *             properties:
  *               name:
  *                 type: string
+ *                 example: "Bé Nâu"
+ *               species:
+ *                 type: string
+ *                 enum: ["dog","cat"]
+ *                 example: "dog"
+ *               breed:
+ *                 type: string
+ *                 example: "Border Collie"
+ *               age:
+ *                 type: string
+ *                 example: "6 tháng tuổi"
+ *               size:
+ *                 type: string
+ *                 enum: ["small","medium","large"]
+ *                 example: "small"
+ *               gender:
+ *                 type: string
+ *                 enum: ["male","female"]
+ *                 example: "male"
+ *               healthStatus:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["Khỏe mạnh", "Đã tiêm chủng"]
+ *               color:
+ *                 type: string
+ *                 example: "Đen vàng"
+ *               weight:
+ *                 type: string
+ *                 example: "3kg"
+ *               temperament:
+ *                 type: string
+ *                 example: "Năng động, thích quấn chủ"
+ *               address:
+ *                 type: string
+ *                 example: "123 Đường A, Quận B"
+ *               contactPhone:
+ *                 type: string
+ *                 example: "0912345678"
+ *               story:
+ *                 type: string
+ *                 example: "Mình được phát hiện..."
+ *               shelterId:
+ *                 type: string
+ *                 example: "60f1d5e8c2a3d4567890abcd"
  *               images:
  *                 type: array
  *                 items:
  *                   type: string
  *                   format: binary
+ *               isAdopted:
+ *                 type: boolean
+ *                 example: false
  *     responses:
  *       200:
  *         description: Pet updated successfully
@@ -175,7 +224,7 @@ router.get("/:id", upload.array("images", 5), getPetByIdController as RequestHan
  *       500:
  *         description: Error updating pet
  */
-router.put("/:id", updatePetController as RequestHandler, authenticateToken as RequestHandler );
+router.put("/:id", authenticateToken as RequestHandler, upload.array("images", 5), updatePetController as RequestHandler);
 
 /**
  * @swagger
@@ -199,6 +248,6 @@ router.put("/:id", updatePetController as RequestHandler, authenticateToken as R
  *       500:
  *         description: Error deleting pet
  */
-router.delete("/:id", deletePetController as RequestHandler, authenticateToken as RequestHandler);
+router.delete("/:id", authenticateToken as RequestHandler, deletePetController as RequestHandler);
 
 export default router;

@@ -22,6 +22,10 @@ export const addToWishlist = async (
     if (!pet) {
       return res.status(404).json({ message: "Pet not found" });
     }
+    // Kiểm tra pet đã được nhận nuôi chưa
+    if (pet.isAdopted) {
+      return res.status(400).json({ message: "Pet is already adopted" });
+    }
     // Tạo wishlist entry (unique index sẽ chặn duplicate)
     const wish = await PetWishlist.create({
       user: user.id || user.uid,
