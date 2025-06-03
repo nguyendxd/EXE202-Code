@@ -466,3 +466,83 @@ Error: write EPIPE
     at Console.log (C:\Users\MSI\Desktop\Desktop\Clone-repo\Exewebsite\EXE202-Code\server\node_modules\winston\lib\winston\transports\console.js:87:23)
     at Console._write (C:\Users\MSI\Desktop\Desktop\Clone-repo\Exewebsite\EXE202-Code\server\node_modules\winston-transport\modern.js:82:19)
     at doWrite (C:\Users\MSI\Desktop\Desktop\Clone-repo\Exewebsite\EXE202-Code\server\node_modules\winston-transport\node_modules\readable-stream\lib\_stream_writable.js:390:139)
+[2025-06-03 14:19:58] [ERROR]: uncaughtException: Cannot set headers after they are sent to the client
+Error: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:699:11)
+    at ServerResponse.header (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:794:10)
+    at ServerResponse.send (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:174:12)
+    at ServerResponse.json (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:278:15)
+    at C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:75:21
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:38:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-06-03 14:22:23] [ERROR]: uncaughtException: Cannot set headers after they are sent to the client
+Error: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:699:11)
+    at ServerResponse.header (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:794:10)
+    at ServerResponse.send (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:174:12)
+    at ServerResponse.json (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:278:15)
+    at C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:75:21
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:38:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-06-03 14:26:03] [ERROR]: uncaughtException: Cannot set headers after they are sent to the client
+Error: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:699:11)
+    at ServerResponse.header (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:794:10)
+    at ServerResponse.send (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:174:12)
+    at ServerResponse.json (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:278:15)
+    at C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:75:21
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:38:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-06-03 14:27:35] [ERROR]: uncaughtException: Cannot set headers after they are sent to the client
+Error: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:699:11)
+    at ServerResponse.header (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:794:10)
+    at ServerResponse.send (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:174:12)
+    at ServerResponse.json (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:278:15)
+    at C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:75:21
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:38:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-06-03 14:29:08] [ERROR]: uncaughtException: Cannot set headers after they are sent to the client
+Error: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:699:11)
+    at ServerResponse.header (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:794:10)
+    at ServerResponse.send (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:174:12)
+    at ServerResponse.json (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:278:15)
+    at C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:75:21
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:38:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-06-03 14:31:26] [ERROR]: uncaughtException: Cannot set headers after they are sent to the client
+Error: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:699:11)
+    at ServerResponse.header (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:794:10)
+    at ServerResponse.send (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:174:12)
+    at ServerResponse.json (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:278:15)
+    at C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:108:23
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:38:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-06-03 14:31:52] [ERROR]: uncaughtException: Cannot set headers after they are sent to the client
+Error: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:699:11)
+    at ServerResponse.header (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:794:10)
+    at ServerResponse.send (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:174:12)
+    at ServerResponse.json (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:278:15)
+    at C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:130:21
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:38:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-06-03 14:33:27] [ERROR]: uncaughtException: Cannot set headers after they are sent to the client
+Error: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:699:11)
+    at ServerResponse.header (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:794:10)
+    at ServerResponse.send (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:174:12)
+    at ServerResponse.json (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\node_modules\express\lib\response.js:278:15)
+    at C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:75:21
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Users\MSI\Desktop\Desktop\Clone-repo\github-clone\EXE202-Code\server\src\controller\petController.ts:38:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
