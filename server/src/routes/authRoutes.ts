@@ -108,7 +108,7 @@ router.post("/register", register as RequestHandler);
  *               email:
  *                 type: string
  *                 format: email
- *                 example: "user@example.com"
+ *                 example: "nguyenn120404@gmail.com"
  *               password:
  *                 type: string
  *                 format: password

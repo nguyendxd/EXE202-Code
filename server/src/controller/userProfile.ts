@@ -27,16 +27,21 @@ export const getProfile = async (req: Request, res: Response): Promise<void> => 
             res.status(404).json({error: "User not found"});
             return;
         }
+
+        res.status(200).json(user);
     }catch(error) {
         console.error("Failed to fetch user profiles:", error);
         res.status(500).json({error:"Failed to fetch user profiles"});
-        
     }
 };
 //cap nhat profile nguoi dung (co the up ava)
 // Cập nhật profile người dùng (có thể upload avatar)
 export const updateProfile = async (req: Request, res: Response): Promise<void> => {
     try {
+        console.log('Starting profile update...');
+        console.log('Request file:', req.file);
+        console.log('Request body:', req.body);
+
         const userId = req.params.id;
         const { username, phone, address, socialLink, description } = req.body;
 
@@ -59,28 +64,47 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
 
         // Xử lý upload avatar nếu có file
         if (req.file) {
+            console.log('Processing file upload...');
+            console.log('File details:', {
+                originalname: req.file.originalname,
+                mimetype: req.file.mimetype,
+                size: req.file.size
+            });
+
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!allowedTypes.includes(req.file.mimetype)) {
+                console.log('Invalid file type:', req.file.mimetype);
+                res.status(400).json({ error: "Invalid file type. Only JPEG, PNG and GIF are allowed" });
+                return;
+            }
+
             try {
                 const fileBuffer = req.file.buffer;
                 const fileName = `${Date.now()}-${req.file.originalname}`;
+                console.log('Uploading to ImageKit with filename:', fileName);
 
                 const result = await imagekit.upload({
                     file: fileBuffer.toString("base64"),
                     fileName,
                     folder: "avatars",
                     useUniqueFileName: true,
-
                 });
 
                 if (!result.url) {
+                    console.log('ImageKit upload failed - no URL returned');
                     res.status(500).json({ error: "Failed to get URL from ImageKit" });
                     return;
                 }
+                console.log('ImageKit upload successful, URL:', result.url);
                 avatarUrl = result.url;
             } catch (uploadError) {
                 console.error("Upload avatar failed:", uploadError);
                 res.status(500).json({ error: "Failed to upload avatar" });
                 return;
             }
+        } else {
+            console.log('No file uploaded, keeping existing avatar');
         }
 
         // Cập nhật thông tin profile
@@ -92,6 +116,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
         user.avatar = avatarUrl;
 
         await user.save();
+        console.log('Profile updated successfully');
 
         res.status(200).json({
             message: "Profile updated successfully",

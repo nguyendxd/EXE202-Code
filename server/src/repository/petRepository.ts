@@ -37,8 +37,12 @@ export const createPet = async (
 export const getAllPets = () =>
   Pet.find({ isAdopted: false });
 
-export const getPetById = (id: string) => 
-    Pet.findOne({ _id: id});
+export const getPetById = (id: string) => {
+    if (!Types.ObjectId.isValid(id)) {
+        throw new Error("Invalid pet ID");
+    }
+    return Pet.findOne({ _id: id });
+};
 
 export const updatePetById = async (
   id: string,
