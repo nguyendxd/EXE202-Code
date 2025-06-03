@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import landingpageimage from '../assets/landingpageimage.png';
+import chungminhlaaisection from '../assets/chungminhlaaisection.jpg';
 
 const images = [
-    'https://via.placeholder.com/1200x500?text=Pet+1',
-    'https://via.placeholder.com/1200x500?text=Pet+2',
-    'https://via.placeholder.com/1200x500?text=Pet+3',
-    'https://via.placeholder.com/1200x500?text=Pet+4',
-    'https://via.placeholder.com/1200x500?text=Pet+5'
+    'https://images.pexels.com/photos/46024/pexels-photo-46024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    'https://images.pexels.com/photos/6821106/pexels-photo-6821106.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    'https://images.pexels.com/photos/416160/pexels-photo-416160.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    'https://images.pexels.com/photos/20816519/pexels-photo-20816519/free-photo-of-cho-ng-i-v-t-nuoi-con-meo.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    'https://images.pexels.com/photos/3071628/pexels-photo-3071628.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
 ];
 
 export default function LandingPage() {
@@ -54,14 +55,19 @@ export default function LandingPage() {
         top: '50%',
         [side]: '20px',
         transform: 'translateY(-50%)',
-        backgroundColor: hoveredArrow === side ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.4)',
+        backgroundColor: hoveredArrow === side ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.5)',
         color: 'white',
         border: 'none',
-        padding: '10px',
-        fontSize: '24px',
+        width: '40px', // Fixed width for circular shape
+        height: '40px', // Fixed height for circular shape
+        borderRadius: '50%', // Ensures circular shape
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '20px', // Slightly smaller font for better fit
         cursor: 'pointer',
-        borderRadius: '50%',
-        transition: 'background-color 0.3s ease'
+        boxShadow: hoveredArrow === side ? '0 4px 8px rgba(0,0,0,0.3)' : '0 2px 4px rgba(0,0,0,0.2)',
+        transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
     });
 
     const dotStyle = (idx) => ({
@@ -123,7 +129,7 @@ export default function LandingPage() {
                         alt={`Slide ${idx}`}
                         style={{
                             width: '100%',
-                            height: '500px',
+                            height: '800px',
                             objectFit: 'cover',
                             position: 'absolute',
                             top: 0,
@@ -173,12 +179,12 @@ export default function LandingPage() {
             </div>
 
             <section style={{
-                padding: '60px 0 0',
+                padding: '10px 0 0',
                 backgroundColor: '#FFF8E7',
                 textAlign: 'center',
                 color: '#5D4037',
             }}>
-                <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+                <div style={{ maxWidth: '900px', margin: '0 auto' }}>
                     <h2 style={{ fontSize: '28px', color: '#A47148', marginBottom: '20px' }}>
                         Cứu một bé nhỏ, nhận cả bầu trời yêu thương!
                     </h2>
@@ -198,17 +204,21 @@ export default function LandingPage() {
                     />
                 </div>
             </section>
-
-            {/* Hero Section */}
-            <section style={{
-                backgroundImage: 'url("https://via.placeholder.com/1200x500?text=Happy+Pets")',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                padding: '120px 20px',
-                textAlign: 'center',
-                color: 'white',
-                textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
-            }}>
+            <section
+                style={{
+                    backgroundImage: 'url("https://cdn.pixabay.com/photo/2022/10/25/04/55/cat-7544821_1280.jpg")',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundAttachment: 'fixed', // Cố định hình nền khi cuộn
+                    padding: '70px 20px',
+                    textAlign: 'center',
+                    color: 'white',
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                    position: 'relative', // Đảm bảo section không bị ảnh hưởng bởi các thuộc tính khác
+                    minHeight: '200px', // Đảm bảo kích thước section được giữ nguyên
+                    boxSizing: 'border-box', // Đảm bảo padding không làm thay đổi kích thước tổng thể
+                }}
+            >
                 <h1 style={{ fontSize: '40px', margin: 0 }}>Find Your Furry Friend</h1>
                 <p style={{ fontSize: '22px', maxWidth: '700px', margin: '20px auto' }}>
                     Hanoi Pet Adoption rescues stray and abandoned animals, giving them a second chance at a loving home.
@@ -227,12 +237,61 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {/* Mission Statement */}
             <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#FFF5E1' }}>
-                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Who We Are</h2>
-                <p style={{ maxWidth: '800px', margin: '20px auto', fontSize: '18px' }}>
-                    Hanoi Pet Adoption is a no-kill shelter dedicated to rescuing stray and abandoned cats and dogs. We provide medical care, shelter, and love while finding them forever homes. Our mission is to promote responsible pet ownership and reduce animal suffering in Hanoi.
-                </p>
+                <div
+                    style={{
+                        maxWidth: '1200px',
+                        margin: '0 auto',
+                        backgroundColor: '#CEA689',
+                        borderRadius: '15px',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                        padding: '30px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexWrap: 'wrap',
+                        gap: '20px',
+                        transition: 'transform 0.3s ease', // Add transition for smooth scaling
+                        ':hover': {
+                            transform: 'scale(1.02)', // Slight scale-up on hover
+                        },
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')} // Scale up on hover
+                    onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Reset scale on leave
+                >
+                    <div style={{ maxWidth: '450px', textAlign: 'center', flex: '1 1 400px' }}>
+                        <h2 style={{ fontSize: '30px', color: '#552F0F', marginBottom: '20px' }}>
+                            Chúng mình là ai?
+                        </h2>
+                        <p style={{ fontSize: '18px', margin: '0 0 40px 0' }}>
+                            Chúng mình là đã tạo Pawmily – nền tảng kết nối chủ nuôi, bác sĩ thú y và trạm cứu hộ,
+                            hỗ trợ chăm sóc, cứu hộ và tìm lại thú cưng nhanh chóng, hiệu quả. Sứ mệnh của chúng mình là xây dựng cộng đồng yêu thương,
+                            bảo vệ động vật, để mọi bé thú cưng đều được sống khỏe và hạnh phúc. Cùng lan tỏa yêu thương vì thế giới tốt đẹp hơn cho thú cưng! 🐾💙
+                        </p>
+                        <button
+                            style={mainButtonStyle('about', hoveredButtons['about'])}
+                            onMouseEnter={() => setHoveredButtons((prev) => ({ ...prev, about: true }))}
+                            onMouseLeave={() => setHoveredButtons((prev) => ({ ...prev, about: false }))}
+                        >
+                            Về chúng tớ
+                        </button>
+                    </div>
+
+                    {/* Hình ảnh */}
+                    <div style={{ flex: '1 1 400px', textAlign: 'center' }}>
+                        <img
+                            src={chungminhlaaisection} // Thay bằng đường dẫn ảnh thực tế
+                            alt="Pawmily Team"
+                            style={{
+                                width: '100%',
+                                maxWidth: 'none', // Loại bỏ giới hạn maxWidth để hình to sát viền
+                                height: '100%',
+                                borderRadius: '10px',
+                                objectFit: 'cover',
+                            }}
+                        />
+                    </div>
+                </div>
             </section>
 
             {/* Featured Pets */}
@@ -302,7 +361,7 @@ export default function LandingPage() {
                     justifyContent: 'center',
                     gap: '100px',
                     maxWidth: '1200px',
-                    margin: '20px auto',
+                    margin: '50px auto',
                     flexWrap: 'wrap'
                 }}>
                     <div style={{ flex: '1', minWidth: '300px', textAlign: 'center', color: '#5D4037', fontSize: '18px' }}>
@@ -318,7 +377,7 @@ export default function LandingPage() {
                         <p style={{ fontSize: '16px' }}>Những kiến thức cần thiết cho việc nuôi thú cưng lần đầu.</p>
                     </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', marginTop: '50px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', marginTop: '80px' }}>
                     <p style={{ fontSize: '22px', color: '#5D4037', margin: '0' }}>
                         Bạn còn nhiều thắc mắc khác?
                     </p>
