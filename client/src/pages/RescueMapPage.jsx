@@ -1,205 +1,166 @@
-import React, { useState, useEffect, useRef } from 'react';
-import goongjs from '@goongmaps/goong-js';
-import axios from 'axios'; // Import axios for API calls
+import { useEffect, useState, useRef } from "react";
+import axios from "axios";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 
-function RescueMapPage() {
+// Replace with your Mapbox access token
+const MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiZHVjbmd1eWVuMTIwNDA0IiwiYSI6ImNtYmhvc25tMzBiejQybXB2bW5tNnQzcHEifQ.Qh9wsJMYKeAqe96lQJ_ZBA";
+
+export default function RescueMapPage() {
+  const mapContainer = useRef(null);
+  const map = useRef(null);
   const [userLocation, setUserLocation] = useState(null);
-  const [rescueStations, setRescueStations] = useState([]);
-  const [loading, setLoading] = useState(true); // Initial loading state
+  const [stations, setStations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const mapContainerRef = useRef(null); // Ref for the map container div
-  const mapRef = useRef(null); // Ref to store the map instance
-  const markersRef = useRef([]); // Ref to store rescue station markers
 
-  // Replace with your actual Goong API Key
-  const GOONG_API_KEY = 'Cy3luLPV7Lyy1gwTh7YnjU2yEkvWv9tWfpZLqjyc';
-
-  // Effect to initialize the Goong Map
+  // Initialize map and get user location/stations
   useEffect(() => {
-    if (mapRef.current) return; // Initialize map only once
+    if (map.current) return; // initialize map only once
 
-    // Initialize the map
-    mapRef.current = new goongjs.Map({
-      container: mapContainerRef.current, // Container ID
-      style: 'https://tiles.goong.io/assets/goong_map_web.json', // Goong Map style URL
-      center: [106.69019216100008, 10.792578281000033], 
-      zoom: 12, 
-      apiKey: GOONG_API_KEY, // Your Goong API Key
+    mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: "mapbox://styles/mapbox/streets-v12",
+      center: [105.8342, 21.0285], // Default to Hanoi coordinates
+      zoom: 12
     });
 
-    // Add navigation control (optional)
-    mapRef.current.addControl(new goongjs.NavigationControl());
+    // Add navigation controls
+    map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
 
-    // Clean up the map on component unmount
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
-    };
-  }, [GOONG_API_KEY]); // Depend on API key just in case
+    // Wait for the map to load before getting user location and data
+    map.current.on('load', () => {
+      // Get user's location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            setUserLocation({ lat: latitude, lng: longitude });
 
-  // Effect to get user location
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser');
-      setLoading(false);
-      return;
-    }
+            console.log("User location obtained:", { latitude, longitude });
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setUserLocation({ lat: latitude, lng: longitude });
-        setLoading(false); // Stop loading after getting location
-      },
-      (err) => {
-        setError(`Error getting user location: ${err.message}`);
-        setLoading(false); // Stop loading on error
-      }
-    );
-  }, []); // Empty dependency array means this runs once on mount
+            // Center map on user's location
+            map.current.flyTo({
+              center: [longitude, latitude],
+              zoom: 14
+            });
 
-  // Effect to fetch rescue stations when userLocation is available
-  useEffect(() => {
-    if (!userLocation) {
-      // Don't fetch if user location is not yet available
-      // We might want to show a message asking for location access here
-      return;
-    }
+            try {
+              // Fetch nearby stations
+              const response = await axios.get("http://localhost:3000/api/map/nearby-stations", {
+                params: {
+                  latitude,
+                  longitude,
+                  radius: 20
+                }
+              });
 
-    // Clear previous markers before adding new ones
-    markersRef.current.forEach(marker => marker.remove());
-    markersRef.current = [];
-
-
-    // Move map center to user location once available
-    if (mapRef.current) {
-       mapRef.current.setCenter([userLocation.lng, userLocation.lat]);
-       mapRef.current.setZoom(13); // Zoom in a bit on the user
-    }
-
-
-    const fetchRescueStations = async () => {
-      setLoading(true); // Start loading for data fetch
-      setError(null); // Clear previous errors
-      const radiusInMeters = 30000; // 30 km in meters
-
-      try {
-        // Assuming your backend is running locally on port 5000
-        const response = await axios.get('http://localhost:5000/map/nearby-stations', { // Đây là dòng gọi API
-          params: {
-            latitude: userLocation.lat,
-            longitude: userLocation.lng,
-             radius: 30 // Assuming backend expects km based on the previous screenshot
+              if (response.data.success) {
+                setStations(response.data.data);
+              }
+            } catch (err) {
+              console.error("Failed to fetch nearby stations:", err);
+              setError("Không thể tải dữ liệu các trạm thú y gần đây");
+            } finally {
+              setLoading(false);
+            }
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            setError("Không thể lấy vị trí của bạn. Vui lòng cho phép truy cập vị trí.");
+            setLoading(false);
           }
-        });
-
-        // Check if the response structure matches the success case JSON
-        if (response.data && response.data.success && Array.isArray(response.data.data)) {
-             setRescueStations(response.data.data);
-        } else {
-            // Handle cases where success is true but data is not an array or missing
-             console.error("API response data is not in expected format:", response.data);
-             setRescueStations([]); // Clear previous stations if data is bad
-             setError("Received unexpected data format from the server.");
-        }
-
-
-      } catch (err) {
-        console.error("Error fetching rescue stations:", err);
-        setError(`Error fetching rescue stations: ${err.message}`);
-        setRescueStations([]); // Clear stations on error
-      } finally {
-        setLoading(false); // Stop loading after fetch (success or error)
-      }
-    };
-
-    fetchRescueStations();
-
-  }, [userLocation]); // This effect runs whenever userLocation changes
-
-  // Effect to add markers to the map when rescueStations data is updated
-  useEffect(() => {
-    if (!mapRef.current || rescueStations.length === 0) {
-        // Clear markers if station list is empty
-        markersRef.current.forEach(marker => marker.remove());
-        markersRef.current = [];
-        return;
-    }
-
-
-    // Clear previous markers before adding new ones
-    markersRef.current.forEach(marker => marker.remove());
-    markersRef.current = [];
-
-    rescueStations.forEach(station => {
-      // Ensure station has location and coordinates in the expected format [lng, lat]
-      if (station.location && station.location.type === 'Point' && Array.isArray(station.location.coordinates) && station.location.coordinates.length === 2) {
-        const [lng, lat] = station.location.coordinates;
-
-        // Create a new marker
-        const marker = new goongjs.Marker()
-          .setLngLat([lng, lat]) // Set marker position [lng, lat]
-          .setPopup(new goongjs.Popup().setHTML(`<h3>${station.name}</h3><p>${station.address}</p>`)) // Add a popup with station info
-          .addTo(mapRef.current); // Add the marker to the map
-
-        markersRef.current.push(marker); // Store marker reference
+        );
       } else {
-        console.warn("Skipping station due to invalid location data:", station);
+        setError("Trình duyệt của bạn không hỗ trợ định vị!");
+        setLoading(false);
       }
     });
 
-  }, [rescueStations]); // This effect runs whenever rescueStations changes
+    // Cleanup map on component unmount
+    return () => {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    };
+  }, []); // End useEffect for map initialization
+
+  // Add station markers when stations data changes or userAddress is updated
+  useEffect(() => {
+    if (!map.current || (!stations.length && !userLocation)) return; // Only proceed if map is ready and we have data/location
+
+    // Clear existing markers, including user marker
+    const markers = document.getElementsByClassName("mapboxgl-marker");
+    while (markers[0]) {
+      markers[0].remove();
+    }
+
+    // Add new markers for user and stations
+    if (userLocation) {
+      new mapboxgl.Marker({ color: "#4285F4" })
+        .setLngLat([userLocation.lng, userLocation.lat])
+        .setPopup(new mapboxgl.Popup().setHTML("<h3>Vị trí của bạn</h3>"))
+        .addTo(map.current);
+    }
+
+    stations.forEach((station) => {
+      const [lng, lat] = station.location.coordinates;
+      const markerColor = station.source === "database" ? "#FF5722" : "#4CAF50";
+
+      const popupContent = `
+        <div style="padding: 10px;">
+          <h3 style="margin: 0 0 5px 0;">${station.name}</h3>
+          <p style="margin: 0 0 5px 0;">${station.address}</p>
+          ${station.phone ? `<p style="margin: 0 0 5px 0;">📞 ${station.phone}</p>` : ""}
+          ${station.email ? `<p style="margin: 0 0 5px 0;">📧 ${station.email}</p>` : ""}
+          <p style="margin: 0 0 5px 0;">📍 ${station.distance.text}</p>
+          <p style="margin: 0;">⏱️ ${station.duration.text}</p>
+        </div>
+      `;
+
+      new mapboxgl.Marker({ color: markerColor })
+        .setLngLat([lng, lat])
+        .setPopup(new mapboxgl.Popup().setHTML(popupContent))
+        .addTo(map.current);
+    });
+  }, [stations, userLocation]);
 
   return (
-    <div style={{ height: 'calc(100vh - 90px)', position: 'relative' }}> {/* Added position: 'relative' for overlay */}
-      <h1>Trang Bản Đồ Trạm Cứu Hộ</h1>
+    <div style={{ height: "100vh", width: "100%", position: "relative" }}>
+      <div ref={mapContainer} style={{ height: "100%", width: "100%" }} />
 
-      {/* Map Container */}
-      <div ref={mapContainerRef} style={{ width: '100%', height: '100%' }} />
-
-      {/* Loading and Error Overlay */}
-      {(loading || error) && (
+      {loading && (
         <div style={{
-          position: 'absolute',
-          top: '0',
-          left: '0',
-          right: '0',
-          bottom: '0',
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 10 // Ensure it's above the map
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          background: "rgba(255, 255, 255, 0.9)",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
         }}>
-          {loading && <p>Đang tải dữ liệu...</p>}
-          {error && <p style={{ color: 'red' }}>Lỗi: {error}</p>}
-           {!userLocation && !loading && !error && <p>Đang chờ vị trí người dùng...</p>}
+          Đang tải bản đồ...
         </div>
       )}
 
-       {/* Message when location is pending */}
-      {!userLocation && !loading && !error && (
-         <div style={{
-          position: 'absolute',
-          top: '0',
-          left: '0',
-          right: '0',
-          bottom: '0',
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 10 // Ensure it's above the map
+      {error && (
+        <div style={{
+          position: "absolute",
+          top: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          background: "#ff5252",
+          color: "white",
+          padding: "10px 20px",
+          borderRadius: "4px",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
         }}>
-           <p>Vui lòng cho phép truy cập vị trí để xem các trạm cứu hộ gần đó.</p>
-         </div>
+          {error}
+        </div>
       )}
-
-
     </div>
   );
 }
-
-export default RescueMapPage; 

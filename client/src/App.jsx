@@ -13,7 +13,6 @@ import PetDetailPage from './pages/PetDetailPage';
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import RescueMapPage from './pages/RescueMapPage'
-
 export default function App() {
   return (
     <BrowserRouter>

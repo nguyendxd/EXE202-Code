@@ -5,7 +5,6 @@ import {
     getPlaceDetail,
     geocodeAddress
 } from '../controller/mapController';
-import { authenticateToken } from '../middleware/auth';
 
 const router = express.Router();
 
@@ -22,8 +21,6 @@ const router = express.Router();
  *   get:
  *     summary: Find nearby rescue stations
  *     tags: [Map]
- *     security:
- *       - BearerAuth: []
  *     parameters:
  *       - in: query
  *         name: latitude
@@ -51,7 +48,7 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.get('/nearby-stations', authenticateToken as RequestHandler, searchNearbyStations as RequestHandler);
+router.get('/nearby-stations', searchNearbyStations as RequestHandler);
 
 /**
  * @swagger
@@ -59,8 +56,6 @@ router.get('/nearby-stations', authenticateToken as RequestHandler, searchNearby
  *   get:
  *     summary: Search for places
  *     tags: [Map]
- *     security:
- *       - BearerAuth: []
  *     parameters:
  *       - in: query
  *         name: query
@@ -76,7 +71,7 @@ router.get('/nearby-stations', authenticateToken as RequestHandler, searchNearby
  *       500:
  *         description: Server error
  */
-router.get('/search', authenticateToken as RequestHandler, searchPlace as RequestHandler);
+router.get('/search', searchPlace as RequestHandler);
 
 /**
  * @swagger
@@ -84,8 +79,6 @@ router.get('/search', authenticateToken as RequestHandler, searchPlace as Reques
  *   get:
  *     summary: Get place details
  *     tags: [Map]
- *     security:
- *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: placeId
@@ -101,16 +94,14 @@ router.get('/search', authenticateToken as RequestHandler, searchPlace as Reques
  *       500:
  *         description: Server error
  */
-router.get('/place/:placeId', authenticateToken as RequestHandler, getPlaceDetail as RequestHandler);
+router.get('/place/:placeId', getPlaceDetail as RequestHandler);
 
 /**
  * @swagger
  * /map/geocode:
  *   get:
- *     summary: Convert address to coordinates
+ *     summary: Get coordinates for a given address (Geocoding)
  *     tags: [Map]
- *     security:
- *       - BearerAuth: []
  *     parameters:
  *       - in: query
  *         name: address
@@ -120,12 +111,12 @@ router.get('/place/:placeId', authenticateToken as RequestHandler, getPlaceDetai
  *         description: Address to geocode
  *     responses:
  *       200:
- *         description: Geocoding results
+ *         description: Coordinates for the address
  *       400:
- *         description: Missing address
+ *         description: Missing required parameters
  *       500:
- *         description: Server error
+ *         description: Server error or geocoding failed
  */
-router.get('/geocode', authenticateToken as RequestHandler, geocodeAddress as RequestHandler);
+router.get('/geocode', geocodeAddress as RequestHandler);
 
 export default router; 
