@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LandingPage from './pages/LandingPage'
-import LoginForm from './pages/LoginForm'
+import { LoginForm } from './pages/LoginForm'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 // import AdoptPage from './pages/AdoptPage'
 import AdoptPage from './pages/AdoptPage'
@@ -12,6 +12,7 @@ import RegisterPage from './pages/RegisterPage'
 import PetDetailPage from './pages/PetDetailPage';
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import RescueMapPage from './pages/RescueMapPage'
 
 export default function App() {
   return (
@@ -31,7 +32,8 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login-form" element={<LoginForm />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />}/>
+          <Route path="/rescue-map" element={<RescueMapPage />} />
         </Routes>
       </div>
 

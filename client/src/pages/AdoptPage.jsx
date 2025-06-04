@@ -1,28 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PetCard from "../components/PetCard";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 import "../styles/index.css";
-
-const pets = Array(8).fill({
-    name: "Bé Nâu",
-    age: "6 tháng",
-    gender: "Đực",
-    breed: "Chó Border lai",
-    status: "Khỏe mạnh",
-    location: "Quận 9",
-    image: "https://storage.googleapis.com/a1aa/image/32cb1443-82cf-41dc-56ac-fe3523ae600f.jpg",
-});
+import { getAllPets } from '../services/petService';
 
 export default function AdoptPage() {
+    const [pets, setPets] = useState([]);
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPets = async () => {
+            setLoading(true);
+            try {
+                const res = await getAllPets();
+                // Nếu trả về 1 object duy nhất, chuyển thành mảng
+                let petArray = [];
+                if (Array.isArray(res.data)) {
+                    petArray = res.data;
+                } else if (res.data && typeof res.data === 'object') {
+                    petArray = [res.data];
+                }
+                setPets(petArray);
+            } catch (error) {
+                console.error("Lỗi khi fetch pets:", error);
+                setPets([]);
+            }
+            setLoading(false);
+        };
+        fetchPets();
+    }, []);
 
     const filteredPets = pets.filter(
         (pet) =>
             pet.name.toLowerCase().includes(search.toLowerCase()) &&
-            (filter === "" || pet.breed.toLowerCase().includes(filter.toLowerCase()))
+            (filter === "" || (pet.breed || "").toLowerCase().includes(filter.toLowerCase()))
     );
 
     const petsPerPage = 8;
@@ -31,7 +46,7 @@ export default function AdoptPage() {
 
     const gridStyle = {
         display: 'grid',
-        gap: '30px', // Increased from 20px to 30px for more spacing
+        gap: '30px',
         padding: '0 20px',
     };
 
@@ -48,11 +63,15 @@ export default function AdoptPage() {
 
                     <SearchBar search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} />
 
-                    <div className="pet-grid" style={gridStyle}>
-                        {displayedPets.map((pet, idx) => (
-                            <PetCard key={idx} pet={pet} />
-                        ))}
-                    </div>
+                    {loading ? (
+                        <div>Đang tải danh sách thú cưng...</div>
+                    ) : (
+                        <div className="pet-grid" style={gridStyle}>
+                            {displayedPets.map((pet, idx) => (
+                                <PetCard key={pet._id || idx} pet={pet} />
+                            ))}
+                        </div>
+                    )}
 
                     <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
                 </div>
