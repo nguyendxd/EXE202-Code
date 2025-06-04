@@ -175,7 +175,7 @@ router.get('/search', searchPetsController);
  *       404:
  *         description: Pet not found
  */
-router.get("/:id", authenticateToken as RequestHandler, getPetByIdController as RequestHandler);
+router.get("/:id", getPetByIdController as RequestHandler);
 
 /**
  * @swagger

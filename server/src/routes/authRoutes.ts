@@ -48,9 +48,6 @@ const router = express.Router();
  *               address:
  *                 type: string
  *                 example: "123 Main St"
- *               socialLink:
- *                 type: string
- *                 example: "https://facebook.com/johndoe"
  *               role:
  *                 type: string
  *                 enum: ["guest", "customer", "shelter", "admin"]
@@ -59,10 +56,6 @@ const router = express.Router();
  *               description:
  *                 type: string
  *                 example: "This is my bio"
- *               avatar:
- *                 type: string
- *                 description: User's avatar URL. If not provided, a default avatar will be used.
- *                 example: "https://example.com/avatar.jpg"
  *     responses:
  *       201:
  *         description: User registered successfully. Please check your email to verify your account.

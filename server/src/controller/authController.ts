@@ -8,26 +8,22 @@ import { getUserByFirebaseUID } from "../repository/userRepository";
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { email, password, username, phone, address, socialLink, role, avatar, isDeleted } = req.body;
+        const { email, password, username, phone, address,  role, avatar, isDeleted } = req.body;
         const userRole = role || "customer";
-
-
+        const avatarUrl = avatar || process.env.DEFAULT_AVATAR_URL || "https://ik.imagekit.io/nguyenn120404/default-avatar.jpg";
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const firebaseUser = userCredential.user;
-        const DEFAULT_AVATAR_URL = process.env.DEFAULT_AVATAR_URL || "https://ik.imagekit.io/nguyenn120404/default-avatar.jpg";
-        if (firebaseUser) {
 
+        if (firebaseUser) {
             await sendEmailVerification(firebaseUser);
-         
 
             const userRef = doc(db, "users", firebaseUser.uid);
             await setDoc(userRef, {
-                avatar,
+                avatar: avatarUrl,
                 username,
                 email,
                 phone,
                 address,
-                socialLink,
                 role: userRole,
                 isVerified: false,
                 isDeleted: false,
@@ -35,18 +31,17 @@ export const register = async (req: Request, res: Response) => {
                 password: password,
             });
 
-
             const newUser = new User({
                 firebaseUID: firebaseUser.uid,
                 username,
                 email,
                 phone,
                 address,
-                socialLink,
                 role: userRole,
                 isVerified: false,
                 createdAt: new Date(),
                 password: password,
+                avatar: avatarUrl,
             });
 
             await newUser.save();
@@ -55,15 +50,17 @@ export const register = async (req: Request, res: Response) => {
         } else {
             res.status(500).json({ error: "Failed to create Firebase user" });
         }
-        
     } catch (error) {
         if (error instanceof Error) {
+            console.error("Error during registration:", error);
             res.status(500).json({ error: error.message });
         } else {
+            console.error("An unknown error occurred during registration:", error);
             res.status(500).json({ error: "An unknown error occurred" });
         }
     }
 };
+
 
 
 export const login = async (req: Request, res: Response) => {

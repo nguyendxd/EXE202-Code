@@ -39,7 +39,7 @@ const RescueStationSchema = new Schema<IRescueStation>(
         },
         phone: {
             type: String,
-            required: [true, 'Phone number is required'],
+            required: [false, 'Phone number is required'],
             trim: true
         },
         email: {

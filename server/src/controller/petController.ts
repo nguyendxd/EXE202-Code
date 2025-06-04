@@ -68,12 +68,6 @@ export const getPetByIdController = async (req: AuthenticatedRequest, res: Respo
     console.log('User role:', user?.role);
     const userId = user?.id || user?.uid;
     console.log('UserId:', userId);
-
-    if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')) {
-      console.log('Permission check failed. User:', user);
-      return res.status(403).json({message: "You have no permission for this function "});
-    }
-
     console.log('Permission check passed, fetching pet with ID:', req.params.id);
     const pet = await repo.getPetById(req.params.id);
     console.log('Pet found:', pet);

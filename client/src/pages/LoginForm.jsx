@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import bgImage from '../assets/catdog.jpg'; // Using the same background
 import logoImg from '../assets/paw-logo.png'; // Using the same logo
 import pawLetter from '../assets/pawLetter.png';
@@ -7,9 +7,57 @@ import '../styles/LoginForm.css'; // Corresponding CSS file
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      // Store the token in localStorage
+      localStorage.setItem('token', data.token);
+      
+      // Redirect to home page on successful login
+      navigate('/');
+    } catch (err) {
+      const errorMessage = err.message || 'An error occurred during login';
+      if (errorMessage === 'Invalid email or password') {
+        setError('Bạn đã nhập sai tài khoản hoặc mật khẩu, vui lòng thử lại');
+      } else {
+        setError(errorMessage);
+      }
+    }
   };
 
   return (
@@ -37,11 +85,20 @@ const LoginForm = () => {
           <h2>Đăng nhập</h2>
         </div>
         
+        {error && <div className="error-message">{error}</div>}
+        
         {/* Login Form Fields */}
-        <form className="login-form">
+        <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="emailOrPhone"> Email</label>
-            <input type="text" id="emailOrPhone" name="emailOrPhone" />
+            <label htmlFor="email">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="form-group">
@@ -50,7 +107,10 @@ const LoginForm = () => {
               <input 
                 type={showPassword ? 'text' : 'password'}
                 id="password" 
-                name="password" 
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
               />
               <span 
                 className="password-toggle-icon"
@@ -67,7 +127,7 @@ const LoginForm = () => {
                   <input type="checkbox" id="rememberMe" name="rememberMe" />
                   <label htmlFor="rememberMe">Ghi nhớ mật khẩu</label>
               </div>
-              <a href="forgot-password">Quên mật khẩu?</a>
+              <Link to="/forgot-password">Quên mật khẩu?</Link>
           </div>
 
           {/* Login Button */}
