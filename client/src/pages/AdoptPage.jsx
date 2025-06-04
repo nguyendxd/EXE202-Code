@@ -11,32 +11,46 @@ export default function AdoptPage() {
     const [filter, setFilter] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchPets = async () => {
             setLoading(true);
+            setError(null);
             try {
                 const res = await getAllPets();
-                // Nếu trả về 1 object duy nhất, chuyển thành mảng
                 let petArray = [];
                 if (Array.isArray(res.data)) {
                     petArray = res.data;
                 } else if (res.data && typeof res.data === 'object') {
                     petArray = [res.data];
                 }
-                setPets(petArray);
+                // Ensure all required fields are present, with fallbacks
+                const formattedPets = petArray.map(pet => ({
+                    _id: pet._id || `temp-id-${Math.random()}`, // Fallback for missing _id
+                    name: pet.name || 'Unknown', // Fallback for missing name
+                    age: pet.age || 'Not specified',
+                    gender: pet.gender || 'Not specified',
+                    breed: pet.breed || 'Not specified',
+                    status: pet.temperament || pet.healthStatus?.join(', ') || 'Unknown',
+                    location: pet.address || 'Unknown location',
+                    image: pet.images?.[0] || 'https://via.placeholder.com/200',
+                }));
+                setPets(formattedPets);
             } catch (error) {
                 console.error("Lỗi khi fetch pets:", error);
-                setPets([]);
+                setError(error.message);
+                setPets([]); // Ensure pets is an empty array on error
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
         fetchPets();
     }, []);
 
     const filteredPets = pets.filter(
         (pet) =>
-            pet.name.toLowerCase().includes(search.toLowerCase()) &&
+            (pet.name || "").toLowerCase().includes(search.toLowerCase()) &&
             (filter === "" || (pet.breed || "").toLowerCase().includes(filter.toLowerCase()))
     );
 
