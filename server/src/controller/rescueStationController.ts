@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import RescueStation, { IRescueStation } from '../model/RescueStation';
-import goongMapService from '../config/goongMap';
+import { geocodingClient } from '../config/mapboxConfig'; // Import Mapbox geocoding client
 
 // Tạo trạm cứu hộ mới
 export const createRescueStation = async (req: Request, res: Response) => {
@@ -15,17 +15,17 @@ export const createRescueStation = async (req: Request, res: Response) => {
             operatingHours
         } = req.body;
 
-        // Sử dụng Goong API để lấy tọa độ từ địa chỉ
-        const geocodeResult = await goongMapService.geocode(address);
+        // Sử dụng Mapbox API để lấy tọa độ từ địa chỉ
+        const geocodeResponse = await geocodingClient.forwardGeocode({ query: address }).send();
         
-        if (!geocodeResult.results || geocodeResult.results.length === 0) {
+        if (!geocodeResponse.body.features || geocodeResponse.body.features.length === 0) {
             return res.status(400).json({
                 success: false,
                 message: 'Không thể xác định vị trí từ địa chỉ này'
             });
         }
 
-        const location = geocodeResult.results[0].geometry.location;
+        const location = geocodeResponse.body.features[0].geometry.coordinates; // [longitude, latitude]
 
         const newStation = new RescueStation({
             name,
@@ -35,7 +35,7 @@ export const createRescueStation = async (req: Request, res: Response) => {
             description,
             location: {
                 type: 'Point',
-                coordinates: [location.lng, location.lat]
+                coordinates: [location[0], location[1]] // Mapbox returns [lng, lat], Mongoose expects [lng, lat]
             },
             services,
             operatingHours
@@ -120,22 +120,22 @@ export const updateRescueStation = async (req: Request, res: Response) => {
             operatingHours
         };
 
-        // Nếu địa chỉ thay đổi, cập nhật tọa độ
+        // Nếu địa chỉ thay đổi, cập nhật tọa độ bằng Mapbox API
         if (address) {
-            const geocodeResult = await goongMapService.geocode(address);
+            const geocodeResponse = await geocodingClient.forwardGeocode({ query: address }).send();
             
-            if (!geocodeResult.results || geocodeResult.results.length === 0) {
+            if (!geocodeResponse.body.features || geocodeResponse.body.features.length === 0) {
                 return res.status(400).json({
                     success: false,
                     message: 'Không thể xác định vị trí từ địa chỉ mới'
                 });
             }
 
-            const location = geocodeResult.results[0].geometry.location;
+            const location = geocodeResponse.body.features[0].geometry.coordinates; // [longitude, latitude]
             updateData.address = address;
             updateData.location = {
                 type: 'Point',
-                coordinates: [location.lng, location.lat]
+                coordinates: [location[0], location[1]] // Mapbox returns [lng, lat], Mongoose expects [lng, lat]
             };
         }
 

@@ -11,7 +11,6 @@ import RegisterPage from './pages/RegisterPage'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import RescueMapPage from './pages/RescueMapPage'
-
 export default function App() {
   return (
     <BrowserRouter>

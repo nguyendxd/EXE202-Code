@@ -44,7 +44,7 @@ const RescueStationSchema = new Schema<IRescueStation>(
         },
         email: {
             type: String,
-            required: [true, 'Email is required'],
+            required: [false, 'Email is required'],
             trim: true,
             lowercase: true
         },
