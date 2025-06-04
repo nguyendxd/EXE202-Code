@@ -21,10 +21,14 @@ const goongApi = axios.create({
 // Các hàm tiện ích để gọi API
 export const goongMapService = {
     // Tìm kiếm địa điểm
-    searchPlace: async (query: string) => {
+    searchPlace: async (query: string, options?: { location?: string; radius?: number }) => {
         try {
             const response = await goongApi.get('/Place/AutoComplete', {
-                params: { input: query }
+                params: { 
+                    input: query,
+                    ...(options?.location && { location: options.location }),
+                    ...(options?.radius && { radius: options.radius })
+                }
             });
             return response.data;
         } catch (error) {

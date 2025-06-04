@@ -5,6 +5,7 @@ import {
   getPetByIdController,
   updatePetController,
   deletePetController,
+  searchPetsController
 } from "../controller/petController";
 import { authenticateToken } from '../middleware/auth';
 import multer from 'multer';
@@ -105,24 +106,62 @@ router.post(
  * @swagger
  * /pets:
  *   get:
- *     summary: Get all available pets
- *     tags:
- *       - Pets
+ *     summary: Get all pets
+ *     tags: [Pets]
  *     responses:
  *       200:
- *         description: List of pets
+ *         description: List of all pets
  *       500:
- *         description: Error fetching pets
+ *         description: Server error
  */
-router.get("/", authenticateToken as RequestHandler, getAllPetsController as RequestHandler);
+router.get("/", getAllPetsController);
+
+/**
+ * @swagger
+ * /pets/search:
+ *   get:
+ *     summary: Search pets with filters
+ *     tags: [Pets]
+ *     parameters:
+ *       - in: query
+ *         name: breed
+ *         schema:
+ *           type: string
+ *         description: Pet breed
+ *       - in: query
+ *         name: gender
+ *         schema:
+ *           type: string
+ *         description: Pet gender
+ *       - in: query
+ *         name: color
+ *         schema:
+ *           type: string
+ *         description: Pet color
+ *       - in: query
+ *         name: address
+ *         schema:
+ *           type: string
+ *         description: Pet location
+ *       - in: query
+ *         name: age
+ *         schema:
+ *           type: string
+ *         description: Pet age (e.g., '6 tháng tuổi', '2 năm')
+ *     responses:
+ *       200:
+ *         description: List of pets matching the search criteria
+ *       500:
+ *         description: Server error
+ */
+router.get('/search', searchPetsController);
 
 /**
  * @swagger
  * /pets/{id}:
  *   get:
- *     summary: Get pet by ID
- *     tags:
- *       - Pets
+ *     summary: Get a pet by ID
+ *     tags: [Pets]
  *     parameters:
  *       - in: path
  *         name: id
@@ -132,11 +171,9 @@ router.get("/", authenticateToken as RequestHandler, getAllPetsController as Req
  *         description: Pet ID
  *     responses:
  *       200:
- *         description: Pet object
+ *         description: Pet details
  *       404:
  *         description: Pet not found
- *       500:
- *         description: Error fetching pet
  */
 router.get("/:id", authenticateToken as RequestHandler, getPetByIdController as RequestHandler);
 

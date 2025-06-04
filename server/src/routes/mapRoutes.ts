@@ -41,7 +41,7 @@ const router = express.Router();
  *         name: radius
  *         schema:
  *           type: number
- *           default: 20
+ *           default: 30
  *         description: Search radius in kilometers
  *     responses:
  *       200:

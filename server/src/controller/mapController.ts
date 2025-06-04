@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import goongMapService from '../config/goongMap';
 import RescueStation from '../model/RescueStation';
 
-// Định nghĩa interface cho kết quả từ Goong Map
 interface GoongPlace {
     place_id: string;
+    description: string;
     name: string;
     formatted_address: string;
     geometry: {
@@ -15,7 +15,7 @@ interface GoongPlace {
     };
 }
 
-// Tìm trạm cứu hộ gần nhất
+
 export const searchNearbyStations = async (req: Request, res: Response) => {
     try {
         const { latitude, longitude, radius = 20 } = req.query;
@@ -27,7 +27,7 @@ export const searchNearbyStations = async (req: Request, res: Response) => {
             });
         }
 
-        // 1. Tìm kiếm trạm cứu hộ trong database
+      
         const stations = await RescueStation.find({
             location: {
                 $near: {
@@ -46,30 +46,63 @@ export const searchNearbyStations = async (req: Request, res: Response) => {
       
         // 2. Tìm kiếm thêm từ Goong Map
         const searchKeywords = [
-            'trạm cứu hộ động vật',
-            'trung tâm cứu hộ động vật',
-            'bệnh viện thú y',
             'phòng khám thú y',
-            'cứu hộ chó mèo'
+            'bệnh viện thú y',
+            'phòng khám chó mèo',
+            'bệnh viện chó mèo',
+            'phòng khám thú cưng',
+            'bệnh viện thú cưng',
+            'phòng khám động vật',
+            'bệnh viện động vật'
         ];
 
+        // Tìm kiếm với từng từ khóa và kết hợp kết quả
         const goongResults = await Promise.all(
-            searchKeywords.map(keyword => goongMapService.searchPlace(keyword))
+            searchKeywords.map(async (keyword) => {
+                try {
+                    const result = await goongMapService.searchPlace(keyword, {
+                        location: `${latitude},${longitude}`,
+                        radius: parseFloat(radius as string) * 1000 // Convert km to meters
+                    });
+                    return result;
+                } catch (error) {
+                    console.error(`Error searching for ${keyword}:`, error);
+                    return null;
+                }
+            })
         );
 
         // Gộp kết quả và loại bỏ trùng lặp
         const uniqueResults = goongResults.reduce((acc: GoongPlace[], result) => {
-            const newPlaces = (result.results || []).filter((place: GoongPlace) => 
-                !acc.some((existing: GoongPlace) => existing.place_id === place.place_id)
-            );
+            if (!result || !result.predictions) {
+                return acc;
+            }
+            const newPlaces = result.predictions.filter((place: GoongPlace) => {
+                // Kiểm tra xem địa điểm đã tồn tại chưa
+                const isDuplicate = acc.some((existing: GoongPlace) => existing.place_id === place.place_id);
+                if (isDuplicate) return false;
+
+                // Lọc các địa điểm không liên quan đến thú y
+                const name = place.description.toLowerCase();
+                const isVetRelated = name.includes('thú y') || 
+                                   name.includes('chó mèo') || 
+                                   name.includes('thú cưng') || 
+                                   name.includes('động vật') ||
+                                   name.includes('pet') ||
+                                   name.includes('vet');
+                
+                return isVetRelated;
+            });
             return [...acc, ...newPlaces];
         }, []);
+
+        console.log(`Found ${uniqueResults.length} unique veterinary places from Goong Map`);
         
-        // 3. Kết hợp và xử lý kết quả
+        
         const stationsWithDetails = await Promise.all(
             stations.map(async (station) => {
                 try {
-                    // Lấy thông tin khoảng cách và thời gian di chuyển
+                    
                     const distanceMatrix = await goongMapService.getDistanceMatrix(
                         `${latitude},${longitude}`,
                         `${station.location.coordinates[1]},${station.location.coordinates[0]}`
@@ -104,9 +137,17 @@ export const searchNearbyStations = async (req: Request, res: Response) => {
         const goongStations = await Promise.all(
             uniqueResults.map(async (place: any) => {
                 try {
+                    // Lấy chi tiết địa điểm để có thông tin đầy đủ
+                    const placeDetails = await goongMapService.getPlaceDetail(place.place_id);
+                    if (!placeDetails || !placeDetails.result) {
+                        console.warn('No details found for place:', place.place_id);
+                        return null;
+                    }
+
+                    const location = placeDetails.result.geometry.location;
                     const distanceMatrix = await goongMapService.getDistanceMatrix(
                         `${latitude},${longitude}`,
-                        `${place.geometry.location.lat},${place.geometry.location.lng}`
+                        `${location.lat},${location.lng}`
                     );
 
                     const distance = distanceMatrix.rows[0].elements[0].distance;
@@ -115,13 +156,13 @@ export const searchNearbyStations = async (req: Request, res: Response) => {
                     // Chỉ thêm nếu trong bán kính 20km
                     if (distance.value <= 20000) {
                         return {
-                            name: place.name,
-                            address: place.formatted_address,
+                            name: placeDetails.result.name,
+                            address: placeDetails.result.formatted_address,
                             location: {
                                 type: 'Point',
                                 coordinates: [
-                                    place.geometry.location.lng,
-                                    place.geometry.location.lat
+                                    location.lng,
+                                    location.lat
                                 ]
                             },
                             distance: {

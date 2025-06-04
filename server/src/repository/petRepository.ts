@@ -35,7 +35,9 @@ export const createPet = async (
 
 // Lấy tất cả pet chưa được nhận nuôi
 export const getAllPets = () =>
-  Pet.find({ isAdopted: false });
+  Pet.find({ isAdopted: false })
+    .sort({ createdAt: -1 })
+    .populate('shelterId', 'name address phone email');
 
 export const getPetById = (id: string) => {
     if (!Types.ObjectId.isValid(id)) {
@@ -73,3 +75,59 @@ export const updatePetById = async (
 
 export const softDeletePetById = (id: string) =>
   Pet.findByIdAndUpdate(id, { isAdopted: true }, { new: true });
+
+export const searchPets = async (filters: {
+    breed?: string;
+    gender?: string;
+    color?: string;
+    isAdopted?: boolean;
+    address?: string;
+    age?: string;
+}) => {
+    try {
+        const query: any = { isDeleted: false };
+
+        // Tìm kiếm theo giống
+        if (filters.breed) {
+            query.breed = { $regex: new RegExp(filters.breed, 'i') };
+        }
+
+        // Tìm kiếm theo giới tính
+        if (filters.gender) {
+            query.gender = filters.gender.toLowerCase();
+        }
+
+        // Tìm kiếm theo màu sắc
+        if (filters.color) {
+            query.color = { $regex: new RegExp(filters.color, 'i') };
+        }
+
+        // Tìm kiếm theo trạng thái nhận nuôi
+        if (filters.isAdopted !== undefined) {
+            query.isAdopted = filters.isAdopted;
+        }
+
+        // Tìm kiếm theo địa chỉ
+        if (filters.address) {
+            query.address = { $regex: new RegExp(filters.address, 'i') };
+        }
+
+        // Tìm kiếm theo tuổi
+        if (filters.age) {
+            query.age = { $regex: new RegExp(filters.age, 'i') };
+        }
+
+        console.log('Search query:', JSON.stringify(query, null, 2));
+
+        const pets = await Pet.find(query)
+            .sort({ createdAt: -1 })
+            .populate('shelterId', 'name address phone email');
+
+        console.log(`Found ${pets.length} pets matching the criteria`);
+
+        return pets;
+    } catch (error) {
+        console.error('Error in searchPets:', error);
+        throw error;
+    }
+};
