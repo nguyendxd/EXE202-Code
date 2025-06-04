@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import landingpageimage from '../assets/landingpageimage.png';
 import chungminhlaaisection from '../assets/chungminhlaaisection.jpg';
+import { getAllPets } from '../services/petService';
 
 const images = [
     'https://images.pexels.com/photos/46024/pexels-photo-46024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
@@ -11,11 +13,52 @@ const images = [
 ];
 
 export default function LandingPage() {
+    const navigate = useNavigate();
     const [current, setCurrent] = useState(0);
     const [hoveredArrow, setHoveredArrow] = useState(null);
     const [hoveredDot, setHoveredDot] = useState(null);
     const [hoveredButtons, setHoveredButtons] = useState({});
     const [hoveredCards, setHoveredCards] = useState({});
+    const [featuredPets, setFeaturedPets] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchFeaturedPets = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const res = await getAllPets();
+                let petArray = [];
+                if (Array.isArray(res.data.data)) {
+                    petArray = res.data.data;
+                } else if (res.data.data && typeof res.data.data === 'object') {
+                    petArray = [res.data.data];
+                }
+                // Format dữ liệu thú cưng
+                const formattedPets = petArray.map(pet => ({
+                    _id: pet._id || `temp-id-${Math.random()}`,
+                    name: pet.name || 'Chưa có tên',
+                    age: pet.age || 'Chưa xác định',
+                    gender: pet.gender || 'Chưa xác định',
+                    breed: pet.breed || 'Chưa xác định',
+                    status: pet.temperament || pet.healthStatus?.join(', ') || 'Chưa xác định',
+                    location: pet.address || 'Chưa xác định',
+                    images: pet.images || [],
+                    description: pet.description || 'Chưa có mô tả'
+                }));
+                // Lấy 5 thú cưng đầu tiên
+                setFeaturedPets(formattedPets.slice(0, 5));
+            } catch (err) {
+                console.error("Lỗi khi fetch thú cưng:", err);
+                setError('Không thể tải danh sách thú cưng');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchFeaturedPets();
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -116,6 +159,18 @@ export default function LandingPage() {
         boxShadow: hovered ? '0 4px 12px rgba(0,0,0,0.3)' : 'none',
         transition: 'all 0.3s ease'
     });
+
+    const handleAdoptClick = () => {
+        navigate('/adopt');
+    };
+
+    const handleAboutClick = () => {
+        navigate('/about');
+    };
+
+    const handleDonateClick = () => {
+        navigate('/donate');
+    };
 
     return (
         <div style={{ fontFamily: "'Roboto', sans-serif", backgroundColor: '#FAF3E0' }}>
@@ -230,6 +285,7 @@ export default function LandingPage() {
                             style={mainButtonStyle(type, hoveredButtons[idx])}
                             onMouseEnter={() => setHoveredButtons(prev => ({ ...prev, [idx]: true }))}
                             onMouseLeave={() => setHoveredButtons(prev => ({ ...prev, [idx]: false }))}
+                            onClick={type === 'adopt' ? handleAdoptClick : handleDonateClick}
                         >
                             {type === 'adopt' ? 'Adopt Now' : 'Donate'}
                         </button>
@@ -272,6 +328,7 @@ export default function LandingPage() {
                             style={mainButtonStyle('about', hoveredButtons['about'])}
                             onMouseEnter={() => setHoveredButtons((prev) => ({ ...prev, about: true }))}
                             onMouseLeave={() => setHoveredButtons((prev) => ({ ...prev, about: false }))}
+                            onClick={handleAboutClick}
                         >
                             Về chúng tớ
                         </button>
@@ -296,35 +353,76 @@ export default function LandingPage() {
 
             {/* Featured Pets */}
             <section style={{ padding: '60px 20px', textAlign: 'center' }}>
-                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Adoptable Pets</h2>
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: '20px',
-                    flexWrap: 'wrap',
-                    maxWidth: '1200px',
-                    margin: '0 auto'
-                }}>
-                    {pets.map((pet, index) => (
-                        <div
-                            key={index}
-                            style={cardStyle(hoveredCards[`pet${index}`])}
-                            onMouseEnter={() => setHoveredCards(prev => ({ ...prev, [`pet${index}`]: true }))}
-                            onMouseLeave={() => setHoveredCards(prev => ({ ...prev, [`pet${index}`]: false }))}
-                        >
-                            <img src={pet.img} alt={pet.name} style={{ width: '100%', borderRadius: '10px' }} />
-                            <h3 style={{ fontSize: '22px', margin: '10px 0', color: '#6D4C41' }}>{pet.name}, {pet.age}</h3>
-                            <p style={{ fontSize: '16px', color: '#5D4037' }}>{pet.desc}</p>
-                            <button
-                                style={cardButtonStyle(hoveredCards[`btnPet${index}`])}
-                                onMouseEnter={() => setHoveredCards(prev => ({ ...prev, [`btnPet${index}`]: true }))}
-                                onMouseLeave={() => setHoveredCards(prev => ({ ...prev, [`btnPet${index}`]: false }))}
+                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Thú cưng đang cần nhà</h2>
+                {loading ? (
+                    <div style={{ padding: '20px' }}>Đang tải danh sách thú cưng...</div>
+                ) : error ? (
+                    <div style={{ padding: '20px', color: 'red' }}>{error}</div>
+                ) : (
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                        gap: '10px',
+                        maxWidth: '1400px',
+                        margin: '0 auto',
+                        padding: '0 10px',
+                    }}>
+                        {featuredPets.map((pet, index) => (
+                            <div
+                                key={pet._id}
+                                style={{
+                                    ...cardStyle(hoveredCards[`pet${index}`]),
+                                    width: '100',
+                                    maxWidth: '220px',
+                                    margin: '0 auto',
+                                }}
+                                onMouseEnter={() => setHoveredCards(prev => ({ ...prev, [`pet${index}`]: true }))}
+                                onMouseLeave={() => setHoveredCards(prev => ({ ...prev, [`pet${index}`]: false }))}
                             >
-                                View Profile
-                            </button>
-                        </div>
-                    ))}
-                </div>
+                                <img
+                                    src={pet.images?.[0]}
+                                    alt={pet.name}
+                                    style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '10px' }}
+                                />
+                                <h3 style={{ fontSize: '20px', margin: '8px 0', color: '#6D4C41' }}>
+                                    {pet.name}, {pet.age} tuổi
+                                </h3>
+                                <p style={{ fontSize: '14px', color: '#5D4037', marginBottom: '10px' }}>{pet.description}</p>
+                                <button
+                                    style={cardButtonStyle(hoveredCards[`btnPet${index}`])}
+                                    onMouseEnter={() => setHoveredCards(prev => ({ ...prev, [`btnPet${index}`]: true }))}
+                                    onMouseLeave={() => setHoveredCards(prev => ({ ...prev, [`btnPet${index}`]: false }))}
+                                >
+                                    Xem chi tiết
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                <style>
+                    {`
+            @media (min-width: 1280px) {
+                section > div {
+                    grid-template-columns: repeat(5, 1fr);
+                }
+            }
+            @media (min-width: 768px) and (max-width: 1279px) {
+                section > div {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            }
+            @media (min-width: 480px) and (max-width: 767px) {
+                section > div {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            @media (max-width: 479px) {
+                section > div {
+                    grid-template-columns: 1fr;
+                }
+            }
+        `}
+                </style>
             </section>
 
             {/* Success Stories */}

@@ -26,7 +26,7 @@ const topSectionStyle = {
 const imageStyle = {
     borderRadius: '1.25rem',
     width: '100%',
-    height: 'auto',
+    height: '200px',
     objectFit: 'cover',
     maxHeight: '200px',
     '@media (max-width: 640px)': {

@@ -19,11 +19,12 @@ export default function AdoptPage() {
             setError(null);
             try {
                 const res = await getAllPets();
+                console.log(res.data.data);
                 let petArray = [];
-                if (Array.isArray(res.data)) {
-                    petArray = res.data;
-                } else if (res.data && typeof res.data === 'object') {
-                    petArray = [res.data];
+                if (Array.isArray(res.data.data)) {
+                    petArray = res.data.data;
+                } else if (res.data.data && typeof res.data.data === 'object') {
+                    petArray = [res.data.data];
                 }
                 // Ensure all required fields are present, with fallbacks
                 const formattedPets = petArray.map(pet => ({
