@@ -41,16 +41,18 @@ export const createPetController =
  */
 export const getAllPetsController = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const user = req.user;
-      const userId = user?.id || user?.uid;
-
-      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
-        return res.status(403).json({message: "You have no permission for this function "})
-      }
     const pets = await repo.getAllPets();
-    res.json(pets);
+    res.json({
+      success: true,
+      data: pets,
+      total: pets.length
+    });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    console.error('Error in getAllPetsController:', err);
+    res.status(500).json({ 
+      success: false,
+      message: err.message 
+    });
   }
 };
 
@@ -59,31 +61,33 @@ export const getAllPetsController = async (req: AuthenticatedRequest, res: Respo
  */
 export const getPetByIdController = async (req: AuthenticatedRequest, res: Response) => {
   try {
-     console.log('Starting getPetByIdController');
-     console.log('Request params:', req.params);
-     const user = req.user;
-     console.log('User in getPetByIdController:', user);
-     console.log('User role:', user?.role);
-     const userId = user?.id || user?.uid;
-     console.log('UserId:', userId);
+    console.log('Starting getPetByIdController');
+    console.log('Request params:', req.params);
+    const user = req.user;
+    console.log('User in getPetByIdController:', user);
+    console.log('User role:', user?.role);
+    const userId = user?.id || user?.uid;
+    console.log('UserId:', userId);
 
-      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
-         console.log('Permission check failed. User:', user);
-         return res.status(403).json({message: "You have no permission for this function "});
-      }
-     console.log('Permission check passed, fetching pet with ID:', req.params.id);
-     const pet = await repo.getPetById(req.params.id);
-     console.log('Pet found:', pet);
-     if (!pet) {
-         console.log('Pet not found for ID:', req.params.id);
-         res.status(404).json({ error: "Pet not found" });
-         return;
-     } 
-     console.log('Sending pet response:', pet);
-     res.json(pet);
+    if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')) {
+      console.log('Permission check failed. User:', user);
+      return res.status(403).json({message: "You have no permission for this function "});
+    }
+
+    console.log('Permission check passed, fetching pet with ID:', req.params.id);
+    const pet = await repo.getPetById(req.params.id);
+    console.log('Pet found:', pet);
+    
+    if (!pet) {
+      console.log('Pet not found for ID:', req.params.id);
+      return res.status(404).json({ error: "Pet not found" });
+    }
+    
+    console.log('Sending pet response:', pet);
+    res.json(pet);
   } catch (err: any) {
-     console.error('Error in getPetByIdController:', err);
-     res.status(500).json({ error: err.message });
+    console.error('Error in getPetByIdController:', err);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -140,4 +144,77 @@ export const deletePetController = async (req: AuthenticatedRequest, res: Respon
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
+};
+
+/**
+ * GET /pets/search
+ */
+export const searchPetsController = async (req: Request, res: Response) => {
+    try {
+        const {
+            breed,
+            gender,
+            color,
+            address,
+            age
+        } = req.query;
+
+        const query: any = {};
+
+        // Tìm kiếm theo giống (breed)
+        if (breed) {
+            query.breed = { 
+                $regex: new RegExp(breed.toString().trim(), 'i') 
+            };
+        }
+
+        // Tìm kiếm theo giới tính (gender)
+        if (gender) {
+            const normalizedGender = gender.toString().toLowerCase().trim();
+            if (['male', 'female'].includes(normalizedGender)) {
+                query.gender = normalizedGender;
+            }
+        }
+
+        // Tìm kiếm theo màu sắc (color)
+        if (color) {
+            query.color = { 
+                $regex: new RegExp(color.toString().trim(), 'i') 
+            };
+        }
+
+        // Tìm kiếm theo địa chỉ (address)
+        if (address) {
+            query.address = { 
+                $regex: new RegExp(address.toString().trim(), 'i') 
+            };
+        }
+
+        // Tìm kiếm theo tuổi (age)
+        if (age) {
+            query.age = { 
+                $regex: new RegExp(age.toString().trim(), 'i') 
+            };
+        }
+
+        console.log('Search query:', JSON.stringify(query, null, 2));
+
+        const pets = await Pet.find(query)
+            .sort({ createdAt: -1 })
+            .populate('shelterId', 'name address phone email');
+
+        console.log(`Found ${pets.length} pets matching the criteria`);
+
+        res.json({
+            success: true,
+            data: pets,
+            total: pets.length
+        });
+    } catch (err: any) {
+        console.error('Error in searchPetsController:', err);
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
 };
