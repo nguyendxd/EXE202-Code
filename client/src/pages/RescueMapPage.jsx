@@ -33,16 +33,36 @@ export default function RescueMapPage() {
     map.current.on('load', () => {
       // Get user's location
       if (navigator.geolocation) {
+        console.log("Geolocation is supported");
+        
         navigator.geolocation.getCurrentPosition(
           async (position) => {
+            console.log("Full position object:", position);
+            console.log("Position accuracy:", position.coords.accuracy, "meters");
+            console.log("Position altitude:", position.coords.altitude);
+            console.log("Position altitudeAccuracy:", position.coords.altitudeAccuracy);
+            console.log("Position heading:", position.coords.heading);
+            console.log("Position speed:", position.coords.speed);
+            
             const { latitude, longitude } = position.coords;
-            setUserLocation({ lat: latitude, lng: longitude });
+            console.log("Raw coordinates:", { latitude, longitude });
+            
+            // Kiểm tra tính hợp lệ của tọa độ
+            if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
+              console.error("Invalid coordinates received");
+              setError("Tọa độ không hợp lệ");
+              return;
+            }
 
-            console.log("User location obtained:", { latitude, longitude });
+            setUserLocation({ lat: latitude, lng: longitude });
+            console.log("User location state set to:", { lat: latitude, lng: longitude });
 
             // Center map on user's location
+            const mapCenter = [longitude, latitude];
+            console.log("Setting map center to:", mapCenter);
+            
             map.current.flyTo({
-              center: [longitude, latitude],
+              center: mapCenter,
               zoom: 14
             });
 
@@ -57,6 +77,7 @@ export default function RescueMapPage() {
               });
 
               if (response.data.success) {
+                console.log("Stations data received:", response.data.data);
                 setStations(response.data.data);
               }
             } catch (err) {
@@ -67,12 +88,24 @@ export default function RescueMapPage() {
             }
           },
           (error) => {
-            console.error("Error getting location:", error);
+            console.error("Geolocation error details:", {
+              code: error.code,
+              message: error.message,
+              PERMISSION_DENIED: error.PERMISSION_DENIED,
+              POSITION_UNAVAILABLE: error.POSITION_UNAVAILABLE,
+              TIMEOUT: error.TIMEOUT
+            });
             setError("Không thể lấy vị trí của bạn. Vui lòng cho phép truy cập vị trí.");
             setLoading(false);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
           }
         );
       } else {
+        console.error("Geolocation is not supported by this browser");
         setError("Trình duyệt của bạn không hỗ trợ định vị!");
         setLoading(false);
       }
@@ -99,6 +132,7 @@ export default function RescueMapPage() {
 
     // Add new markers for user and stations
     if (userLocation) {
+      console.log("Adding user marker at:", [userLocation.lng, userLocation.lat]);
       new mapboxgl.Marker({ color: "#4285F4" })
         .setLngLat([userLocation.lng, userLocation.lat])
         .setPopup(new mapboxgl.Popup().setHTML("<h3>Vị trí của bạn</h3>"))
@@ -107,6 +141,7 @@ export default function RescueMapPage() {
 
     stations.forEach((station) => {
       const [lng, lat] = station.location.coordinates;
+      console.log("Adding station marker at:", [lng, lat]);
       const markerColor = station.source === "database" ? "#FF5722" : "#4CAF50";
 
       const popupContent = `

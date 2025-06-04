@@ -240,3 +240,16 @@
     font-size: 0.75rem;
   }
 }
+
+/* Success Message */
+.success-message {
+  color: #155724;
+  background-color: #d4edda;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  text-align: center;
+  border: 1px solid #c3e6cb;
+  width: 100%;
+}

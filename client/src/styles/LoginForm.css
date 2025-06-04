@@ -299,4 +299,17 @@
         transform: translateY(0);
         opacity: 1;
     }
+}
+
+/* Error Message */
+.error-message {
+  color: #ff4444;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  text-align: center;
+  border: 1px solid #ffcdd2;
+  width: 100%;
 } 
