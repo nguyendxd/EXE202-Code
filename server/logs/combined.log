@@ -338,3 +338,160 @@
 {"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:16:45.017Z"}
 {"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:20:05.577Z"}
 {"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:20:20.927Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:21:22.889Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:26:17.133Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:29:19.026Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:29:41.675Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:31:04.749Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:31:51.081Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:40:03.680Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID yw6MOZoZjpAHaj-7AAAB","timestamp":"2025-06-05T16:40:03.800Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID H-bZFvB7uvM6n00FAAAF","timestamp":"2025-06-05T16:40:05.495Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID PhoIZyu4rxWuf_xbAAAH","timestamp":"2025-06-05T16:40:09.043Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID bpMmvoD38uQD2pIYAAAJ","timestamp":"2025-06-05T16:40:09.289Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:40:19.868Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID UtaszVvumYuESzeAAAAL","timestamp":"2025-06-05T16:40:20.323Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID h4xtjZZkymG3hVExAAAN","timestamp":"2025-06-05T16:40:20.334Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:40:21.776Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 7ucXrjVqiKyB1h5cAAAP","timestamp":"2025-06-05T16:40:21.795Z"}
+{"level":"error","message":"Error sending message:","timestamp":"2025-06-05T16:40:24.341Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:42:17.985Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID LYFEXCnMxX0vQ-ZeAAAD","timestamp":"2025-06-05T16:42:19.597Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 40--OUS2rz7jk1mwAAAH","timestamp":"2025-06-05T16:42:22.586Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:43:03.254Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID gXq0Kr4BaHADRDhwAAAJ","timestamp":"2025-06-05T16:43:25.635Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID Bj5efmzIso2fw_X5AAAL","timestamp":"2025-06-05T16:43:25.640Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:43:26.840Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID _7WwdNiendPvsvNKAAAN","timestamp":"2025-06-05T16:43:26.847Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID w2MyYBefkTwo4_3QAAAP","timestamp":"2025-06-05T16:43:32.975Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID TN4V-5VLKygXgjyLAAAR","timestamp":"2025-06-05T16:43:32.987Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:43:33.935Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 6krzBsKUgLDE6GEUAAAT","timestamp":"2025-06-05T16:43:33.945Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID azlREC7si9Mqiz_dAAAW","timestamp":"2025-06-05T16:44:26.338Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID _vrW_p4gjSk2HPrQAAAX","timestamp":"2025-06-05T16:44:26.340Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:44:27.298Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID Qrg_lQTRcTMwMzJ6AAAZ","timestamp":"2025-06-05T16:44:27.303Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:45:46.593Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID _UhJ-FiIsEFbLXIMAAAb","timestamp":"2025-06-05T16:45:46.598Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID _N6vuUP5vhnc513yAAAd","timestamp":"2025-06-05T16:45:46.607Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID TcjJWtFhz4h-8C7iAAAf","timestamp":"2025-06-05T16:55:33.617Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID VqxGauRUoSgCchTBAAAh","timestamp":"2025-06-05T16:55:33.637Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID kZsxOHjJ0Wu0bWamAAAk","timestamp":"2025-06-05T16:55:37.122Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID p-iaBzwsPuBfjd9sAAAl","timestamp":"2025-06-05T16:55:37.122Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:55:38.502Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID DynOYiZjHV2cdNcnAAAn","timestamp":"2025-06-05T16:55:38.510Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:55:56.750Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 3P6DesRufqVqBZx3AAAq","timestamp":"2025-06-05T16:55:56.877Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 59PM8KNDYtXOeLUzAAAr","timestamp":"2025-06-05T16:55:56.877Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:55:58.983Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID uhv2LUwS_m_ot870AAAt","timestamp":"2025-06-05T16:55:58.998Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:58:10.311Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID SgnPYXxD0BVeuFZzAAAH","timestamp":"2025-06-05T16:58:12.934Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:58:19.582Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID rejOlAivfVLF0sCPAAAL","timestamp":"2025-06-05T16:58:19.902Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID mwvulHe9MyhRl2hjAAAN","timestamp":"2025-06-05T16:58:19.907Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T16:58:21.358Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID oR-9eSMYzRe-vur-AAAP","timestamp":"2025-06-05T16:58:21.364Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T16:59:19.809Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=b8qm57g7RSNP4l6dvxQiCUY56aS2, receiverId=68407649f2baa85016bea68e, content=aaaaaa","timestamp":"2025-06-05T16:59:21.576Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=b8qm57g7RSNP4l6dvxQiCUY56aS2, receiverId=68407649f2baa85016bea68e, content=aaaa","timestamp":"2025-06-05T16:59:21.587Z"}
+{"level":"info","message":"[SOCKET] Converted senderId to Mongo _id: 68418835dbc131db77843a64","timestamp":"2025-06-05T16:59:21.731Z"}
+{"level":"info","message":"[SOCKET] Converted senderId to Mongo _id: 68418835dbc131db77843a64","timestamp":"2025-06-05T16:59:21.749Z"}
+{"level":"info","message":"[SOCKET] Message saved: {\"sender\":\"68418835dbc131db77843a64\",\"receiver\":\"68407649f2baa85016bea68e\",\"content\":\"aaaa\",\"attachments\":[],\"read\":false,\"_id\":\"6841cce9efc6491c2c873dbf\",\"createdAt\":\"2025-06-05T16:59:21.744Z\",\"updatedAt\":\"2025-06-05T16:59:21.744Z\",\"__v\":0}","timestamp":"2025-06-05T16:59:21.875Z"}
+{"level":"info","message":"[SOCKET] Message saved: {\"sender\":\"68418835dbc131db77843a64\",\"receiver\":\"68407649f2baa85016bea68e\",\"content\":\"aaaaaa\",\"attachments\":[],\"read\":false,\"_id\":\"6841cce9efc6491c2c873dc1\",\"createdAt\":\"2025-06-05T16:59:21.751Z\",\"updatedAt\":\"2025-06-05T16:59:21.751Z\",\"__v\":0}","timestamp":"2025-06-05T16:59:21.883Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T17:10:21.473Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T17:12:49.457Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 0PDj7O4jMu02ztaVAAAG","timestamp":"2025-06-05T17:13:11.144Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID _U5CuUX4AmsiBG8kAAAH","timestamp":"2025-06-05T17:13:11.145Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T17:13:12.885Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 05psvjyfnMiU41JeAAAJ","timestamp":"2025-06-05T17:13:12.906Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=b8qm57g7RSNP4l6dvxQiCUY56aS2, receiverId=68407649f2baa85016bea68e, content=test","timestamp":"2025-06-05T17:13:15.176Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 94GFJLvY1xI7V_LiAAAL","timestamp":"2025-06-05T17:13:23.386Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID ZL8yiRiImauLpaAhAAAN","timestamp":"2025-06-05T17:13:23.397Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T17:13:29.101Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID 9ub4uSN1fHATu3cFAAAP","timestamp":"2025-06-05T17:13:44.074Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID aIQ2pXhzGRZ80SvAAAAR","timestamp":"2025-06-05T17:13:44.091Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 disconnected","timestamp":"2025-06-05T17:13:45.291Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID GTe8zoPtj5MzsxFwAAAT","timestamp":"2025-06-05T17:13:45.299Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=dyKL0fyzOAUdjeB3Ypnx3SoxGbw1, receiverId=68418835dbc131db77843a64, content=hi","timestamp":"2025-06-05T17:13:47.351Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=b8qm57g7RSNP4l6dvxQiCUY56aS2, receiverId=68407649f2baa85016bea68e, content=hi","timestamp":"2025-06-05T17:13:55.724Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID DD3VhV9eyaoMJ7VrAAAW","timestamp":"2025-06-05T17:14:03.038Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID aIKl16fXHW8iN33UAAAX","timestamp":"2025-06-05T17:14:03.039Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T17:14:03.989Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID nOlGagNOkg8R0YLNAAAZ","timestamp":"2025-06-05T17:14:03.994Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 disconnected","timestamp":"2025-06-05T17:14:10.882Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID lZbtzrwx4tlEURaRAAAb","timestamp":"2025-06-05T17:14:10.976Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID QzEemRab02Q4qRvTAAAd","timestamp":"2025-06-05T17:14:10.985Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 disconnected","timestamp":"2025-06-05T17:14:12.513Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID TytHowOvLndnDUxKAAAf","timestamp":"2025-06-05T17:14:12.526Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=dyKL0fyzOAUdjeB3Ypnx3SoxGbw1, receiverId=68418835dbc131db77843a64, content=đây là real time chat ","timestamp":"2025-06-05T17:14:21.593Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T17:14:58.679Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 4FqJgn73kef7TXctAAAi","timestamp":"2025-06-05T17:14:58.817Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID ZQhu4ZlTV87wD3ofAAAj","timestamp":"2025-06-05T17:14:58.818Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T17:15:00.020Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID rhNtuSw3q2SgPe-3AAAl","timestamp":"2025-06-05T17:15:00.039Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=dyKL0fyzOAUdjeB3Ypnx3SoxGbw1, receiverId=68418835dbc131db77843a64, content=aaaaaaaa","timestamp":"2025-06-05T17:15:10.111Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=dyKL0fyzOAUdjeB3Ypnx3SoxGbw1, receiverId=68418835dbc131db77843a64, content=test","timestamp":"2025-06-05T17:16:34.744Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=b8qm57g7RSNP4l6dvxQiCUY56aS2, receiverId=68407649f2baa85016bea68e, content=test","timestamp":"2025-06-05T17:16:53.017Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=b8qm57g7RSNP4l6dvxQiCUY56aS2, receiverId=68407649f2baa85016bea68e, content=test","timestamp":"2025-06-05T17:17:34.191Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=dyKL0fyzOAUdjeB3Ypnx3SoxGbw1, receiverId=68418835dbc131db77843a64, content=aaaa","timestamp":"2025-06-05T17:17:37.976Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T17:21:30.582Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 disconnected","timestamp":"2025-06-05T17:21:30.582Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID DI7qRknki4YqqLvTAAAo","timestamp":"2025-06-05T17:21:30.600Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID G4tmKE4K2LHVIoZ4AAAp","timestamp":"2025-06-05T17:21:30.603Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID fqgZtQSQ8TB_BF-hAAAr","timestamp":"2025-06-05T17:21:30.605Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID AKD9CyHHIbJ-FNMZAAAt","timestamp":"2025-06-05T17:21:30.610Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 disconnected","timestamp":"2025-06-05T17:21:45.947Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID ZSPy3eY8VoA4pywZAAAv","timestamp":"2025-06-05T17:21:45.959Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=b8qm57g7RSNP4l6dvxQiCUY56aS2, receiverId=68407649f2baa85016bea68e, content=hey","timestamp":"2025-06-05T17:21:50.504Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 disconnected","timestamp":"2025-06-05T17:21:54.875Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID g0sJBjjdYoZBnPbZAAAx","timestamp":"2025-06-05T17:21:54.882Z"}
+{"level":"info","message":"[SOCKET] send_message: senderId=dyKL0fyzOAUdjeB3Ypnx3SoxGbw1, receiverId=68418835dbc131db77843a64, content=hey","timestamp":"2025-06-05T17:21:59.453Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T17:26:55.437Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID TBmO_tbBPrUgVNktAAAN","timestamp":"2025-06-05T17:37:04.625Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID P6UntfrhVf46RYBQAAAQ","timestamp":"2025-06-05T17:37:04.634Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID JVT-jwdnN7XB4pPhAAAR","timestamp":"2025-06-05T17:37:04.635Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID aA5WHCf9yKP_LHEBAAAT","timestamp":"2025-06-05T17:37:04.638Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 8PIJe38cQSgH9acBAAAW","timestamp":"2025-06-05T17:37:10.599Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID 7MUalmhliiDsvV51AAAX","timestamp":"2025-06-05T17:37:10.600Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID A61EaurGx7nNl_yVAAAa","timestamp":"2025-06-05T17:37:31.881Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID qVK4hRnvED894869AAAb","timestamp":"2025-06-05T17:37:31.889Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID mNEFxustNiVPAM0ZAAAd","timestamp":"2025-06-05T17:37:33.305Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID 1rvvLcl7mbzMSC-yAAAf","timestamp":"2025-06-05T17:37:41.188Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID tte8nv3TJM9IiY6RAAAh","timestamp":"2025-06-05T17:37:46.368Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID EAEYJNGrq9fHtJs6AAAj","timestamp":"2025-06-05T17:37:46.387Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID Cmywjgf-WfLJjECIAAAl","timestamp":"2025-06-05T17:37:48.230Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID cuAxU8qczU4AbSRNAAAn","timestamp":"2025-06-05T17:40:31.617Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID K5ZOsM_TC7H9IddiAAAp","timestamp":"2025-06-05T17:40:31.627Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID WZ-3zfPxEztsEbksAAAr","timestamp":"2025-06-05T17:40:35.594Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID ysHdQrOCEj26K9O2AAAt","timestamp":"2025-06-05T17:40:35.605Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID D4zNeUW1FAGBUsTKAAAw","timestamp":"2025-06-05T17:40:40.162Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID fOHUbeaOZxZukND7AAAx","timestamp":"2025-06-05T17:40:40.166Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID RZ_juBHyxEhJtqv7AAAz","timestamp":"2025-06-05T17:40:41.007Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID DfeKd-m6I5ONTpumAAA1","timestamp":"2025-06-05T17:42:52.607Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID P1424x3eKZAsH6bKAAA3","timestamp":"2025-06-05T17:42:52.625Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID W6XMlqjgAdnuG4JeAAA5","timestamp":"2025-06-05T17:44:43.587Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 5lsLK3iG57H5C_2bAAA7","timestamp":"2025-06-05T17:44:43.599Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID xjbvN6uKApCJ7VMMAAA-","timestamp":"2025-06-05T17:44:50.993Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID jZFZ9kNJgzkiXxvjAAA_","timestamp":"2025-06-05T17:44:50.995Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID zpfrM-cFuA-h_OICAABB","timestamp":"2025-06-05T17:44:51.654Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID gnLZ-A8ZVNw7X6EbAABD","timestamp":"2025-06-05T17:44:58.949Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID b66oJIeZuQUedHX8AABF","timestamp":"2025-06-05T17:44:58.950Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID 4seR_ZvWAm2y7mUkAABH","timestamp":"2025-06-05T17:44:59.844Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T17:48:12.638Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID MS80EPr4_QiIXMLVAAAF","timestamp":"2025-06-05T17:48:16.818Z"}
+{"level":"info","message":"User dyKL0fyzOAUdjeB3Ypnx3SoxGbw1 joined with socket ID MuS73ZBgHcjgPSAQAAAH","timestamp":"2025-06-05T17:48:16.822Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID puLXHysHT_7MSHqqAAAK","timestamp":"2025-06-05T17:48:50.916Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID NDvroiMzYR7-VeOAAAAL","timestamp":"2025-06-05T17:48:50.917Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID hTS-rybhGJ49rb5OAAAN","timestamp":"2025-06-05T17:48:52.568Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID Q9obg5oqOdvTTaMcAAAQ","timestamp":"2025-06-05T17:48:59.630Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID Pqh1su-BuzVhJw4qAAAR","timestamp":"2025-06-05T17:48:59.630Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID a-wbnvNRLN9uQeywAAAT","timestamp":"2025-06-05T17:49:01.469Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID XkyTNess2Cp0PJeCAAAW","timestamp":"2025-06-05T17:51:48.099Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID yklx4yDSQCHkdM4eAAAX","timestamp":"2025-06-05T17:51:48.099Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID 1N_qKe27G82u8udyAAAZ","timestamp":"2025-06-05T17:51:49.741Z"}
+{"level":"info","message":"User b8qm57g7RSNP4l6dvxQiCUY56aS2 joined with socket ID uDAzNmcktK9-D-b1AAAb","timestamp":"2025-06-05T17:51:56.498Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T18:10:13.670Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T18:12:47.452Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T18:13:10.597Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-05T19:01:12.209Z"}

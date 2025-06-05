@@ -1,158 +1,156 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { io } from "socket.io-client"
+import { db } from "../firebase"
+import {
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp,
+  doc,
+  getDocs,
+  setDoc,
+  limit,
+} from "firebase/firestore"
 import pawLetter from "../assets/PawLetter.png"
-
-const SOCKET_URL = "http://localhost:3000" // Đảm bảo dùng đúng port backend
 
 export default function ChatPage() {
   const [chatList, setChatList] = useState([])
   const [selectedChat, setSelectedChat] = useState(null)
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState("")
-  const socketRef = useRef(null)
-  const messagesEndRef = useRef(null) // Để tự động scroll đến tin nhắn mới nhất
   const messagesContainerRef = useRef(null)
   const userId = localStorage.getItem("userId")
   const token = localStorage.getItem("token")
+  const [allUsers, setAllUsers] = useState([])
 
-  // Tự động scroll đến tin nhắn mới nhất khi messages thay đổi
-  const scrollToBottom = () => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
-    }
-  }
-
+  // Lấy danh sách user thực tế từ API
   useEffect(() => {
-    // Delay scroll to ensure DOM is updated
-    const timer = setTimeout(() => {
-      scrollToBottom()
-    }, 100)
-    return () => clearTimeout(timer)
-  }, [messages])
-
-  // Kết nối socket khi mount
-  useEffect(() => {
-    if (!userId || !token) {
-      console.error("Missing userId or token. Please login again.")
-      return
-    }
-
-    const socket = io(SOCKET_URL, {
-      transports: ["websocket"],
-      autoConnect: false,
-      auth: { token: `Bearer ${token}` }, // Gửi token để xác thực socket
-    })
-    socketRef.current = socket
-
-    socket.connect()
-    socket.emit("join", userId)
-
-    // Nhận tin nhắn realtime
-    socket.on("receive_message", (msg) => {
-      // Nếu tin nhắn liên quan đến selectedChat thì push vào state
-      if (
-        selectedChat &&
-        (
-          (msg.sender._id === selectedChat._id) ||
-          (msg.receiver._id === selectedChat._id) ||
-          (msg.sender === selectedChat._id) ||
-          (msg.receiver === selectedChat._id)
-        )
-      ) {
-        setMessages((prev) => {
-          const exists = prev.some((m) => m._id === msg._id);
-          if (exists) return prev;
-          return [...prev, msg].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-        });
-      }
-    })
-
-    // Xác nhận tin nhắn đã gửi
-    socket.on("message_sent", (msg) => {
-      console.log("[SOCKET] Message sent confirm:", msg, "Selected chat:", selectedChat);
-      if (
-        selectedChat &&
-        (
-          (msg.sender._id === selectedChat._id) ||
-          (msg.receiver._id === selectedChat._id) ||
-          (msg.sender === selectedChat._id) ||
-          (msg.receiver === selectedChat._id)
-        )
-      ) {
-        setMessages((prev) => {
-          const exists = prev.some((m) => m._id === msg._id);
-          if (exists) return prev;
-          return [...prev, msg].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-        });
-      }
-    })
-
-    // Xử lý lỗi Socket
-    socket.on("connect_error", (err) => {
-      console.error("Socket connection error:", err.message)
-    })
-
-    return () => {
-      if (socket.connected) socket.disconnect()
-    }
-  }, [userId, token, selectedChat])
-
-  // Lấy danh sách hội thoại khi load trang
-  useEffect(() => {
-    if (!userId || !token) {
-      console.error("Missing userId or token. Please login again.")
-      return
-    }
-    fetch("http://localhost:3000/api/messages/conversations", {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
+    if (!token) return
+    fetch("http://localhost:3000/api/users", {
+      headers: { Authorization: "Bearer " + token },
     })
       .then((res) => res.json())
-      .then((data) => setChatList(data))
-      .catch((err) => console.error("Error fetching conversations:", err))
-  }, [token, userId])
+      .then((data) => setAllUsers(data))
+      .catch((err) => console.error("Error fetching users:", err))
+  }, [token])
 
-  // Khi chọn 1 chat, lấy lịch sử tin nhắn và đánh dấu tin nhắn đã đọc
-  const handleSelectChat = (chat) => {
-    setSelectedChat(chat)
-    fetch(`http://localhost:3000/api/messages/conversation/${chat._id}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        // Sort messages by creation date to ensure chronological order
-        const sortedMessages = Array.isArray(data)
-          ? data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-          : []
-        setMessages(sortedMessages)
-        // Scroll to bottom after loading messages
-        setTimeout(() => scrollToBottom(), 200)
+  // Lấy danh sách hội thoại và sắp xếp theo tin nhắn mới nhất
+  useEffect(() => {
+    if (!userId || allUsers.length === 0) return
+
+    const q = query(collection(db, "conversations"))
+    const unsubscribe = onSnapshot(q, async (snapshot) => {
+      const chats = []
+
+      for (const docSnap of snapshot.docs) {
+        const ids = docSnap.id.split("_")
+        // Chỉ lấy hội thoại mà user hiện tại là 1 trong 2 thành viên
+        if (ids.includes(userId)) {
+          const otherId = ids[0] === userId ? ids[1] : ids[0]
+          const user = allUsers.find((u) => u._id === otherId)
+
+          if (user) {
+            // Lấy tin nhắn cuối cùng của conversation này
+            const msgQuery = query(
+              collection(db, "conversations", docSnap.id, "messages"),
+              orderBy("createdAt", "desc"),
+              limit(1),
+            )
+            const msgSnap = await getDocs(msgQuery)
+            const lastMessage = msgSnap.docs[0]?.data()
+
+            chats.push({
+              _id: otherId,
+              user,
+              lastMessage,
+              conversationId: docSnap.id,
+              lastMessageTime: lastMessage?.createdAt || null,
+            })
+          }
+        }
+      }
+
+      // Sắp xếp theo thời gian tin nhắn mới nhất (mới nhất lên đầu)
+      chats.sort((a, b) => {
+        if (!a.lastMessageTime && !b.lastMessageTime) return 0
+        if (!a.lastMessageTime) return 1
+        if (!b.lastMessageTime) return -1
+
+        const timeA = a.lastMessageTime.seconds || 0
+        const timeB = b.lastMessageTime.seconds || 0
+        return timeB - timeA
       })
-      .catch((err) => console.error("Error fetching messages:", err))
+
+      setChatList(chats)
+    })
+
+    return () => unsubscribe()
+  }, [userId, allUsers])
+
+  // Khi click vào user, tạo hội thoại nếu chưa có
+  const handleSelectUser = async (user) => {
+    setSelectedChat(user)
+    const conversationId = userId < user._id ? `${userId}_${user._id}` : `${user._id}_${userId}`
+    // Đảm bảo conversation tồn tại
+    await setDoc(doc(db, "conversations", conversationId), {
+      participants: [userId, user._id],
+      createdAt: serverTimestamp(),
+    })
   }
 
-  // Khi gửi tin nhắn chỉ emit, không tự push vào state
-  const handleSendMessage = (e) => {
-    e.preventDefault();
-    if (!message.trim() || !selectedChat) return;
-    const msgData = {
-      senderId: userId,
-      receiverId: selectedChat._id,
-      content: message,
-      attachments: [],
-    };
-    socketRef.current.emit("send_message", msgData);
-    setMessage("");
-  };
+  // Lắng nghe tin nhắn realtime chỉ của conversationId đúng cặp user
+  useEffect(() => {
+    if (!selectedChat || !userId) return
+    const conversationId = userId < selectedChat._id ? `${userId}_${selectedChat._id}` : `${selectedChat._id}_${userId}`
+    const q = query(collection(db, "conversations", conversationId, "messages"), orderBy("createdAt"))
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setMessages(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+      // Auto scroll to bottom
+      setTimeout(() => {
+        if (messagesContainerRef.current) {
+          messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
+        }
+      }, 100)
+    })
+    return () => unsubscribe()
+  }, [selectedChat, userId])
+
+  // Gửi tin nhắn
+  const handleSendMessage = async (e) => {
+    e.preventDefault()
+    if (!message.trim() || !selectedChat) return
+
+    const conversationId = userId < selectedChat._id ? `${userId}_${selectedChat._id}` : `${selectedChat._id}_${userId}`
+
+    try {
+      // Đảm bảo conversation tồn tại
+      await setDoc(
+        doc(db, "conversations", conversationId),
+        {
+          participants: [userId, selectedChat._id],
+          lastActivity: serverTimestamp(),
+        },
+        { merge: true },
+      )
+
+      // Thêm tin nhắn
+      await addDoc(collection(db, "conversations", conversationId, "messages"), {
+        senderId: userId,
+        content: message,
+        createdAt: serverTimestamp(),
+      })
+
+      setMessage("")
+    } catch (error) {
+      console.error("Error sending message:", error)
+    }
+  }
 
   const chatItemStyle = (isSelected) => ({
     display: "flex",
-    alignItems: "center",
     padding: "15px",
     borderBottom: "1px solid #F5E8C7",
     cursor: "pointer",
@@ -160,7 +158,26 @@ export default function ChatPage() {
     transition: "background-color 0.2s ease",
   })
 
-  if (!userId || !token) {
+  // Hiển thị thời gian relative
+  const formatTime = (timestamp) => {
+    if (!timestamp || !timestamp.seconds) return ""
+
+    const messageDate = new Date(timestamp.seconds * 1000)
+    const now = new Date()
+    const diffInHours = (now - messageDate) / (1000 * 60 * 60)
+
+    if (diffInHours < 1) {
+      return "Vừa xong"
+    } else if (diffInHours < 24) {
+      return `${Math.floor(diffInHours)} giờ trước`
+    } else if (diffInHours < 48) {
+      return "Hôm qua"
+    } else {
+      return messageDate.toLocaleDateString("vi-VN")
+    }
+  }
+
+  if (!userId) {
     return (
       <div
         style={{
@@ -186,16 +203,9 @@ export default function ChatPage() {
         padding: "20px",
       }}
     >
-      {/* Pawmily Logo */}
+      {/* Logo */}
       <div style={{ textAlign: "center", marginBottom: "30px" }}>
-        <img
-          src={pawLetter || "/placeholder.svg"}
-          alt="Pawmily"
-          style={{
-            height: "200px",
-            objectFit: "contain",
-          }}
-        />
+        <img src={pawLetter || "/placeholder.svg"} alt="Pawmily" style={{ height: "200px", objectFit: "contain" }} />
       </div>
 
       {/* Chat Container */}
@@ -210,7 +220,7 @@ export default function ChatPage() {
           boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
         }}
       >
-        {/* Chat List */}
+        {/* Chat List - Hiển thị conversations đã có tin nhắn trước, sau đó là users chưa chat */}
         <div
           style={{
             width: "350px",
@@ -219,37 +229,191 @@ export default function ChatPage() {
             overflowY: "auto",
           }}
         >
-          {chatList.length > 0 ? (
-            chatList.map((chat) => (
+          {/* Conversations với tin nhắn */}
+          {chatList.length > 0 && (
+            <>
               <div
-                key={chat._id}
-                style={chatItemStyle(selectedChat?._id === chat._id)}
-                onClick={() => handleSelectChat(chat)}
+                style={{
+                  padding: "10px 15px",
+                  backgroundColor: "#F5E8C7",
+                  fontWeight: "bold",
+                  color: "#A47148",
+                  fontSize: "14px",
+                }}
               >
-                <img
-                  src={chat.user?.avatar || "/placeholder.svg"}
-                  alt={chat.user?.email}
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "50%",
-                    marginRight: "15px",
-                    border: "1px solid #D7A86E",
-                  }}
-                />
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: "bold", color: "#5D4037", fontSize: "16px" }}>
-                    {chat.user?.email || "No name"}
-                  </div>
-                  <div style={{ color: "#8B4513", fontSize: "14px" }}>{chat.lastMessage?.content || ""}</div>
-                </div>
-                <div style={{ color: "#A47148", fontSize: "12px" }}>
-                  {chat.lastMessage?.createdAt ? new Date(chat.lastMessage.createdAt).toLocaleDateString() : ""}
-                </div>
+                Tin nhắn gần đây
               </div>
-            ))
-          ) : (
-            <div style={{ textAlign: "center", color: "#A47148", padding: "20px" }}>Không có hội thoại nào.</div>
+              {chatList
+                .filter((chat) => chat && chat.user) // Add filter to remove invalid chats
+                .map((chat) => (
+                  <div
+                    key={`chat-${chat._id}`}
+                    style={{
+                      ...chatItemStyle(selectedChat?._id === chat._id),
+                      backgroundColor:
+                        selectedChat?._id === chat._id ? "#FFF8E7" : chat.lastMessage ? "#FFFBF0" : "transparent",
+                      height: "70px", // Fixed height for chat items
+                    }}
+                    onClick={() => handleSelectUser(chat.user)}
+                  >
+                    <img
+                      src={
+                        chat.user?.avatar && !chat.user.avatar.includes("default-avatar.jpg")
+                          ? chat.user.avatar
+                          : "/placeholder.svg"
+                      }
+                      alt={chat.user?.email || "User"}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        marginRight: "15px",
+                        border: "1px solid #D7A86E",
+                        alignSelf: "flex-start",
+                      }}
+                    />
+                    <div
+                      style={{
+                        flex: 1,
+                        minWidth: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontWeight: "bold",
+                          color: "#5D4037",
+                          fontSize: "16px",
+                          marginBottom: "6px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {chat.user?.email || "No name"}
+                      </div>
+                      <div
+                        style={{
+                          color: chat.lastMessage ? "#8B4513" : "#B0B0B0",
+                          fontSize: "14px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          lineHeight: "1.2",
+                        }}
+                      >
+                        {chat.lastMessage?.content || "Bắt đầu cuộc trò chuyện"}
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        color: "#A47148",
+                        fontSize: "11px",
+                        textAlign: "right",
+                        minWidth: "70px",
+                        alignSelf: "flex-start",
+                        marginTop: "2px",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {formatTime(chat.lastMessageTime)}
+                    </div>
+                  </div>
+                ))}
+            </>
+          )}
+
+          {/* Users chưa có conversation */}
+          {allUsers.filter((u) => u && u._id !== userId && !chatList.find((c) => c && c._id === u._id)).length > 0 && (
+            <>
+              <div
+                style={{
+                  padding: "10px 15px",
+                  backgroundColor: "#F0F0F0",
+                  fontWeight: "bold",
+                  color: "#888",
+                  fontSize: "14px",
+                }}
+              >
+                Người dùng khác
+              </div>
+              {allUsers
+                .filter((u) => u && u._id && u._id !== userId && !chatList.find((c) => c && c._id === u._id))
+                .map((user) => (
+                  <div
+                    key={`user-${user._id}`}
+                    style={{
+                      ...chatItemStyle(selectedChat?._id === user._id),
+                      height: "70px", // Fixed height for user items
+                    }}
+                    onClick={() => handleSelectUser(user)}
+                  >
+                    <img
+                      src={
+                        user?.avatar && !user.avatar.includes("default-avatar.jpg") ? user.avatar : "/placeholder.svg"
+                      }
+                      alt={user?.email || "User"}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        marginRight: "15px",
+                        border: "1px solid #D7A86E",
+                        alignSelf: "center",
+                      }}
+                    />
+                    <div
+                      style={{
+                        flex: 1,
+                        minWidth: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontWeight: "bold",
+                          color: "#5D4037",
+                          fontSize: "16px",
+                          marginBottom: "6px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {user?.email || "No name"}
+                      </div>
+                      <div
+                        style={{
+                          color: "#B0B0B0",
+                          fontSize: "14px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          lineHeight: "1.2",
+                        }}
+                      >
+                        Bắt đầu cuộc trò chuyện
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </>
+          )}
+
+          {allUsers.length === 0 && (
+            <div
+              style={{
+                textAlign: "center",
+                color: "#A47148",
+                padding: "20px",
+              }}
+            >
+              Đang tải danh sách người dùng...
+            </div>
           )}
         </div>
 
@@ -275,8 +439,12 @@ export default function ChatPage() {
                 }}
               >
                 <img
-                  src={selectedChat.user?.avatar || "/placeholder.svg"}
-                  alt={selectedChat.user?.email}
+                  src={
+                    selectedChat?.avatar && !selectedChat.avatar.includes("default-avatar.jpg")
+                      ? selectedChat.avatar
+                      : "/placeholder.svg"
+                  }
+                  alt={selectedChat?.email || "User"}
                   style={{
                     width: "40px",
                     height: "40px",
@@ -285,8 +453,14 @@ export default function ChatPage() {
                     border: "1px solid #D7A86E",
                   }}
                 />
-                <div style={{ fontWeight: "bold", color: "#5D4037", fontSize: "18px" }}>
-                  {selectedChat.user?.email || "No name"}
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    color: "#5D4037",
+                    fontSize: "18px",
+                  }}
+                >
+                  {selectedChat?.email || "No name"}
                 </div>
               </div>
 
@@ -304,10 +478,10 @@ export default function ChatPage() {
               >
                 {messages.length > 0 ? (
                   messages.map((msg) => {
-                    const isSender = (msg.sender?._id || msg.sender) === userId
+                    const isSender = msg.senderId === userId
                     return (
                       <div
-                        key={msg._id}
+                        key={msg.id}
                         style={{
                           display: "flex",
                           justifyContent: isSender ? "flex-end" : "flex-start",
@@ -326,12 +500,23 @@ export default function ChatPage() {
                         >
                           {!isSender && (
                             <div
-                              style={{ fontSize: "12px", color: "#8B4513", fontWeight: "bold", marginBottom: "4px" }}
+                              style={{
+                                fontSize: "12px",
+                                color: "#8B4513",
+                                fontWeight: "bold",
+                                marginBottom: "4px",
+                              }}
                             >
-                              {msg.sender?.username || msg.sender?.email || "User"}
+                              {selectedChat?.email || "User"}
                             </div>
                           )}
-                          <div style={{ fontSize: "16px", color: "#5D4037", wordWrap: "break-word" }}>
+                          <div
+                            style={{
+                              fontSize: "16px",
+                              color: "#5D4037",
+                              wordWrap: "break-word",
+                            }}
+                          >
                             {msg.content}
                           </div>
                           <div
@@ -342,8 +527,8 @@ export default function ChatPage() {
                               textAlign: isSender ? "right" : "left",
                             }}
                           >
-                            {msg.createdAt
-                              ? new Date(msg.createdAt).toLocaleTimeString("vi-VN", {
+                            {msg.createdAt && msg.createdAt.seconds
+                              ? new Date(msg.createdAt.seconds * 1000).toLocaleTimeString("vi-VN", {
                                   hour: "2-digit",
                                   minute: "2-digit",
                                 })
@@ -362,11 +547,9 @@ export default function ChatPage() {
                       fontSize: "16px",
                     }}
                   >
-                    Bắt đầu cuộc trò chuyện với {selectedChat.user?.email || "No name"}
+                    Bắt đầu cuộc trò chuyện với {selectedChat.email || "No name"}
                   </div>
                 )}
-                {/* Invisible element to scroll to */}
-                <div ref={messagesEndRef} style={{ height: "1px" }} />
               </div>
 
               {/* Message Input */}
