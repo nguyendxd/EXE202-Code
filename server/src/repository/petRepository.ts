@@ -10,11 +10,26 @@ const DEFAULT_PET_IMAGE_URL =
 // Tạo pet mới (upload ảnh nếu có, ngược lại dùng ảnh mặc định)
 export const createPet = async (
   data: Partial<IPet>,
-  files?: Express.Multer.File[]
+  files?: {
+    images?: Express.Multer.File[];
+    avatar?: Express.Multer.File[];
+  }
 ): Promise<IPet> => {
-  const imageUrls = files && files.length > 0
+  const imageUrls = files?.images && files.images.length > 0
     ? (await Promise.all(
-        files.map(f =>
+        files.images.map(f =>
+          imagekit.upload({
+            file: f.buffer.toString("base64"),
+            fileName: f.originalname,
+            folder: "/pet-image",
+          })
+        )
+      )).map(r => r.url)
+    : [DEFAULT_PET_IMAGE_URL];
+    
+  const avatarUrls = files?.avatar && files.avatar.length > 0
+  ? (await Promise.all(
+        files.avatar.map(f =>
           imagekit.upload({
             file: f.buffer.toString("base64"),
             fileName: f.originalname,
@@ -30,6 +45,7 @@ export const createPet = async (
       ? new Types.ObjectId(String(data.shelterId))
       : undefined,
     images: imageUrls,
+    avatar: avatarUrls[0],
   }).save();
 };
 
@@ -49,15 +65,15 @@ export const getPetById = (id: string) => {
 export const updatePetById = async (
   id: string,
   data: Partial<IPet>,
-  files?: Express.Multer.File[]
+  files?: { images?: Express.Multer.File[]; avatar?: Express.Multer.File[] }
 ): Promise<IPet | null> => {
   if (!Types.ObjectId.isValid(id)) {
     throw new Error("Invalid pet ID");
   }
 
-  if (files && files.length > 0) {
+   if (files?.images && files.images.length > 0) {
     const uploadResults = await Promise.all(
-      files.map((file) =>
+      files.images.map((file) =>
         imagekit.upload({
           file: file.buffer.toString("base64"),
           fileName: file.originalname,
@@ -67,6 +83,15 @@ export const updatePetById = async (
     );
     const newUrls = uploadResults.map((r) => r.url);
     data.images = newUrls;
+  }
+
+  if (files?.avatar && files.avatar.length > 0) {
+    const avatarResult = await imagekit.upload({
+      file: files.avatar[0].buffer.toString("base64"),
+      fileName: files.avatar[0].originalname,
+      folder: "/pet-avatar",
+    });
+    data.avatar = avatarResult.url;
   }
 
 
