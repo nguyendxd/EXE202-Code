@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import Blog, { IBlog } from "../model/Blog";
-import { Types } from "mongoose";
+import mongoose, { Types, Mongoose } from "mongoose";
 import imagekit from "../config/imagekit";
+
 
 export interface AuthenticatedRequest extends Request {
     user?: {id: string; uid: string; role: string; email: string};
@@ -52,11 +53,12 @@ export const createBlog = async (req: AuthenticatedRequest, res: Response) => {
 // Get all blogs with optional filters
 export const getAllBlogs = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const { status, author } = req.query;
-        const query: any = {};
+        const { author } = req.query; 
+        const query: any = {
+            status: 'published' 
+        };
 
-        // Add filters if provided
-        if (status) query.status = status;
+        
         if (author) query.author = author;
 
         const blogs = await Blog.find(query)
@@ -75,23 +77,32 @@ export const getAllBlogs = async (req: AuthenticatedRequest, res: Response) => {
 
 // Get blog by ID
 export const getBlogById = async (req: AuthenticatedRequest, res: Response) => {
-    try {
-        const blogId = req.params.id;
-        const blog = await Blog.findById(blogId)
-            .populate('author', 'username avatar');
+  try {
+    const { id } = req.params;
 
-        if (!blog) {
-            return res.status(404).json({ message: 'Blog not found' });
-        }
-
-        res.json(blog);
-    } catch (error) {
-        console.error('Error fetching blog:', error);
-        res.status(500).json({ 
-            message: 'Error fetching blog', 
-            error: error instanceof Error ? error.message : error 
-        });
+    // Kiểm tra xem id có hợp lệ không (phải là ObjectId hợp lệ của MongoDB)
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'ID không hợp lệ' });
     }
+
+    const blog = await Blog.findById(id).populate('author', 'username avatar');
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog không tìm thấy' });
+    }
+
+    // Chỉ trả về blog nếu status là 'published'
+    if (blog.status !== 'published') {
+      return res.status(403).json({ message: 'Blog chưa được xuất bản' });
+    }
+
+    res.json(blog);
+  } catch (error) {
+    console.error('Error fetching blog by id:', error);
+    res.status(500).json({ 
+      message: 'Error fetching blog', 
+      error: error instanceof Error ? error.message : error 
+    });
+  }
 };
 
 // Update blog
