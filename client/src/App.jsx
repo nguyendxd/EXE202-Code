@@ -15,12 +15,15 @@ import Footer from './components/Footer'
 import RescueMapPage from './pages/RescueMapPage'
 import BlogPage from './pages/BlogPage'
 import BlogDetailPage from './pages/BlogPageDetail'
+import UserPage from './pages/UserPage'
 import './styles/index.css'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function App() {
   return (
     <BrowserRouter>
       <Navbar />
-
+      <ToastContainer />
       <div style={{ paddingTop: '90px' }}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -38,6 +41,7 @@ export default function App() {
           <Route path="/rescue-map" element={<RescueMapPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:id" element={<BlogDetailPage />} />
+          <Route path="/user/:id" element={<UserPage />} />
         </Routes>
       </div>
 

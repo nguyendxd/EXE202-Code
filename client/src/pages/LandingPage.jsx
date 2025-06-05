@@ -274,9 +274,9 @@ export default function LandingPage() {
                     boxSizing: 'border-box', // Đảm bảo padding không làm thay đổi kích thước tổng thể
                 }}
             >
-                <h1 style={{ fontSize: '40px', margin: 0 }}>Find Your Furry Friend</h1>
+                <h1 style={{ fontSize: '40px', margin: 0 }}>Cùng tìm kiếm bé thú cưng của bạn</h1>
                 <p style={{ fontSize: '22px', maxWidth: '700px', margin: '20px auto' }}>
-                    Hanoi Pet Adoption rescues stray and abandoned animals, giving them a second chance at a loving home.
+                    Những bé thú cưng đáng yêu cần được sự quan tâm và chăm sóc
                 </p>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
                     {['adopt', 'donate'].map((type, idx) => (
@@ -287,7 +287,7 @@ export default function LandingPage() {
                             onMouseLeave={() => setHoveredButtons(prev => ({ ...prev, [idx]: false }))}
                             onClick={type === 'adopt' ? handleAdoptClick : handleDonateClick}
                         >
-                            {type === 'adopt' ? 'Adopt Now' : 'Donate'}
+                            {type === 'adopt' ? 'Nhận nuôi' : 'Quyên góp'}
                         </button>
                     ))}
                 </div>

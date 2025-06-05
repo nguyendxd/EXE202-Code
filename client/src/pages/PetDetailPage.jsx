@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "../styles/index.css";
 import { getPetById } from '../services/petService';
-import './PetGallery.css';
-import './PetDetailInfo.css';
+import '../styles/PetGallery.css';
+import '../styles/PetDetailInfo.css';
 
 export default function PetDetailPage() {
     const { id } = useParams();
@@ -12,8 +14,8 @@ export default function PetDetailPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [carouselIndex, setCarouselIndex] = useState(0);
-    const [zoomImgIdx, setZoomImgIdx] = useState(null); // index ảnh đang phóng to
-    const [isWishlisted, setIsWishlisted] = useState(false); // state để theo dõi wishlist
+    const [zoomImgIdx, setZoomImgIdx] = useState(null);
+    const [isWishlisted, setIsWishlisted] = useState(false);
 
     useEffect(() => {
         const fetchPet = async () => {
@@ -32,7 +34,33 @@ export default function PetDetailPage() {
     }, [id]);
 
     const handleWishlistToggle = () => {
-        setIsWishlisted((prev) => !prev); // toggle trạng thái wishlist
+        setIsWishlisted((prev) => {
+            const newState = !prev;
+            if (newState) {
+                toast.success('Đã thêm vào wishlist!', {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
+            } else {
+                toast.info('Đã xóa khỏi wishlist!', {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
+            }
+            return newState;
+        });
+    };
+
+    const handleNavigateToUserPage = () => {
+        navigate('/user/:id');
     };
 
     if (loading) return <div style={{ textAlign: 'center', marginTop: 40 }}>Đang tải thông tin thú cưng...</div>;
@@ -40,6 +68,27 @@ export default function PetDetailPage() {
 
     return (
         <div style={{ backgroundColor: "#FFF7E2", minHeight: "100vh", fontFamily: "Arial, sans-serif" }}>
+            <ToastContainer />
+            <section
+                style={{
+                    backgroundImage: 'url("https://cdn.pixabay.com/photo/2022/10/25/04/55/cat-7544821_1280.jpg")',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundAttachment: 'fixed',
+                    padding: '40px 20px',
+                    textAlign: 'center',
+                    color: '#5C4033',
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                    position: 'relative',
+                    minHeight: '100px',
+                    boxSizing: 'border-box',
+                }}
+            >
+                <h1 style={{ fontSize: '24px', margin: 0, fontWeight: 600 }}>Thông tin về bé</h1>
+                <p style={{ fontSize: '19px', maxWidth: '700px', margin: '20px auto' }}>
+                    Tìm hiểu thêm về tính cách, sức khỏe và câu chuyện của boss
+                </p>
+            </section>
             <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 20px" }}>
                 <div style={{ background: "#fff", borderRadius: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.08)", padding: "24px" }}>
                     <div className="pet-detail-info-row">
@@ -82,11 +131,16 @@ export default function PetDetailPage() {
                                     </svg>
                                 </button>
                             </div>
-                            <button className="pet-register-btn">Đăng ký</button>
+                            <button className="pet-register-btn" onClick={handleNavigateToUserPage}>Đăng ký</button>
                         </div>
                         {/* Thông tin chi tiết bên phải */}
                         <div className="pet-detail-main">
-                            <div style={{ fontWeight: 700, fontSize: "20px", marginBottom: "12px" }}>Trại cứu hộ chó mèo</div>
+                            <div
+                                style={{ fontWeight: 700, fontSize: "20px", marginBottom: "12px", cursor: 'pointer' }}
+                                onClick={handleNavigateToUserPage}
+                            >
+                                Trại cứu hộ chó mèo
+                            </div>
                             <hr style={{ border: "none", borderTop: "2px solid #E5C299", borderRadius: "2px", marginBottom: "16px" }} />
                             <div style={{ fontSize: "16px", display: 'flex', marginBottom: "12px" }}>
                                 <div style={{ display: 'flex', flex: 0.5, flexDirection: 'column', gap: '8px' }}>
