@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { createUserWithEmailAndPassword, sendEmailVerification,signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth, db } from "../config/firebase";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import User from "../model/User";
 import jwt from 'jsonwebtoken';
 import { getUserByFirebaseUID } from "../repository/userRepository";
@@ -11,13 +11,17 @@ export const register = async (req: Request, res: Response) => {
         const { email, password, username, phone, address,  role, avatar, isDeleted } = req.body;
         const userRole = role || "customer";
         const avatarUrl = avatar || process.env.DEFAULT_AVATAR_URL || "https://ik.imagekit.io/nguyenn120404/default-avatar.jpg";
+        
+        // Create user in Firebase Auth
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const firebaseUser = userCredential.user;
 
         if (firebaseUser) {
+            // Send verification email
             await sendEmailVerification(firebaseUser);
 
-            const userRef = doc(db, "users", firebaseUser.uid);
+            // Store temporary user data in Firestore
+            const userRef = doc(db, "pending_users", firebaseUser.uid);
             await setDoc(userRef, {
                 avatar: avatarUrl,
                 username,
@@ -31,22 +35,10 @@ export const register = async (req: Request, res: Response) => {
                 password: password,
             });
 
-            const newUser = new User({
-                firebaseUID: firebaseUser.uid,
-                username,
-                email,
-                phone,
-                address,
-                role: userRole,
-                isVerified: false,
-                createdAt: new Date(),
-                password: password,
-                avatar: avatarUrl,
+            res.status(201).json({ 
+                message: "Registration successful. Please check your email to verify your account before logging in.",
+                uid: firebaseUser.uid
             });
-
-            await newUser.save();
-
-            res.status(201).json({ message: "User registered successfully. Please check your email to verify your account." });
         } else {
             res.status(500).json({ error: "Failed to create Firebase user" });
         }
@@ -61,44 +53,85 @@ export const register = async (req: Request, res: Response) => {
     }
 };
 
-
-
 export const login = async (req: Request, res: Response) => {
-  try {
-    const { email, password } = req.body;
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const firebaseUser = userCredential.user;
+    try {
+        const { email, password } = req.body;
+        
+        // Sign in with Firebase
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const firebaseUser = userCredential.user;
 
-    // Get user data from MongoDB
-    const user = await getUserByFirebaseUID(firebaseUser.uid);
+        if (!firebaseUser.emailVerified) {
+            // If email is not verified, sign out the user
+            await auth.signOut();
+            return res.status(401).json({ 
+                error: "Please verify your email before logging in. Check your inbox for the verification link." 
+            });
+        }
 
-    if (!user) {
-      // This case should ideally not happen if user is in Firebase Auth but good for robustness
-      return res.status(404).json({ error: "User data not found in database" });
+        // Check if user exists in MongoDB
+        const user = await getUserByFirebaseUID(firebaseUser.uid);
+        
+        if (!user) {
+            // If user doesn't exist in MongoDB but email is verified, create the user
+            const pendingUserRef = doc(db, "pending_users", firebaseUser.uid);
+            const pendingUserDoc = await getDoc(pendingUserRef);
+            
+            if (pendingUserDoc.exists()) {
+                const pendingUserData = pendingUserDoc.data();
+                
+                // Create user in MongoDB
+                const newUser = new User({
+                    firebaseUID: firebaseUser.uid,
+                    username: pendingUserData.username,
+                    email: pendingUserData.email,
+                    phone: pendingUserData.phone,
+                    address: pendingUserData.address,
+                    role: pendingUserData.role,
+                    isVerified: true,
+                    createdAt: new Date(),
+                    password: pendingUserData.password,
+                    avatar: pendingUserData.avatar,
+                });
+
+                await newUser.save();
+
+                // Move user data from pending_users to users collection
+                const userRef = doc(db, "users", firebaseUser.uid);
+                await setDoc(userRef, {
+                    ...pendingUserData,
+                    isVerified: true
+                });
+
+                // Delete from pending_users
+                await deleteDoc(pendingUserRef);
+            }
+        }
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { uid: firebaseUser.uid, email: firebaseUser.email },
+            process.env.JWT_SECRET || 'your-secret-key',
+            { expiresIn: '24h' }
+        );
+
+        res.status(200).json({
+            message: "Login successful",
+            token,
+            user: {
+                uid: firebaseUser.uid,
+                email: firebaseUser.email,
+                role: user?.role || "customer"
+            }
+        });
+    } catch (error) {
+        console.error("Login error:", error);
+        if (error instanceof Error) {
+            res.status(401).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "An unknown error occurred during login" });
+        }
     }
-
-    const token = jwt.sign(
-      { 
-        uid: firebaseUser.uid,
-        role: user.role, // Use role from MongoDB
-        email: user.email // Use email from MongoDB
-      },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
-    );
-
-    res.status(200).json({ 
-      message: "User logged in successfully", 
-      token,
-      user: {
-        uid: firebaseUser.uid,
-        role: user.role, // Use role from MongoDB for response
-        email: user.email // Use email from MongoDB for response
-      }
-    });
-  } catch (error) {
-    res.status(401).json({ error: "Invalid email or password" });
-  }
 };
 
 export const resetPassword = async (req: Request, res: Response) => {
@@ -116,3 +149,73 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 
 }
+
+export const verifyEmail = async (req: Request, res: Response) => {
+    try {
+        const { uid } = req.body;
+        
+        // Get user from Firebase Auth
+        const user = auth.currentUser;
+        if (!user || user.uid !== uid) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        // Check if email is verified
+        if (!user.emailVerified) {
+            return res.status(400).json({ error: "Email not verified" });
+        }
+
+        // Get pending user data from Firestore
+        const pendingUserRef = doc(db, "pending_users", uid);
+        const pendingUserDoc = await getDoc(pendingUserRef);
+        
+        if (!pendingUserDoc.exists()) {
+            return res.status(404).json({ error: "Pending user data not found" });
+        }
+
+        const pendingUserData = pendingUserDoc.data();
+
+        // Create user in MongoDB
+        const newUser = new User({
+            firebaseUID: uid,
+            username: pendingUserData.username,
+            email: pendingUserData.email,
+            phone: pendingUserData.phone,
+            address: pendingUserData.address,
+            role: pendingUserData.role,
+            isVerified: true,
+            createdAt: new Date(),
+            password: pendingUserData.password,
+            avatar: pendingUserData.avatar,
+        });
+
+        await newUser.save();
+
+        // Move user data from pending_users to users collection
+        const userRef = doc(db, "users", uid);
+        await setDoc(userRef, {
+            ...pendingUserData,
+            isVerified: true
+        });
+
+        // Delete from pending_users
+        await deleteDoc(pendingUserRef);
+
+        res.status(200).json({ 
+            message: "Email verified successfully. You can now log in.",
+            user: {
+                uid: newUser.firebaseUID,
+                email: newUser.email,
+                role: newUser.role
+            }
+        });
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error("Error during email verification:", error);
+            res.status(500).json({ error: error.message });
+        } else {
+            console.error("An unknown error occurred during email verification:", error);
+            res.status(500).json({ error: "An unknown error occurred" });
+        }
+    }
+};

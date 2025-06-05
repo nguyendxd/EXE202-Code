@@ -30,7 +30,11 @@ const BlogSchema = new Schema<IBlog> (
     images: [{
          type: String, required: false 
         }],
-    
+    status: {
+            type: String,
+            enum: ['draft', 'published', 'archived'],
+            default: 'draft' 
+    },
 },
     { timestamps: true }
 );

@@ -13,6 +13,8 @@ import PetDetailPage from './pages/PetDetailPage';
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import RescueMapPage from './pages/RescueMapPage'
+import BlogPage from './pages/BlogPage'
+import BlogDetailPage from './pages/BlogPageDetail'
 import './styles/index.css'
 export default function App() {
   return (
@@ -34,6 +36,8 @@ export default function App() {
           <Route path="/login-form" element={<LoginForm />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/rescue-map" element={<RescueMapPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:id" element={<BlogDetailPage />} />
         </Routes>
       </div>
 
