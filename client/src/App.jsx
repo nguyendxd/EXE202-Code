@@ -13,6 +13,7 @@ import PetDetailPage from './pages/PetDetailPage';
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import RescueMapPage from './pages/RescueMapPage'
+import './styles/index.css'
 export default function App() {
   return (
     <BrowserRouter>
@@ -27,11 +28,11 @@ export default function App() {
           // <Route path="/login" element={<LoginPage />} />
           // <Route path="/register" element={<RegisterPage />} />
           // <Route path="/about" element={<AboutPage />} /> */}
-          <Route path="/pet/:id" element={<PetDetailPage />} />
+          <Route path="/pets/:id" element={<PetDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login-form" element={<LoginForm />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />}/>
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/rescue-map" element={<RescueMapPage />} />
         </Routes>
       </div>

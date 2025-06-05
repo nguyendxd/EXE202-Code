@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PetCard from "../components/PetCard";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
+import Loading from "../components/Loading";
 import "../styles/index.css";
 import { getAllPets } from '../services/petService';
 
@@ -79,7 +80,7 @@ export default function AdoptPage() {
                     <SearchBar search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} />
 
                     {loading ? (
-                        <div>Đang tải danh sách thú cưng...</div>
+                        <Loading />
                     ) : (
                         <div className="pet-grid" style={gridStyle}>
                             {displayedPets.map((pet, idx) => (
