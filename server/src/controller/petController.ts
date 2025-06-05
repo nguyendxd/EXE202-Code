@@ -24,9 +24,18 @@ export const createPetController =
         console.log('Permission check failed in createPetController');
         return res.status(403).json({message: "You have no permission for this function "})
       }
-      const pet = await repo.createPet(
-        req.body,
-        req.files as Express.Multer.File[]
+      const files = req.files as {
+      [fieldname: string]: Express.Multer.File[];
+      };
+       const pet = await repo.createPet(
+      { ...req.body, 
+        shelterId: userId 
+      },
+      {
+        images: files?.images || [],
+        avatar: files?.avatar || []
+      }
+
       );
       res.status(201).json(pet);
     } catch (err: any) {
@@ -88,35 +97,43 @@ export const getPetByIdController = async (req: AuthenticatedRequest, res: Respo
 /**
  * PUT /pets/:id
  */
-export const updatePetController = 
-  async (req: AuthenticatedRequest, res: Response):Promise<void> => {
-    try {
-      const user = req.user;
-      const userId = user?.id || user?.uid;
 
-      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
-         res.status(403).json({message: "You have no permission for this function "})
-      }
-      const dataWithImages = {
-        ...req.body,
-        images: req.files && (req.files as Express.Multer.File[]).length > 0
-          ? (req.files as Express.Multer.File[]).map(f => f.originalname) 
-          : undefined
-      };
+export const updatePetController = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  try {
+    const user = req.user;
+    const userId = user?.id || user?.uid;
 
-      const pet = await repo.updatePetById(
-        req.params.id,
-        dataWithImages
-      );
-      if (!pet){
-        res.status(404).json({ error: "Pet not found" });
-        return;
-      } 
-      res.json(pet);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    if (!user || !userId || (user.role !== "admin" && user.role !== "shelter")) {
+      res.status(403).json({ message: "You have no permission for this function" });
+      return;
     }
-}
+
+    // Ép kiểu files đúng định dạng để xử lý riêng images và avatar
+    const files = req.files as {
+      [fieldname: string]: Express.Multer.File[];
+    };
+
+    const updatedPet = await repo.updatePetById(
+      req.params.id,
+      req.body,
+      {
+        images: files?.images || [],
+        avatar: files?.avatar || [],
+      }
+    );
+
+    if (!updatedPet) {
+      res.status(404).json({ error: "Pet not found" });
+      return;
+    }
+
+    res.json(updatedPet);
+  } catch (err: any) {
+    console.error("Error in updatePetController:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 
 /**
  * DELETE /pets/:id

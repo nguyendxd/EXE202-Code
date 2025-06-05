@@ -12,7 +12,8 @@ export interface IPet extends Document {
   address: string;             
   contactPhone: string;        
   story: string;                
-  images: string[];             
+  images: string[]; 
+  avatar: string;            
   shelterId: Types.ObjectId;   
   isAdopted: boolean;           
   createdAt: Date;
@@ -35,6 +36,7 @@ const petSchema = new Schema<IPet>(
     images:        [{ type: String, required: false }],
     shelterId:     { type: Schema.Types.ObjectId, ref: "User", required: true },
     isAdopted:     { type: Boolean, default: false },
+    avatar:        { type: String, required: false},
   },
   { timestamps: true }
 );
