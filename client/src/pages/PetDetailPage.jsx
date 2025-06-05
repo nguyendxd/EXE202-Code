@@ -60,7 +60,7 @@ export default function PetDetailPage() {
     };
 
     const handleNavigateToUserPage = () => {
-        navigate('/user/:id');
+        navigate(`/user/${pet.shelterId}`);
     };
 
     if (loading) return <div style={{ textAlign: 'center', marginTop: 40 }}>Đang tải thông tin thú cưng...</div>;

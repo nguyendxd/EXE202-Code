@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getUserById } from '../services/userService';
+import Loading from '../components/Loading';
 import "../styles/index.css";
 
 export default function UserPage() {
@@ -15,6 +16,7 @@ export default function UserPage() {
             setError(null);
             try {
                 const res = await getUserById(id);
+                console.log(res);
                 setUser(res.data);
             } catch (err) {
                 setError("Không tìm thấy thông tin trạm cứu hộ.");
@@ -25,7 +27,7 @@ export default function UserPage() {
         fetchUser();
     }, [id]);
 
-    if (loading) return <div style={{ textAlign: 'center', marginTop: 40 }}>Đang tải thông tin trạm cứu hộ...</div>;
+    if (loading) return <Loading />;
     if (error || !user) return <div style={{ textAlign: 'center', marginTop: 40, color: 'red' }}>{error || "Không có dữ liệu."}</div>;
 
     return (

@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { createUser, getUsers, getUserByEmail, getUserById, updateUserById, softDeleteUserById } from "../repository/userRepository";
 
 export interface AuthenticatedRequest extends Request {
-    user?: {id: string, uid: string, role: string, email: string}
-} 
+    user?: { id: string, uid: string, role: string, email: string }
+}
 
 export const getAllUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -56,11 +56,11 @@ export const getUserByEmailController = async (req: AuthenticatedRequest, res: R
 
 export const getUserByIdController = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const authenticatedUser = req.user;
-        if (!authenticatedUser || authenticatedUser.role !== 'admin') {
-            res.status(403).json({ message: 'You have no permission for this function' });
-            return;
-        }
+        // const authenticatedUser = req.user;
+        // if (!authenticatedUser || authenticatedUser.role !== 'admin') {
+        //     res.status(403).json({ message: 'You have no permission for this function' });
+        //     return;
+        // }
 
         const user = await getUserById(req.params.id);
         if (!user) {

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import pawLogo from '../assets/paw-logo.png'
 import { useState, useEffect, useRef } from 'react'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
@@ -8,6 +9,7 @@ export default function Navbar() {
     const [showUserMenu, setShowUserMenu] = useState(false)
     const userMenuRef = useRef(null)
     const navigate = useNavigate();
+    const { isAuthenticated, user, logout } = useAuth();
 
     useEffect(() => {
         const handleResize = () => {
@@ -37,8 +39,11 @@ export default function Navbar() {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [showUserMenu]);
 
-    // Giả lập trạng thái đăng nhập (bạn có thể thay bằng context thực tế)
-    const isLoggedIn = false;
+    const handleLogout = () => {
+        logout();
+        setShowUserMenu(false);
+        navigate('/');
+    };
 
     return (
         <>
@@ -297,7 +302,7 @@ export default function Navbar() {
                         </Link>
                     </div>
 
-                    {/* Icons */}
+                    {/* Auth Buttons */}
                     <div className="nav-icons" style={{
                         display: isMobile ? (isOpen ? 'flex' : 'none') : 'flex',
                         gap: isMobile ? '15px' : '15px',
@@ -308,53 +313,101 @@ export default function Navbar() {
                         flexShrink: 0,
                         position: 'relative',
                     }}>
-                        <div style={{ position: 'relative' }}>
-                            <button
-                                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-                                onClick={() => setShowUserMenu((v) => !v)}
-                                aria-label="User menu"
-                            >
-                                <svg
-                                    style={{
-                                        width: '28px',
-                                        height: '28px',
-                                        fill: 'none',
-                                        stroke: '#333',
-                                        strokeWidth: '2',
-                                        strokeLinecap: 'round',
-                                        strokeLinejoin: 'round',
-                                        transition: 'all 0.3s',
-                                        borderRadius: '50%',
-                                        padding: '5px',
-                                        background: showUserMenu ? '#E8D7A3' : 'transparent',
-                                    }}
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                        {isAuthenticated ? (
+                            <div style={{ position: 'relative' }}>
+                                <button
+                                    style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                                    onClick={() => setShowUserMenu((v) => !v)}
+                                    aria-label="User menu"
                                 >
-                                    <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                            </button>
-                            {showUserMenu && (
-                                <div ref={userMenuRef} style={{
-                                    position: 'absolute',
-                                    top: 40,
-                                    right: 0,
-                                    minWidth: 160,
-                                    background: '#fff',
-                                    border: '1.5px solid #E5C299',
-                                    borderRadius: 12,
-                                    boxShadow: '0 4px 24px rgba(92,64,51,0.10)',
-                                    zIndex: 2000,
-                                    padding: '8px 0',
-                                }}>
-                                    <button style={menuBtnStyle} onClick={() => { navigate('/account'); setShowUserMenu(false); }}>Xem profile</button>
-                                    <button style={menuBtnStyle} onClick={() => { navigate('/setting'); setShowUserMenu(false); }}>Cài đặt</button>
-                                    {!isLoggedIn && <button style={menuBtnStyle} onClick={() => { navigate('/login'); setShowUserMenu(false); }}>Đăng nhập</button>}
-                                    {!isLoggedIn && <button style={menuBtnStyle} onClick={() => { navigate('/register'); setShowUserMenu(false); }}>Đăng ký</button>}
-                                    {isLoggedIn && <button style={menuBtnStyle} onClick={() => { alert('Đã đăng xuất!'); setShowUserMenu(false); }}>Đăng xuất</button>}
-                                </div>
-                            )}
-                        </div>
+                                    <svg
+                                        style={{
+                                            width: '28px',
+                                            height: '28px',
+                                            fill: 'none',
+                                            stroke: '#333',
+                                            strokeWidth: '2',
+                                            strokeLinecap: 'round',
+                                            strokeLinejoin: 'round',
+                                            transition: 'all 0.3s',
+                                            borderRadius: '50%',
+                                            padding: '5px',
+                                            background: showUserMenu ? '#E8D7A3' : 'transparent',
+                                        }}
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </button>
+                                {showUserMenu && (
+                                    <div ref={userMenuRef} style={{
+                                        position: 'absolute',
+                                        top: 40,
+                                        right: 0,
+                                        minWidth: 160,
+                                        background: '#fff',
+                                        border: '1.5px solid #E5C299',
+                                        borderRadius: 12,
+                                        boxShadow: '0 4px 24px rgba(92,64,51,0.10)',
+                                        zIndex: 2000,
+                                        padding: '8px 0',
+                                    }}>
+                                        <button style={menuBtnStyle} onClick={() => { navigate(`/user/${user.id}`); setShowUserMenu(false); }}>Xem profile</button>
+                                        <button style={menuBtnStyle} onClick={() => { navigate('/setting'); setShowUserMenu(false); }}>Cài đặt</button>
+                                        <button style={menuBtnStyle} onClick={handleLogout}>Đăng xuất</button>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <Link
+                                    to="/login"
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: '#333',
+                                        padding: '8px 16px',
+                                        borderRadius: '20px',
+                                        border: '1px solid #E5C299',
+                                        backgroundColor: '#FFF5E1',
+                                        transition: 'all 0.3s',
+                                        fontSize: '14px',
+                                        fontWeight: '500',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.target.style.backgroundColor = '#E8D7A3';
+                                        e.target.style.color = '#6B3A0F';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target.style.backgroundColor = '#FFF5E1';
+                                        e.target.style.color = '#333';
+                                    }}
+                                >
+                                    Đăng nhập
+                                </Link>
+                                <Link
+                                    to="/register"
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: '#fff',
+                                        padding: '8px 16px',
+                                        borderRadius: '20px',
+                                        backgroundColor: '#E5C299',
+                                        transition: 'all 0.3s',
+                                        fontSize: '14px',
+                                        fontWeight: '500',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.target.style.backgroundColor = '#D3B17D';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target.style.backgroundColor = '#E5C299';
+                                    }}
+                                >
+                                    Đăng ký
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </nav>
