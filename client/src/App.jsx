@@ -1,35 +1,27 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-// import AdoptPage from './pages/AdoptPage';
-// import PostPage from './pages/PostPage';
-// import BlogPage from './pages/BlogPage';
-// import LoginPage from './pages/LoginPage';
-// import RegisterPage from './pages/RegisterPage';
-import AboutPage from './pages/AboutPage';
-import DonatePage from './pages/DonatePage'; // Import DonatePage
-import Navbar from './components/Navbar'; // Uncomment this line to import Navbar
-
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import LandingPage from './pages/LandingPage'
-import { LoginForm } from './pages/LoginForm'
-import ForgotPasswordPage from './pages/ForgotPasswordPage'
-// import AdoptPage from './pages/AdoptPage'
-import AdoptPage from './pages/AdoptPage'
-// import PostPage from './pages/PostPage'
-// import BlogPage from './pages/BlogPage'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-// import AboutPage from './pages/AboutPage'
-import PetDetailPage from './pages/PetDetailPage';
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import RescueMapPage from './pages/RescueMapPage'
-import BlogPage from './pages/BlogPage'
-import BlogDetailPage from './pages/BlogPageDetail'
-import UserPage from './pages/UserPage'
-import './styles/index.css'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './styles/index.css';
+
+// Pages
+import LandingPage from './pages/LandingPage';
+import AdoptPage from './pages/AdoptPage';
+import AboutPage from './pages/AboutPage';
+import DonatePage from './pages/DonatePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import PetDetailPage from './pages/PetDetailPage';
+import RescueMapPage from './pages/RescueMapPage';
+import BlogPage from './pages/BlogPage';
+import BlogDetailPage from './pages/BlogPageDetail';
+import UserPage from './pages/UserPage';
+import { LoginForm } from './pages/LoginForm';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+
+// Components
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -39,17 +31,11 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/adopt" element={<AdoptPage />} />
-          {/* // <Route path="/posts" element={<PostPage />} />
-          // <Route path="/blog" element={<BlogPage />} />
-          // <Route path="/login" element={<LoginPage />} />
-          // <Route path="/register" element={<RegisterPage />} />
-          // <Route path="/about" element={<AboutPage />} /> */}
           <Route path="/pets/:id" element={<PetDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} /> */}
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/donate" element={<DonatePage />} /> {/* Thêm route cho DonatePage */}
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/donate" element={<DonatePage />} />
           <Route path="/login-form" element={<LoginForm />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/rescue-map" element={<RescueMapPage />} />
@@ -58,7 +44,6 @@ export default function App() {
           <Route path="/user/:id" element={<UserPage />} />
         </Routes>
       </div>
-
       <Footer />
     </BrowserRouter>
   );
