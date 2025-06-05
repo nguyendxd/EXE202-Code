@@ -1,10 +1,13 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import pawLogo from '../assets/paw-logo.png'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024) // Increased breakpoint to 1024px
+    const [showUserMenu, setShowUserMenu] = useState(false)
+    const userMenuRef = useRef(null)
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleResize = () => {
@@ -18,6 +21,24 @@ export default function Navbar() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
+
+    // Đóng menu user khi click ra ngoài
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+                setShowUserMenu(false);
+            }
+        }
+        if (showUserMenu) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showUserMenu]);
+
+    // Giả lập trạng thái đăng nhập (bạn có thể thay bằng context thực tế)
+    const isLoggedIn = false;
 
     return (
         <>
@@ -285,40 +306,76 @@ export default function Navbar() {
                         marginTop: isMobile ? '20px' : 0,
                         transition: isMobile ? 'all 0.3s ease-in-out' : 'none',
                         flexShrink: 0,
+                        position: 'relative',
                     }}>
-                        <Link to="/account">
-                            <svg
-                                style={{
-                                    width: '28px',
-                                    height: '28px',
-                                    fill: 'none',
-                                    stroke: '#333',
-                                    strokeWidth: '2',
-                                    strokeLinecap: 'round',
-                                    strokeLinejoin: 'round',
-                                    transition: 'all 0.3s',
-                                    borderRadius: '50%',
-                                    padding: '5px'
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.target.style.stroke = '#6B3A0F';
-                                    e.target.style.backgroundColor = '#E8D7A3';
-                                    e.target.style.transform = 'scale(1.1)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.target.style.stroke = '#333';
-                                    e.target.style.backgroundColor = 'transparent';
-                                    e.target.style.transform = 'scale(1)';
-                                }}
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
+                        <div style={{ position: 'relative' }}>
+                            <button
+                                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                                onClick={() => setShowUserMenu((v) => !v)}
+                                aria-label="User menu"
                             >
-                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </Link>
+                                <svg
+                                    style={{
+                                        width: '28px',
+                                        height: '28px',
+                                        fill: 'none',
+                                        stroke: '#333',
+                                        strokeWidth: '2',
+                                        strokeLinecap: 'round',
+                                        strokeLinejoin: 'round',
+                                        transition: 'all 0.3s',
+                                        borderRadius: '50%',
+                                        padding: '5px',
+                                        background: showUserMenu ? '#E8D7A3' : 'transparent',
+                                    }}
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </button>
+                            {showUserMenu && (
+                                <div ref={userMenuRef} style={{
+                                    position: 'absolute',
+                                    top: 40,
+                                    right: 0,
+                                    minWidth: 160,
+                                    background: '#fff',
+                                    border: '1.5px solid #E5C299',
+                                    borderRadius: 12,
+                                    boxShadow: '0 4px 24px rgba(92,64,51,0.10)',
+                                    zIndex: 2000,
+                                    padding: '8px 0',
+                                }}>
+                                    <button style={menuBtnStyle} onClick={() => { navigate('/account'); setShowUserMenu(false); }}>Xem profile</button>
+                                    <button style={menuBtnStyle} onClick={() => { navigate('/setting'); setShowUserMenu(false); }}>Cài đặt</button>
+                                    {!isLoggedIn && <button style={menuBtnStyle} onClick={() => { navigate('/login'); setShowUserMenu(false); }}>Đăng nhập</button>}
+                                    {!isLoggedIn && <button style={menuBtnStyle} onClick={() => { navigate('/register'); setShowUserMenu(false); }}>Đăng ký</button>}
+                                    {isLoggedIn && <button style={menuBtnStyle} onClick={() => { alert('Đã đăng xuất!'); setShowUserMenu(false); }}>Đăng xuất</button>}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </nav>
         </>
     )
 }
+
+const menuBtnStyle = {
+    width: '100%',
+    background: 'none',
+    border: 'none',
+    textAlign: 'left',
+    padding: '10px 20px',
+    fontSize: 16,
+    color: '#5C4033',
+    cursor: 'pointer',
+    transition: 'background 0.2s',
+    borderRadius: 8,
+    outline: 'none',
+    fontFamily: 'inherit',
+    fontWeight: 500,
+    margin: 0,
+    display: 'block',
+};
