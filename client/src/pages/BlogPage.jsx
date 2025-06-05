@@ -133,7 +133,7 @@ export default function BlogPage() {
       <div style={{ textAlign: "center", marginBottom: "60px" }}>
         <h1
           style={{
-            fontSize: "48px",
+            fontSize: "24px",
             color: "#A47148",
             margin: "0 0 20px 0",
             fontWeight: "bold",
@@ -143,7 +143,7 @@ export default function BlogPage() {
         </h1>
         <h2
           style={{
-            fontSize: "24px",
+            fontSize: "18px",
             color: "#6D4C41",
             margin: "0",
             fontWeight: "normal",

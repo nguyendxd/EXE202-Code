@@ -73,7 +73,7 @@ export default function AdoptPage() {
                     <h2 style={{ fontSize: "24px", fontWeight: "bold", color: "#5C4033", marginBottom: "10px" }}>
                         Nhận nuôi & Tìm gia đình mới cho các bé
                     </h2>
-                    <p style={{ fontSize: "16px", color: "#5C4033", marginBottom: "20px" }}>
+                    <p style={{ fontSize: "18px", color: "#5C4033", marginBottom: "20px" }}>
                         Cho bé một mái ấm - Trọn đời yêu thương!
                     </p>
 

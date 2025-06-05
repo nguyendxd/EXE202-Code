@@ -13,6 +13,7 @@ export default function PetDetailPage() {
     const [error, setError] = useState(null);
     const [carouselIndex, setCarouselIndex] = useState(0);
     const [zoomImgIdx, setZoomImgIdx] = useState(null); // index ảnh đang phóng to
+    const [isWishlisted, setIsWishlisted] = useState(false); // state để theo dõi wishlist
 
     useEffect(() => {
         const fetchPet = async () => {
@@ -30,6 +31,10 @@ export default function PetDetailPage() {
         fetchPet();
     }, [id]);
 
+    const handleWishlistToggle = () => {
+        setIsWishlisted((prev) => !prev); // toggle trạng thái wishlist
+    };
+
     if (loading) return <div style={{ textAlign: 'center', marginTop: 40 }}>Đang tải thông tin thú cưng...</div>;
     if (error || !pet) return <div style={{ textAlign: 'center', marginTop: 40, color: 'red' }}>{error || "Không có dữ liệu."}</div>;
 
@@ -43,7 +48,40 @@ export default function PetDetailPage() {
                             {/* Avatar */}
                             <img src={pet.images?.[0] || 'https://via.placeholder.com/300'} alt={pet.name} style={{ width: "180px", height: "180px", objectFit: "cover", borderRadius: "50%", border: '2px solid #E5C299' }} />
                             <div className="pet-name">{pet.name}</div>
-                            <div style={{ color: '#7A5F3C', fontSize: "14px", margin: '8px 0 12px 0' }}>Thêm vào danh sách yêu thích</div>
+                            <div style={{ paddingTop: '30px', display: 'flex', alignItems: 'center', color: '#7A5F3C', fontSize: "16px", margin: '8px 0 12px 0' }}>
+                                Thêm vào wishlist
+                                <button
+                                    style={{
+                                        background: 'none',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        marginLeft: '8px',
+                                        padding: '0',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        transition: 'transform 0.3s ease-in-out'
+                                    }}
+                                    aria-label="Thêm vào wishlist"
+                                    onClick={handleWishlistToggle}
+                                >
+                                    <svg
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill={isWishlisted ? '#FF0000' : 'none'}
+                                        stroke={isWishlisted ? '#FF0000' : '#E5C299'}
+                                        strokeWidth={isWishlisted ? '2.5' : '2'}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        style={{
+                                            transform: isWishlisted ? 'scale(1.2)' : 'scale(1)',
+                                            transition: 'fill 0.3s ease-in-out, stroke 0.3s ease-in-out, stroke-width 0.3s ease-in-out, transform 0.3s ease-in-out'
+                                        }}
+                                    >
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                                    </svg>
+                                </button>
+                            </div>
                             <button className="pet-register-btn">Đăng ký</button>
                         </div>
                         {/* Thông tin chi tiết bên phải */}

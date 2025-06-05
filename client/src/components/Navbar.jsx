@@ -200,7 +200,7 @@ export default function Navbar() {
                             BÀI ĐĂNG
                         </Link>
                         <Link
-                            to="/shop"
+                            to="/rescue-map"
                             style={{
                                 textDecoration: 'none',
                                 color: '#333',
