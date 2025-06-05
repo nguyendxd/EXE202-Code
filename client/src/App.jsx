@@ -13,6 +13,8 @@ import Footer from './components/Footer'
 import RescueMapPage from './pages/RescueMapPage'
 import BlogPage from './pages/BlogPage'
 import BlogDetailPage from './pages/BlogPageDetail'
+import ChatPage from './pages/ChatPage'
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -28,6 +30,7 @@ export default function App() {
           <Route path="/rescue-map" element={<RescueMapPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:id" element={<BlogDetailPage />} />
+          <Route path="/chat" element={<ChatPage />} />
         </Routes>
       </div>
 

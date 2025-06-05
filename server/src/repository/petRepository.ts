@@ -59,7 +59,7 @@ export const getPetById = (id: string) => {
     if (!Types.ObjectId.isValid(id)) {
         throw new Error("Invalid pet ID");
     }
-    return Pet.findOne({ _id: id });
+    return Pet.findOne({ _id: id }).populate('shelterId');
 };
 
 export const updatePetById = async (

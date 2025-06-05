@@ -47,7 +47,13 @@ const LoginForm = () => {
 
       // Store the token in localStorage
       localStorage.setItem('token', data.token);
-      
+      // Store userId (MongoDB _id) nếu có
+      if (data.user && (data.user._id || data.user.id)) {
+        localStorage.setItem('userId', data.user._id || data.user.id);
+      } else if (data.user && data.user.uid) {
+        // Nếu chỉ có uid (firebaseUID), có thể fetch thêm thông tin user nếu cần
+        localStorage.setItem('userId', data.user.uid);
+      }
       // Redirect to home page on successful login
       navigate('/');
     } catch (err) {
