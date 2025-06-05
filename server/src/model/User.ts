@@ -25,15 +25,15 @@ const userSchema = new Schema<IUser>({
     password: { type: String, required: true, select: false, minlength: 2, maxlength: 50  },
     email: { type: String, required: true, unique: true, minlength: 5, maxlength: 50 },
     phone: { type: String, required: true, minlength: 8, maxlength: 50 },
-    address: { type: String, required: true, minlength: 5, maxlength: 50 },
-    socialLink: { type: String, required: false, minlength: 5, maxlength: 50 },
+    address: { type: String, required: true},
+    socialLink: { type: String, required: false},
     avatar: { type: String, default: process.env.DEFAULT_AVATAR_URL },
     role: { type: String, enum: ["guest", "customer", "shelter", "admin"], default: "customer" },
     isVerified: { type: Boolean, default: false },
     isAdmin: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     isDeleted: {type: Boolean, default: false},
-    description: { type: String, required: false, minlength: 0, maxlength: 100 },
+    description: { type: String, required: false, maxlength: 100 },
     fcmToken: { type: String, required: false },
 });
 

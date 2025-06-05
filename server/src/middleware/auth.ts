@@ -81,3 +81,14 @@ export const authenticateToken = async (
     return res.status(403).json({ message: 'Invalid token or user data issue', error: error.message });
   }
 };
+
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+    if (req.user && req.user.role === 'admin') {
+        next();
+    } else {
+        res.status(403).json({
+            success: false,
+            message: 'Access denied. Admin privileges required.'
+        });
+    }
+};

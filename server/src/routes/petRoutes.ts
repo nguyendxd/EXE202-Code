@@ -5,14 +5,16 @@ import {
   getPetByIdController,
   updatePetController,
   deletePetController,
+  searchPetsController
 } from "../controller/petController";
 import { authenticateToken } from '../middleware/auth';
 import multer from 'multer';
+
 const router = express.Router();
 
 const upload = multer({
-  storage: multer.memoryStorage(),  
-  limits: { fileSize: 5 * 1024 * 1024 }, 
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 /**
@@ -27,8 +29,7 @@ const upload = multer({
  * /pets:
  *   post:
  *     summary: Create a new pet
- *     tags:
- *       - Pets
+ *     tags: [Pets]
  *     requestBody:
  *       required: true
  *       content:
@@ -38,52 +39,41 @@ const upload = multer({
  *             properties:
  *               name:
  *                 type: string
- *                 example: "Bé Nâu"
  *               species:
  *                 type: string
- *                 enum: ["dog","cat"]
- *                 example: "dog"
+ *                 enum: [dog, cat]
  *               breed:
  *                 type: string
- *                 example: "Border Collie"
  *               age:
  *                 type: string
- *                 example: "6 tháng tuổi"
  *               size:
  *                 type: string
- *                 enum: ["small","medium","large"]
- *                 example: "small"
+ *                 enum: [small, medium, large]
  *               gender:
  *                 type: string
- *                 enum: ["male","female"]
- *                 example: "male"
+ *                 enum: [male, female]
  *               healthStatus:
  *                 type: array
  *                 items:
  *                   type: string
- *                 example: ["Khỏe mạnh", "Đã tiêm chủng"]
  *               color:
  *                 type: string
- *                 example: "Đen vàng"
  *               weight:
  *                 type: string
- *                 example: "3kg"
  *               temperament:
  *                 type: string
- *                 example: "Năng động, thích quấn chủ"
  *               address:
  *                 type: string
- *                 example: "123 Đường A, Quận B"
  *               contactPhone:
  *                 type: string
- *                 example: "0912345678"
  *               story:
  *                 type: string
- *                 example: "Mình được phát hiện..."
- *               shelterId:
- *                 type: string
- *                 example: "60f1d5e8c2a3d4567890abcd"
  *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *               avatar:
  *                 type: array
  *                 items:
  *                   type: string
@@ -97,7 +87,10 @@ const upload = multer({
 router.post(
   "/",
   authenticateToken as RequestHandler,
-  upload.array("images", 5),
+  upload.fields([
+    { name: "images", maxCount: 5 },
+    { name: "avatar", maxCount: 1 }
+  ]),
   createPetController as RequestHandler
 );
 
@@ -105,48 +98,77 @@ router.post(
  * @swagger
  * /pets:
  *   get:
- *     summary: Get all available pets
- *     tags:
- *       - Pets
+ *     summary: Get all pets
+ *     tags: [Pets]
  *     responses:
  *       200:
- *         description: List of pets
+ *         description: List of all pets
  *       500:
- *         description: Error fetching pets
+ *         description: Server error
  */
-router.get("/", authenticateToken as RequestHandler, getAllPetsController as RequestHandler);
+router.get("/", getAllPetsController);
+
+/**
+ * @swagger
+ * /pets/search:
+ *   get:
+ *     summary: Search pets with filters
+ *     tags: [Pets]
+ *     parameters:
+ *       - in: query
+ *         name: breed
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: gender
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: color
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: address
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: age
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of pets matching the search criteria
+ *       500:
+ *         description: Server error
+ */
+router.get('/search', searchPetsController);
 
 /**
  * @swagger
  * /pets/{id}:
  *   get:
- *     summary: Get pet by ID
- *     tags:
- *       - Pets
+ *     summary: Get a pet by ID
+ *     tags: [Pets]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Pet ID
  *     responses:
  *       200:
- *         description: Pet object
+ *         description: Pet details
  *       404:
  *         description: Pet not found
- *       500:
- *         description: Error fetching pet
  */
-router.get("/:id", upload.array("images", 5), getPetByIdController as RequestHandler, authenticateToken as RequestHandler);
+router.get("/:id", getPetByIdController as RequestHandler);
 
 /**
  * @swagger
  * /pets/{id}:
  *   put:
  *     summary: Update a pet
- *     tags:
- *       - Pets
+ *     tags: [Pets]
  *     parameters:
  *       - in: path
  *         name: id
@@ -162,7 +184,43 @@ router.get("/:id", upload.array("images", 5), getPetByIdController as RequestHan
  *             properties:
  *               name:
  *                 type: string
+ *               species:
+ *                 type: string
+ *                 enum: [dog, cat]
+ *               breed:
+ *                 type: string
+ *               age:
+ *                 type: string
+ *               size:
+ *                 type: string
+ *                 enum: [small, medium, large]
+ *               gender:
+ *                 type: string
+ *                 enum: [male, female]
+ *               healthStatus:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               color:
+ *                 type: string
+ *               weight:
+ *                 type: string
+ *               temperament:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               contactPhone:
+ *                 type: string
+ *               story:
+ *                 type: string
+ *               isAdopted:
+ *                 type: boolean
  *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *               avatar:
  *                 type: array
  *                 items:
  *                   type: string
@@ -175,22 +233,28 @@ router.get("/:id", upload.array("images", 5), getPetByIdController as RequestHan
  *       500:
  *         description: Error updating pet
  */
-router.put("/:id", updatePetController as RequestHandler, authenticateToken as RequestHandler );
+router.put(
+  "/:id",
+  authenticateToken as RequestHandler,
+  upload.fields([
+    { name: "images", maxCount: 5 },
+    { name: "avatar", maxCount: 1 }
+  ]),
+  updatePetController as RequestHandler
+);
 
 /**
  * @swagger
  * /pets/{id}:
  *   delete:
  *     summary: Mark a pet as adopted
- *     tags:
- *       - Pets
+ *     tags: [Pets]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Pet ID
  *     responses:
  *       200:
  *         description: Pet marked as adopted
@@ -199,6 +263,6 @@ router.put("/:id", updatePetController as RequestHandler, authenticateToken as R
  *       500:
  *         description: Error deleting pet
  */
-router.delete("/:id", deletePetController as RequestHandler, authenticateToken as RequestHandler);
+router.delete("/:id", authenticateToken as RequestHandler, deletePetController as RequestHandler);
 
 export default router;

@@ -1,0 +1,315 @@
+/* src/styles/LoginForm.css */
+.login-form-container {
+    display: flex;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    animation: fadeIn 0.3s ease-in-out; /* Added animation */
+  }
+  
+  .login-form-left {
+    flex: 2;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .login-form-left .back-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #ffffff;
+    font-size: 1rem;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .login-form-left .back-link:hover {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .login-form-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Changed from center to flex-start */
+    background-color: #fdf8f0;
+    padding: 0 40px;
+    animation: slideIn 0.3s ease-in-out; /* Added animation */
+    max-width: 400px; /* Added max-width to make the form column narrower */
+  }
+  
+  /* Logo */ /* Reverted to original logo style */
+  .login-form-logo img:not(.paw-letter) { /* Target the logo specifically */
+    width: 150px;     /* Tăng kích thước logo */
+    height: auto;
+    margin-bottom: 0; /* Ensure no margin below logo */
+    transform: scale(1.5); /* Visually scale the logo */
+    transform-origin: center; /* Scale from the center */
+  }
+  
+  /* Title */
+  .login-form-title {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .login-form-title h2 {
+    margin: 2px 0;
+    font-size: 1.5rem; /* Adjusted size for login title */
+    color: #4d4d4d;
+    font-weight: bold; /* Made title bold */
+  }
+
+   /* Form Group */
+   .login-form .form-group {
+    width: 100%;
+    margin-bottom: 15px;
+    text-align: left;
+    position: relative;
+}
+
+.login-form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.login-form .form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin-top: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+/* Add hover and focus effects */
+.login-form .form-group input:hover {
+    border-color: #a0a0a0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.login-form .form-group input:focus {
+    outline: none;
+    border-color: #ffab62;
+    box-shadow: 0 0 8px rgba(255, 171, 98, 0.4);
+    transform: translateY(-2px);
+}
+
+.login-form .form-group input:focus + label {
+    color: #ffab62;
+    transform: translateY(-2px);
+}
+
+/* Password field specific styles */
+.login-form .form-group input[type="password"] {
+    letter-spacing: 2px;
+    font-family: monospace;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.login-form .form-group input[type="password"]:hover {
+    border-color: #a0a0a0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.login-form .form-group input[type="password"]:focus {
+    outline: none;
+    border-color: #ffab62;
+    box-shadow: 0 0 8px rgba(255, 171, 98, 0.4);
+    transform: translateY(-2px);
+    background-color: #fff;
+}
+
+/* Style for the password input container */
+.login-form .form-group .password-input-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.login-form .form-group .password-input-container input[type="password"],
+.login-form .form-group .password-input-container input[type="text"] {
+    flex-grow: 1;
+    padding-right: 30px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin-top: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.login-form .form-group .password-input-container input:hover {
+    border-color: #a0a0a0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.login-form .form-group .password-input-container input:focus {
+    outline: none;
+    border-color: #ffab62;
+    box-shadow: 0 0 8px rgba(255, 171, 98, 0.4);
+    transform: translateY(-2px);
+    background-color: #fff;
+}
+
+/* Add a subtle animation when the input is focused */
+@keyframes inputFocus {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.login-form .form-group input:focus {
+    animation: inputFocus 0.3s ease;
+}
+
+/* Style for the password toggle icon */
+.login-form .form-group .password-toggle-icon {
+    position: absolute;
+    right: 8px; /* Position from the right */
+    top: 50%; /* Align vertically */
+    transform: translateY(-50%); /* Adjust for perfect vertical centering */
+    cursor: pointer;
+    color: #555; /* Icon color */
+    font-size: 1rem; /* Adjust icon size if needed */
+}
+
+/* Remember me / Forgot password */
+.login-form-options {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    margin-left: 5px;
+}
+
+.login-form-options label {
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+.login-form-options a {
+    color: #ff7f50;
+    text-decoration: n }
+.login-form-options a:hover {
+    text-decoration: underline;
+}
+
+/* Login Button */
+.login-button {
+    padding: 12px 0;
+    width: 100%;
+    max-width: 280px; /* Match signup button width */
+    background-color: #ffab62;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-weight: bold;
+    margin-top: 12px; /* Space above button */
+}
+.login-button:hover {
+    opacity: 0.9;
+}
+
+/* Link to Register Page */
+.register-link-text {
+    text-align: center;
+    margin-top: 20px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.register-link-text a {
+    color: #ff7f50;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link-text a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .login-form-container {
+        flex-direction: column;
+    }
+    .login-form-left,
+    .login-form-right {
+        flex: unset;
+        width: 100%;
+        height: 50vh;
+    }
+    .login-form-left .back-link {
+        font-size: 0.9rem;
+        padding: 4px 8px;
+    }
+    .login-form-right {
+        padding: 0 20px;
+    }
+    .login-button {
+        max-width: 100%;
+    }
+}
+
+/* Animations */ /* Copied from LoginPage.css */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Error Message */
+.error-message {
+  color: #ff4444;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  text-align: center;
+  border: 1px solid #ffcdd2;
+  width: 100%;
+} 

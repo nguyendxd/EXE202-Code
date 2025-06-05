@@ -5,7 +5,8 @@ import {
     getAllBlogs,
     getBlogById,
     updateBlog,
-    deleteBlog
+    deleteBlog,
+    searchBlogs
 } from '../controller/blogController';
 import { authenticateToken } from '../middleware/auth';
 
@@ -180,5 +181,61 @@ router.put('/:id', authenticateToken as RequestHandler, upload.array('images', 5
  *         description: Blog not found
  */
 router.delete('/:id', authenticateToken as RequestHandler, deleteBlog as RequestHandler);
+
+/**
+ * @swagger
+ * /blogs/search:
+ *   get:
+ *     summary: Search blogs with pagination
+ *     tags: [Blogs]
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         schema:
+ *           type: string
+ *         description: Search term for title and content
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of items per page
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [draft, published, archived]
+ *         description: Filter by blog status
+ *     responses:
+ *       200:
+ *         description: Search results with pagination
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 blogs:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Blog'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     total:
+ *                       type: integer
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
+ */
+router.get('/search', searchBlogs as RequestHandler);
 
 export default router; 

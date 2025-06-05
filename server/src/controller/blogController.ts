@@ -199,3 +199,51 @@ export const deleteBlog = async (req: AuthenticatedRequest, res: Response) => {
         });
     }
 };
+
+// Search blogs with pagination
+export const searchBlogs = async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        const { query, page = 1, limit = 10, status } = req.query;
+        const skip = (Number(page) - 1) * Number(limit);
+
+        // Build search query
+        const searchQuery: any = {};
+        
+        if (query) {
+            searchQuery.$or = [
+                { title: { $regex: query, $options: 'i' } },
+                { content: { $regex: query, $options: 'i' } }
+            ];
+        }
+
+        if (status) {
+            searchQuery.status = status;
+        }
+
+        // Execute search with pagination
+        const [blogs, total] = await Promise.all([
+            Blog.find(searchQuery)
+                .populate('author', 'username avatar')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(Number(limit)),
+            Blog.countDocuments(searchQuery)
+        ]);
+
+        res.json({
+            blogs,
+            pagination: {
+                total,
+                page: Number(page),
+                limit: Number(limit),
+                totalPages: Math.ceil(total / Number(limit))
+            }
+        });
+    } catch (error) {
+        console.error('Error searching blogs:', error);
+        res.status(500).json({ 
+            message: 'Error searching blogs', 
+            error: error instanceof Error ? error.message : error 
+        });
+    }
+};
