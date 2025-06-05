@@ -371,7 +371,7 @@ export default function Navbar() {
                                         border: '1px solid #E5C299',
                                         backgroundColor: '#FFF5E1',
                                         transition: 'all 0.3s',
-                                        fontSize: '14px',
+                                        fontSize: '16px',
                                         fontWeight: '500',
                                     }}
                                     onMouseEnter={(e) => {
@@ -383,7 +383,7 @@ export default function Navbar() {
                                         e.target.style.color = '#333';
                                     }}
                                 >
-                                    Đăng nhập
+                                    ĐĂNG NHẬP
                                 </Link>
                                 <Link
                                     to="/register"
@@ -394,7 +394,7 @@ export default function Navbar() {
                                         borderRadius: '20px',
                                         backgroundColor: '#E5C299',
                                         transition: 'all 0.3s',
-                                        fontSize: '14px',
+                                        fontSize: '16px',
                                         fontWeight: '500',
                                     }}
                                     onMouseEnter={(e) => {
@@ -404,7 +404,7 @@ export default function Navbar() {
                                         e.target.style.backgroundColor = '#E5C299';
                                     }}
                                 >
-                                    Đăng ký
+                                    ĐĂNG KÝ
                                 </Link>
                             </div>
                         )}

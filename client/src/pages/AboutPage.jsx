@@ -25,36 +25,48 @@ export default function AboutUsPage() {
           style={{ height: '80px', marginBottom: '40px' }}
         />
 
-        {/* Team Section */}
+        {/* Who We Are Section */}
         <div
           style={{
-            backgroundColor: '#6B3A0F',
-            color: '#FFF',
+            backgroundColor: '#FFF',
+            color: '#6B3A0F',
             padding: '20px',
             marginBottom: '40px',
             borderRadius: '10px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            gap: '20px',
           }}
         >
+          <div style={{ maxWidth: '500px', textAlign: 'left' }}>
+            <h2
+              style={{
+                fontSize: '24px',
+                fontWeight: '600',
+                marginBottom: '10px',
+                fontFamily: '"Varela Round", sans-serif',
+              }}
+            >
+              CHÚNG MÌNH LÀ AI?
+            </h2>
+            <p
+              style={{
+                fontSize: '16px',
+                fontFamily: '"Varela Round", sans-serif',
+              }}
+            >
+              Tới Pawmily, chúng mình tin rằng mọi động vật đều xứng đáng được yêu thương và chăm sóc. Với tình yêu và sự tận tâm, chúng mình đã và đang cố gắng mang đến một cuộc sống tốt đẹp hơn cho các bé động vật hoang dã và bị bỏ rơi. Cùng chúng mình lan tỏa tình yêu thương, để thế giới của các bé thêm hạnh phúc!
+            </p>
+          </div>
           <img
             src="https://via.placeholder.com/400x200" // Replace with actual team image URL
             alt="Team Photo"
-            style={{ width: '400px', height: '200px', marginRight: '20px' }}
+            style={{ width: '400px', height: '200px', borderRadius: '10px' }}
           />
-          <p
-            style={{
-              fontSize: '16px',
-              maxWidth: '500px',
-              fontFamily: '"Varela Round", sans-serif',
-            }}
-          >
-            ĐỘI NGŨ MLAAP - Chúng mình là những người trẻ đam mê với việc bảo vệ và chăm sóc động vật. Với tình yêu và sự tận tâm, chúng mình luôn nỗ lực để mang đến một cuộc sống tốt đẹp hơn cho các bé động vật hoang dã và bị bỏ rơi. Hãy cùng chúng mình tạo nên sự khác biệt!
-          </p>
         </div>
 
-        {/* Family Up Section */}
+        {/* Pawmily Up Section */}
         <div style={{ marginBottom: '40px' }}>
           <h2
             style={{
@@ -65,7 +77,7 @@ export default function AboutUsPage() {
               fontFamily: '"Varela Round", sans-serif',
             }}
           >
-            FAMILY UP
+            PAWMILY LÀ GÌ?
           </h2>
           <div
             style={{
@@ -81,11 +93,37 @@ export default function AboutUsPage() {
                 width: '250px',
                 padding: '20px',
                 borderRadius: '10px',
-                textAlign: 'left',
+                textAlign: 'center',
               }}
             >
-              <p style={{ fontSize: '16px', fontFamily: '"Varela Round", sans-serif' }}>
-                Tình bạn tuyệt vời - Chúng mình gặp nhau qua những lần cứu hộ và cùng nhau xây dựng một cộng đồng yêu thương.
+              <div
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  borderRadius: '50%',
+                  backgroundColor: '#FFF',
+                  margin: '0 auto 10px',
+                }}
+              >
+                {/* Placeholder for circular image */}
+                <img
+                  src="https://via.placeholder.com/100" // Replace with actual image URL
+                  alt="Icon 1"
+                  style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                />
+              </div>
+              <h3
+                style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  marginBottom: '10px',
+                  fontFamily: '"Varela Round", sans-serif',
+                }}
+              >
+                Hỗ trợ nhận nuôi các bé không nhà
+              </h3>
+              <p style={{ fontSize: '14px', fontFamily: '"Varela Round", sans-serif' }}>
+                Gặp gỡ bạn thân mới tại trung tâm nhận nuôi của chúng mình.
               </p>
             </div>
             <div
@@ -94,11 +132,36 @@ export default function AboutUsPage() {
                 width: '250px',
                 padding: '20px',
                 borderRadius: '10px',
-                textAlign: 'left',
+                textAlign: 'center',
               }}
             >
-              <p style={{ fontSize: '16px', fontFamily: '"Varela Round", sans-serif' }}>
-                Tình yêu với thú cưng - Mỗi ngày là một hành trình mới để chăm sóc và bảo vệ các bé.
+              <div
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  borderRadius: '50%',
+                  backgroundColor: '#FFF',
+                  margin: '0 auto 10px',
+                }}
+              >
+                <img
+                  src="https://via.placeholder.com/100" // Replace with actual image URL
+                  alt="Icon 2"
+                  style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                />
+              </div>
+              <h3
+                style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  marginBottom: '10px',
+                  fontFamily: '"Varela Round", sans-serif',
+                }}
+              >
+                Trao gửi khám chữa bệnh và yêu thương
+              </h3>
+              <p style={{ fontSize: '14px', fontFamily: '"Varela Round", sans-serif' }}>
+                Hỗ trợ bác sĩ và các bé có hoàn cảnh đặc biệt.
               </p>
             </div>
             <div
@@ -107,18 +170,43 @@ export default function AboutUsPage() {
                 width: '250px',
                 padding: '20px',
                 borderRadius: '10px',
-                textAlign: 'left',
+                textAlign: 'center',
               }}
             >
-              <p style={{ fontSize: '16px', fontFamily: '"Varela Round", sans-serif' }}>
-                Tương lai bền vững - Cùng nhau làm việc để xây dựng một thế giới tốt đẹp hơn cho thú cưng.
+              <div
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  borderRadius: '50%',
+                  backgroundColor: '#FFF',
+                  margin: '0 auto 10px',
+                }}
+              >
+                <img
+                  src="https://via.placeholder.com/100" // Replace with actual image URL
+                  alt="Icon 3"
+                  style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                />
+              </div>
+              <h3
+                style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  marginBottom: '10px',
+                  fontFamily: '"Varela Round", sans-serif',
+                }}
+              >
+                Kết nối cộng đồng yêu thú cưng
+              </h3>
+              <p style={{ fontSize: '14px', fontFamily: '"Varela Round", sans-serif' }}>
+                Tham gia tri ân, quyên góp và các sự kiện của chúng mình.
               </p>
             </div>
           </div>
         </div>
 
         {/* Pet Adoption Stories */}
-        <div style={{ marginBottom: '40px' }}>
+        <div style={{ marginBottom: '40px', backgroundColor: '#E8D7A3', padding: '20px', borderRadius: '10px' }}>
           <h2
             style={{
               fontSize: '24px',
@@ -128,7 +216,7 @@ export default function AboutUsPage() {
               fontFamily: '"Varela Round", sans-serif',
             }}
           >
-            NHỮNG CHÚ BÉ ĐƯỢC CỨU HỘ
+            NHỮNG CÂU CHUYỆN CỦA PAWMILY
           </h2>
           <div
             style={{
@@ -140,92 +228,156 @@ export default function AboutUsPage() {
           >
             <div
               style={{
-                backgroundColor: '#E8D7A3',
-                width: '250px',
+                backgroundColor: '#FFF',
+                width: '300px',
                 padding: '20px',
                 borderRadius: '10px',
                 textAlign: 'left',
               }}
             >
-              <img
-                src="https://via.placeholder.com/200x150" // Replace with actual pet image URL
-                alt="Pet 1"
-                style={{ width: '200px', height: '150px', marginBottom: '10px' }}
-              />
+              <h3
+                style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  marginBottom: '10px',
+                  fontFamily: '"Varela Round", sans-serif',
+                }}
+              >
+                Cậu bé 1 tuổi
+              </h3>
+              <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                <img
+                  src="https://via.placeholder.com/100x100" // Replace with actual pet image URL
+                  alt="Pet 1 Before"
+                  style={{ width: '100px', height: '100px', borderRadius: '10px' }}
+                />
+                <img
+                  src="https://via.placeholder.com/100x100" // Replace with actual pet image URL
+                  alt="Pet 1 After"
+                  style={{ width: '100px', height: '100px', borderRadius: '10px' }}
+                />
+              </div>
               <p style={{ fontSize: '14px', fontFamily: '"Varela Round", sans-serif' }}>
-                Cậu bé này 1 tuổi - Hiện tại đã được nhận nuôi tại Huế. Cậu bé này là một chiến binh mạnh mẽ vượt qua bệnh tật.
+                The need of travelers has made Sinh Cafe feel that it is necessary to introduce travelers its friendly culture, its people with its friendly instinct. Sinh Cafe hospitality suggest who has provided travelers with travel and transport to ease their travel!
               </p>
             </div>
             <div
               style={{
-                backgroundColor: '#E8D7A3',
-                width: '250px',
+                backgroundColor: '#FFF',
+                width: '300px',
                 padding: '20px',
                 borderRadius: '10px',
                 textAlign: 'left',
               }}
             >
-              <img
-                src="https://via.placeholder.com/200x150" // Replace with actual pet image URL
-                alt="Pet 2"
-                style={{ width: '200px', height: '150px', marginBottom: '10px' }}
-              />
+              <h3
+                style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  marginBottom: '10px',
+                  fontFamily: '"Varela Round", sans-serif',
+                }}
+              >
+                Cậu bé 6 tháng
+              </h3>
+              <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                <img
+                  src="https://via.placeholder.com/100x100" // Replace with actual pet image URL
+                  alt="Pet 2 Before"
+                  style={{ width: '100px', height: '100px', borderRadius: '10px' }}
+                />
+                <img
+                  src="https://via.placeholder.com/100x100" // Replace with actual pet image URL
+                  alt="Pet 2 After"
+                  style={{ width: '100px', height: '100px', borderRadius: '10px' }}
+                />
+              </div>
               <p style={{ fontSize: '14px', fontFamily: '"Varela Round", sans-serif' }}>
-                Cậu bé này 6 tháng - Hiện đang chờ nhận nuôi tại Đà Nẵng. Cậu bé này rất đáng yêu và năng động.
+                The need of travelers has made Sinh Cafe feel that it is necessary to introduce travelers its friendly culture, its people with its friendly instinct. Sinh Cafe hospitality suggest who has provided travelers with travel and transport to ease their travel!
               </p>
             </div>
           </div>
         </div>
 
-        {/* Call to Action */}
+        {/* Why Choose Pawmily Section */}
         <div
           style={{
-            backgroundColor: '#6B3A0F',
-            color: '#FFF',
-            padding: '40px',
+            position: 'relative',
+            backgroundImage: 'url("https://via.placeholder.com/1200x400")', // Replace with actual background image URL
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
             borderRadius: '10px',
-            textAlign: 'center',
+            padding: '40px 20px',
+            marginBottom: '40px',
+            color: '#FFF',
+            textAlign: 'left',
           }}
         >
-          <h2
+          <div
             style={{
-              fontSize: '24px',
-              fontWeight: '600',
-              marginBottom: '20px',
-              fontFamily: '"Varela Round", sans-serif',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)', // Overlay for readability
+              borderRadius: '10px',
             }}
-          >
-            VỚI CHÚNG MÌNH!
-          </h2>
-          <p
-            style={{
-              fontSize: '16px',
-              maxWidth: '600px',
-              margin: '0 auto 20px',
-              fontFamily: '"Varela Round", sans-serif',
-            }}
-          >
-            Cùng chung tay góp phần mang lại hy vọng và một cuộc sống tốt đẹp hơn cho các bé động vật. Hãy tham gia cùng chúng mình trong hành trình tuyệt vời này!
-          </p>
-          <button
-            style={{
-              backgroundColor: '#F5A623',
-              color: '#FFF',
-              padding: '10px 20px',
-              border: 'none',
-              borderRadius: '5px',
-              fontSize: '16px',
-              cursor: 'pointer',
-              fontFamily: '"Varela Round", sans-serif',
-            }}
-          >
-            ĐÓNG GÓP
-          </button>
+          />
+          <div style={{ position: 'relative', zIndex: 1, maxWidth: '800px', margin: '0 auto' }}>
+            <h2
+              style={{
+                fontSize: '24px',
+                fontWeight: '600',
+                marginBottom: '20px',
+                fontFamily: '"Varela Round", sans-serif',
+              }}
+            >
+              VÌ SAO CHỌN PAWMILY
+            </h2>
+            <p
+              style={{
+                fontSize: '16px',
+                fontFamily: '"Varela Round", sans-serif',
+                marginBottom: '20px',
+              }}
+            >
+              Chúng mình luôn nỗ lực để yêu thương động vật: các tình nguyện viên, chuyên gia đều có lòng nhân ái và sẵn sàng giúp đỡ. Đưa bạn tới gần hơn với các bé động vật hoang dã, để bạn hiểu và yêu thương các bé, cùng chung tay giúp đỡ chúng mình nhé!
+            </p>
+            <button
+              style={{
+                backgroundColor: '#FFF',
+                color: '#6B3A0F',
+                padding: '10px 20px',
+                border: 'none',
+                borderRadius: '20px',
+                fontSize: '16px',
+                fontFamily: '"Varela Round", sans-serif',
+                cursor: 'pointer',
+              }}
+            >
+              Đọc thêm
+            </button>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                marginTop: '20px',
+                fontSize: '14px',
+                fontFamily: '"Varela Round", sans-serif',
+              }}
+            >
+              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                📧 <a href="mailto:chungminh@pawmily.com" style={{ color: '#FFF', textDecoration: 'none' }}>chungminh@pawmily.com</a>
+              </span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                📞 <a href="tel:1900xxxx" style={{ color: '#FFF', textDecoration: 'none' }}>1900xxxx</a>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

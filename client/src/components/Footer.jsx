@@ -7,8 +7,9 @@ function Footer() {
             style={{
                 backgroundColor: '#5A2E0A', // Màu nền đậm hơn để khớp với hình
                 color: '#FFF',
-                padding: '40px 20px',
+                padding: '30px 10px',
                 fontFamily: '"Varela Round", sans-serif',
+                textAlign: 'center',
             }}
         >
             <div
@@ -36,7 +37,7 @@ function Footer() {
                 </div>
 
                 {/* Cột 2: Link */}
-                <div>
+                <div style={{ paddingLeft: '40px' }}>
                     <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '15px', textTransform: 'uppercase' }}>
                         Link
                     </h4>
@@ -101,7 +102,7 @@ function Footer() {
             <div style={{ borderTop: '1px solid #FFF', margin: '20px 0' }}></div>
 
             {/* Bản quyền */}
-            <div style={{ textAlign: 'center', fontSize: '12px', textTransform: 'uppercase' }}>
+            <div style={{ textAlign: 'center', fontSize: '12px', textTransform: 'uppercase', marginBottom: '-20px' }}>
                 Copyright by Pawmily
             </div>
         </footer>

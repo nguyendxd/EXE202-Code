@@ -7,7 +7,7 @@ import './styles/index.css';
 import LandingPage from './pages/LandingPage';
 import AdoptPage from './pages/AdoptPage';
 import AboutPage from './pages/AboutPage';
-// import DonatePage from './pages/DonatePage';
+import DonatePage from './pages/DonatePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import PetDetailPage from './pages/PetDetailPage';
@@ -15,7 +15,7 @@ import RescueMapPage from './pages/RescueMapPage';
 import BlogPage from './pages/BlogPage';
 import BlogDetailPage from './pages/BlogPageDetail';
 import UserPage from './pages/UserPage';
-import { LoginForm } from './pages/LoginForm';
+import LoginForm from './pages/LoginForm';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 // Components
@@ -40,6 +40,7 @@ export default function App() {
             <Route path="/rescue-map" element={<RescueMapPage />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:id" element={<BlogDetailPage />} />
+            <Route path="/donate" element={<DonatePage />} />
 
             {/* Public Routes - Chỉ cho phép người dùng chưa đăng nhập */}
             <Route

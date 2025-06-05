@@ -47,7 +47,7 @@ const LoginForm = () => {
 
       // Store the token in localStorage
       localStorage.setItem('token', data.token);
-      
+
       // Redirect to home page on successful login
       navigate('/');
     } catch (err) {
@@ -84,17 +84,17 @@ const LoginForm = () => {
         <div className="login-form-title">
           <h2>Đăng nhập</h2>
         </div>
-        
+
         {error && <div className="error-message">{error}</div>}
-        
+
         {/* Login Form Fields */}
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              name="email" 
+            <input
+              type="email"
+              id="email"
+              name="email"
               value={formData.email}
               onChange={handleChange}
               required
@@ -104,15 +104,15 @@ const LoginForm = () => {
           <div className="form-group">
             <label htmlFor="password">Mật khẩu</label>
             <div className="password-input-container">
-              <input 
+              <input
                 type={showPassword ? 'text' : 'password'}
-                id="password" 
+                id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
-              <span 
+              <span
                 className="password-toggle-icon"
                 onClick={togglePasswordVisibility}
               >
@@ -123,11 +123,11 @@ const LoginForm = () => {
 
           {/* Remember me / Forgot password */}
           <div className="login-form-options">
-              <div>
-                  <input type="checkbox" id="rememberMe" name="rememberMe" />
-                  <label htmlFor="rememberMe">Ghi nhớ mật khẩu</label>
-              </div>
-              <Link to="/forgot-password">Quên mật khẩu?</Link>
+            <div>
+              <input type="checkbox" id="rememberMe" name="rememberMe" />
+              <label htmlFor="rememberMe">Ghi nhớ mật khẩu</label>
+            </div>
+            <Link to="/forgot-password">Quên mật khẩu?</Link>
           </div>
 
           {/* Login Button */}
@@ -142,4 +142,4 @@ const LoginForm = () => {
 };
 
 // Export component using named export
-export default { LoginForm };
+export default LoginForm;
