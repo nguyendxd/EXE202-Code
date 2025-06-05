@@ -142,4 +142,4 @@ const LoginForm = () => {
 };
 
 // Export component using named export
-export { LoginForm };
+export default { LoginForm };
