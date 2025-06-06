@@ -6,6 +6,7 @@ import "../styles/index.css";
 import { getPetById } from '../services/petService';
 import '../styles/PetGallery.css';
 import '../styles/PetDetailInfo.css';
+import Loading from '../components/Loading';
 
 export default function PetDetailPage() {
     const { id } = useParams();
@@ -63,7 +64,7 @@ export default function PetDetailPage() {
         navigate(`/user/${pet.shelterId}`);
     };
 
-    if (loading) return <div style={{ textAlign: 'center', marginTop: 40 }}>Đang tải thông tin thú cưng...</div>;
+    if (loading) return <Loading />;
     if (error || !pet) return <div style={{ textAlign: 'center', marginTop: 40, color: 'red' }}>{error || "Không có dữ liệu."}</div>;
 
     return (
