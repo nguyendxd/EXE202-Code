@@ -229,3 +229,21 @@ export const searchPetsController = async (req: Request, res: Response) => {
         });
     }
 };
+
+/**
+ * GET /pets/user/:userId
+ */
+export const getPetsByUserIdController = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const pets = await repo.getPetsByUserId(userId);
+    res.json({
+      success: true,
+      data: pets,
+      total: pets.length
+    });
+  } catch (err: any) {
+    console.error('Error in getPetsByUserIdController:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

@@ -156,3 +156,13 @@ export const searchPets = async (filters: {
         throw error;
     }
 };
+
+// Lấy tất cả pet theo shelterId (userId)
+export const getPetsByUserId = (userId: string) => {
+  if (!Types.ObjectId.isValid(userId)) {
+    throw new Error("Invalid user ID");
+  }
+  return Pet.find({ shelterId: userId, isAdopted: false })
+    .sort({ createdAt: -1 })
+    .populate('shelterId', 'name address phone email');
+};

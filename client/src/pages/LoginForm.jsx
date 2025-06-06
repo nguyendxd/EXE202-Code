@@ -50,6 +50,8 @@ const LoginForm = () => {
       // Store userId (MongoDB _id) nếu có
       if (data.user && (data.user._id || data.user.id)) {
         localStorage.setItem('userId', data.user._id || data.user.id);
+        // Lưu luôn thông tin user (bao gồm role) vào localStorage
+        localStorage.setItem('user', JSON.stringify(data.user));
       } else if (data.user && data.user.uid) {
         // Nếu chỉ có uid (firebaseUID), fetch danh sách user để lấy _id MongoDB
         fetch('http://localhost:3000/api/users', {
@@ -61,11 +63,16 @@ const LoginForm = () => {
             const user = users.find(u => u.uid === data.user.uid || u.email === data.user.email);
             if (user && user._id) {
               localStorage.setItem('userId', user._id);
+              localStorage.setItem('user', JSON.stringify(user));
             }
           });
       }
-      // Redirect to home page on successful login
-      navigate('/');
+      // Redirect: nếu là admin thì sang /admin/account, ngược lại sang home
+      if (data.user && data.user.role === 'admin') {
+        navigate('/admin/account');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       const errorMessage = err.message || 'An error occurred during login';
       if (errorMessage === 'Invalid email or password') {
