@@ -22,19 +22,17 @@ export default function ChatPage() {
   const [selectedChat, setSelectedChat] = useState(null)
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState("")
+  const [selectedFile, setSelectedFile] = useState(null)
+  const fileInputRef = useRef(null)
   const messagesContainerRef = useRef(null)
+  const searchInputRef = useRef(null)
   const userId = localStorage.getItem("userId")
   const token = localStorage.getItem("token")
   const [allUsers, setAllUsers] = useState([])
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // Chặn truy cập nếu chưa đăng nhập
-  useEffect(() => {
-    if (!userId) {
-      navigate("/login");
-    }
-  }, [userId, navigate]);
+  const [searchTerm, setSearchTerm] = useState("")
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false)
+  const [searchResults, setSearchResults] = useState([])
+  const [isHoveringAttachment, setIsHoveringAttachment] = useState(false)
 
   // Lấy danh sách user thực tế từ API
   useEffect(() => {
@@ -46,6 +44,69 @@ export default function ChatPage() {
       .then((data) => setAllUsers(data))
       .catch((err) => console.error("Error fetching users:", err))
   }, [token])
+
+  // Search functionality
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setSearchResults([])
+      setShowSearchDropdown(false)
+      return
+    }
+
+    const keyword = searchTerm.trim().toLowerCase()
+
+    // Search in existing chats
+    const chatResults = chatList
+      .filter((chat) => chat && chat.user)
+      .filter((chat) => {
+        const username = chat.user?.username?.toLowerCase() || ""
+        const email = chat.user?.email?.toLowerCase() || ""
+        return username.includes(keyword) || email.includes(keyword)
+      })
+      .map((chat) => ({ ...chat.user, type: "existing_chat", hasMessages: true }))
+
+    // Search in all users (excluding current user and existing chats)
+    const userResults = allUsers
+      .filter((user) => user && user._id !== userId)
+      .filter((user) => !chatList.find((chat) => chat._id === user._id))
+      .filter((user) => {
+        const username = user?.username?.toLowerCase() || ""
+        const email = user?.email?.toLowerCase() || ""
+        return username.includes(keyword) || email.includes(keyword)
+      })
+      .map((user) => ({ ...user, type: "new_user", hasMessages: false }))
+
+    const combinedResults = [...chatResults, ...userResults]
+    setSearchResults(combinedResults)
+    setShowSearchDropdown(combinedResults.length > 0)
+  }, [searchTerm, chatList, allUsers, userId])
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value)
+  }
+
+  // Handle search result click
+  const handleSearchResultClick = (user) => {
+    setSelectedChat(user)
+    setSearchTerm("")
+    setShowSearchDropdown(false)
+    handleSelectUser(user)
+  }
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchInputRef.current && !searchInputRef.current.contains(event.target)) {
+        setShowSearchDropdown(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
 
   // Lấy danh sách hội thoại và sắp xếp theo tin nhắn mới nhất
   useEffect(() => {
@@ -72,19 +133,30 @@ export default function ChatPage() {
             const msgSnap = await getDocs(msgQuery)
             const lastMessage = msgSnap.docs[0]?.data()
 
+            // Kiểm tra xem tin nhắn cuối có phải là tin nhắn mới không
+            const isNewMessage = lastMessage && lastMessage.senderId !== userId
+
             chats.push({
               _id: otherId,
               user,
               lastMessage,
               conversationId: docSnap.id,
               lastMessageTime: lastMessage?.createdAt || null,
+              isNewMessage,
             })
           }
         }
       }
 
-      // Sắp xếp theo thời gian tin nhắn mới nhất (mới nhất lên đầu)
+      // Sắp xếp theo thứ tự:
+      // 1. Tin nhắn mới (người khác gửi) lên đầu
+      // 2. Sau đó sắp xếp theo thời gian tin nhắn mới nhất
       chats.sort((a, b) => {
+        // Nếu một trong hai là tin nhắn mới, ưu tiên đưa lên đầu
+        if (a.isNewMessage && !b.isNewMessage) return -1
+        if (!a.isNewMessage && b.isNewMessage) return 1
+
+        // Nếu cả hai đều là tin nhắn mới hoặc không phải, sắp xếp theo thời gian
         if (!a.lastMessageTime && !b.lastMessageTime) return 0
         if (!a.lastMessageTime) return 1
         if (!b.lastMessageTime) return -1
@@ -141,7 +213,7 @@ export default function ChatPage() {
   // Gửi tin nhắn
   const handleSendMessage = async (e) => {
     e.preventDefault()
-    if (!message.trim() || !selectedChat) return
+    if ((!message.trim() && !selectedFile) || !selectedChat) return
 
     const conversationId = userId < selectedChat._id ? `${userId}_${selectedChat._id}` : `${selectedChat._id}_${userId}`
 
@@ -160,12 +232,35 @@ export default function ChatPage() {
       await addDoc(collection(db, "conversations", conversationId, "messages"), {
         senderId: userId,
         content: message,
+        file: selectedFile
+          ? {
+            name: selectedFile.name,
+            type: selectedFile.type,
+            size: selectedFile.size,
+            url: URL.createObjectURL(selectedFile),
+          }
+          : null,
         createdAt: serverTimestamp(),
       })
 
       setMessage("")
+      setSelectedFile(null)
     } catch (error) {
       console.error("Error sending message:", error)
+    }
+  }
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setSelectedFile(file)
+    }
+  }
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
     }
   }
 
@@ -215,8 +310,37 @@ export default function ChatPage() {
   `;
 
   if (!userId) {
-    return null; // Đã redirect ở trên
+    return (
+      <div
+        style={{
+          fontFamily: "'Roboto', sans-serif",
+          backgroundColor: "#FAF3E0",
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <p style={{ color: "#A47148", fontSize: "24px" }}>Vui lòng đăng nhập để sử dụng tính năng chat.</p>
+      </div>
+    )
   }
+
+  // Attachment icon SVG
+  const attachmentIcon = (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
+    </svg>
+  )
 
   return (
     <div
@@ -229,8 +353,113 @@ export default function ChatPage() {
     >
       <style>{responsiveStyles}</style>
       {/* Logo */}
-      <div style={{ textAlign: "center", marginBottom: "30px" }}>
-        <img src={pawLetter || "/placeholder.svg"} alt="Pawmily" style={{ height: "120px", objectFit: "contain" }} />
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <img src={pawLetter || "/placeholder.svg"} alt="Pawmily" style={{ height: "150px", objectFit: "contain" }} />
+      </div>
+
+      {/* Search Bar with Dropdown */}
+      <div style={{ textAlign: "center", marginBottom: "15px", position: "relative" }}>
+        <div ref={searchInputRef} style={{ display: "inline-block", position: "relative" }}>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            onFocus={() => searchTerm.trim() && setShowSearchDropdown(true)}
+            placeholder="Tìm kiếm theo tên hoặc email..."
+            style={{
+              width: "350px",
+              padding: "10px 16px",
+              borderRadius: "25px",
+              border: "2px solid #D7A86E",
+              outline: "none",
+              fontSize: "16px",
+              backgroundColor: "#FFFFFF",
+              color: "#5D4037",
+            }}
+          />
+
+          {/* Search Dropdown */}
+          {showSearchDropdown && searchResults.length > 0 && (
+            <div
+              style={{
+                position: "absolute",
+                top: "100%",
+                left: "0",
+                right: "0",
+                backgroundColor: "#FFFFFF",
+                border: "2px solid #D7A86E",
+                borderTop: "none",
+                borderRadius: "0 0 15px 15px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                zIndex: 1000,
+                maxHeight: "300px",
+                overflowY: "auto",
+              }}
+            >
+              {searchResults.map((user, index) => (
+                <div
+                  key={`search-${user._id}-${index}`}
+                  onClick={() => handleSearchResultClick(user)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "12px 16px",
+                    cursor: "pointer",
+                    borderBottom: index < searchResults.length - 1 ? "1px solid #F5E8C7" : "none",
+                    backgroundColor: "transparent",
+                    transition: "background-color 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => (e.target.style.backgroundColor = "#FFF8E7")}
+                  onMouseLeave={(e) => (e.target.style.backgroundColor = "transparent")}
+                >
+                  <img
+                    src={user?.avatar && !user.avatar.includes("default-avatar.jpg") ? user.avatar : "/placeholder.svg"}
+                    alt={user?.username || user?.email || "User"}
+                    style={{
+                      width: "35px",
+                      height: "35px",
+                      borderRadius: "50%",
+                      marginRight: "12px",
+                      border: "1px solid #D7A86E",
+                    }}
+                  />
+                  <div style={{ flex: 1, textAlign: "left" }}>
+                    <div
+                      style={{
+                        fontWeight: "bold",
+                        color: "#5D4037",
+                        fontSize: "14px",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      {user?.username || user?.email || "No name"}
+                    </div>
+                    <div
+                      style={{
+                        color: "#8B4513",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {user.hasMessages ? "Có tin nhắn" : "Bắt đầu trò chuyện"}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#A47148",
+                      backgroundColor: user.hasMessages ? "#E8F5E8" : "#F0F8FF",
+                      padding: "4px 8px",
+                      borderRadius: "12px",
+                      border: `1px solid ${user.hasMessages ? "#90EE90" : "#87CEEB"}`,
+                    }}
+                  >
+                    {user.hasMessages ? "💬" : "👋"}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Chat Container */}
@@ -238,7 +467,7 @@ export default function ChatPage() {
         className="chat-container"
         style={{
           display: "flex",
-          maxWidth: "1200px",
+          maxWidth: "1400px",
           margin: "0 auto",
           height: "calc(100vh - 200px)",
           borderRadius: "15px",
@@ -246,11 +475,11 @@ export default function ChatPage() {
           boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
         }}
       >
-        {/* Chat List - Hiển thị conversations đã có tin nhắn trước, sau đó là users chưa chat */}
+        {/* Chat List */}
         <div
           className="chat-sidebar"
           style={{
-            width: "350px",
+            width: "400px",
             backgroundColor: "#FFFFFF",
             borderRight: "1px solid #F5E8C7",
             overflowY: "auto",
@@ -272,15 +501,21 @@ export default function ChatPage() {
                 Tin nhắn gần đây
               </div>
               {chatList
-                .filter((chat) => chat && chat.user) // Add filter to remove invalid chats
+                .filter((chat) => chat && chat.user)
                 .map((chat) => (
                   <div
                     key={`chat-${chat._id}`}
                     style={{
                       ...chatItemStyle(selectedChat?._id === chat._id),
                       backgroundColor:
-                        selectedChat?._id === chat._id ? "#FFF8E7" : chat.lastMessage ? "#FFFBF0" : "transparent",
-                      height: "70px", // Fixed height for chat items
+                        selectedChat?._id === chat._id
+                          ? "#FFF8E7"
+                          : chat.isNewMessage
+                            ? "#FFF0D9"
+                            : chat.lastMessage
+                              ? "#FFFBF0"
+                              : "transparent",
+                      height: "70px",
                     }}
                     onClick={() => handleSelectUser(chat.user)}
                   >
@@ -290,7 +525,7 @@ export default function ChatPage() {
                           ? chat.user.avatar
                           : "/placeholder.svg"
                       }
-                      alt={chat.user?.email || "User"}
+                      alt={chat.user?.username || chat.user?.email || "No name"}
                       style={{
                         width: "40px",
                         height: "40px",
@@ -320,7 +555,7 @@ export default function ChatPage() {
                           whiteSpace: "nowrap",
                         }}
                       >
-                        {chat.user?.email || "No name"}
+                        {chat.user?.username || chat.user?.email || "No name"}
                       </div>
                       <div
                         style={{
@@ -374,7 +609,7 @@ export default function ChatPage() {
                     key={`user-${user._id}`}
                     style={{
                       ...chatItemStyle(selectedChat?._id === user._id),
-                      height: "70px", // Fixed height for user items
+                      height: "70px",
                     }}
                     onClick={() => handleSelectUser(user)}
                   >
@@ -382,7 +617,7 @@ export default function ChatPage() {
                       src={
                         user?.avatar && !user.avatar.includes("default-avatar.jpg") ? user.avatar : "/placeholder.svg"
                       }
-                      alt={user?.email || "User"}
+                      alt={user?.username || user?.email || "No name"}
                       style={{
                         width: "40px",
                         height: "40px",
@@ -412,7 +647,7 @@ export default function ChatPage() {
                           whiteSpace: "nowrap",
                         }}
                       >
-                        {user?.email || "No name"}
+                        {user?.username || user?.email || "No name"}
                       </div>
                       <div
                         style={{
@@ -475,7 +710,7 @@ export default function ChatPage() {
                       ? selectedChat.avatar
                       : "/placeholder.svg"
                   }
-                  alt={selectedChat?.email || "User"}
+                  alt={selectedChat?.username || selectedChat?.email || "No name"}
                   style={{
                     width: "40px",
                     height: "40px",
@@ -491,7 +726,7 @@ export default function ChatPage() {
                     fontSize: "18px",
                   }}
                 >
-                  {selectedChat?.email || "No name"}
+                  {selectedChat?.username || selectedChat?.email || "No name"}
                 </div>
               </div>
 
@@ -538,7 +773,7 @@ export default function ChatPage() {
                                 marginBottom: "4px",
                               }}
                             >
-                              {selectedChat?.email || "User"}
+                              {selectedChat?.username || selectedChat?.email || "No name"}
                             </div>
                           )}
                           <div
@@ -549,6 +784,42 @@ export default function ChatPage() {
                             }}
                           >
                             {msg.content}
+                            {msg.file && (
+                              <div style={{ marginTop: "8px" }}>
+                                {msg.file.type.startsWith("image/") ? (
+                                  <img
+                                    src={msg.file.url || "/placeholder.svg"}
+                                    alt={msg.file.name}
+                                    style={{
+                                      maxWidth: "200px",
+                                      maxHeight: "200px",
+                                      borderRadius: "8px",
+                                      border: "1px solid #D7A86E",
+                                    }}
+                                  />
+                                ) : (
+                                  <a
+                                    href={msg.file.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: "8px",
+                                      padding: "8px 12px",
+                                      backgroundColor: "#FFF8E7",
+                                      borderRadius: "8px",
+                                      border: "1px solid #D7A86E",
+                                      color: "#5D4037",
+                                      textDecoration: "none",
+                                      maxWidth: "200px",
+                                    }}
+                                  >
+                                    📎 {msg.file.name}
+                                  </a>
+                                )}
+                              </div>
+                            )}
                           </div>
                           <div
                             style={{
@@ -578,7 +849,7 @@ export default function ChatPage() {
                       fontSize: "16px",
                     }}
                   >
-                    Bắt đầu cuộc trò chuyện với {selectedChat.email || "No name"}
+                    Bắt đầu cuộc trò chuyện với {selectedChat?.username || selectedChat?.email || "No name"}
                   </div>
                 )}
               </div>
@@ -591,47 +862,111 @@ export default function ChatPage() {
                   borderTop: "1px solid #F5E8C7",
                   backgroundColor: "#FFF8E7",
                   display: "flex",
-                  alignItems: "center",
+                  flexDirection: "column",
                   gap: "10px",
                 }}
               >
-                <input
-                  type="text"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Nhập tin nhắn..."
-                  className="chat-message-input"
-                  style={{
-                    flex: 1,
-                    padding: "12px 15px",
-                    borderRadius: "25px",
-                    border: "2px solid #D7A86E",
-                    outline: "none",
-                    fontSize: "16px",
-                    backgroundColor: "#FFFFFF",
-                  }}
-                />
-                <button
-                  type="submit"
-                  disabled={!message.trim()}
-                  className="chat-send-btn"
-                  style={{
-                    backgroundColor: message.trim() ? "#D7A86E" : "#E0E0E0",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "50%",
-                    width: "40px",
-                    height: "40px",
-                    cursor: message.trim() ? "pointer" : "not-allowed",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "18px",
-                    transition: "background-color 0.2s ease",
-                  }}
-                >
-                  ➤
-                </button>
+                {selectedFile && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      padding: "10px",
+                      backgroundColor: "#FFFFFF",
+                      borderRadius: "10px",
+                      border: "1px solid #D7A86E",
+                    }}
+                  >
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: "bold", color: "#5D4037" }}>{selectedFile.name}</div>
+                      <div style={{ fontSize: "12px", color: "#A47148" }}>
+                        {(selectedFile.size / 1024).toFixed(1)} KB
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleRemoveFile}
+                      style={{
+                        backgroundColor: "#FF6B6B",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "50%",
+                        width: "30px",
+                        height: "30px",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "16px",
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <input
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Nhập tin nhắn..."
+                    style={{
+                      flex: 1,
+                      padding: "12px 15px",
+                      borderRadius: "25px",
+                      border: "2px solid #D7A86E",
+                      outline: "none",
+                      fontSize: "16px",
+                      backgroundColor: "#FFFFFF",
+                    }}
+                  />
+                  <input type="file" ref={fileInputRef} onChange={handleFileSelect} style={{ display: "none" }} />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    onMouseEnter={() => setIsHoveringAttachment(true)}
+                    onMouseLeave={() => setIsHoveringAttachment(false)}
+                    style={{
+                      backgroundColor: isHoveringAttachment ? "#C69447" : "#D7A86E",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "50%",
+                      width: "40px",
+                      height: "40px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "18px",
+                      transition: "all 0.2s ease",
+                      boxShadow: isHoveringAttachment ? "0 3px 8px rgba(0,0,0,0.2)" : "0 2px 5px rgba(0,0,0,0.1)",
+                      transform: isHoveringAttachment ? "translateY(-2px)" : "translateY(0)",
+                    }}
+                  >
+                    {attachmentIcon}
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={!message.trim() && !selectedFile}
+                    style={{
+                      backgroundColor: message.trim() || selectedFile ? "#D7A86E" : "#E0E0E0",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "50%",
+                      width: "40px",
+                      height: "40px",
+                      cursor: message.trim() || selectedFile ? "pointer" : "not-allowed",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "18px",
+                      transition: "background-color 0.2s ease",
+                    }}
+                  >
+                    ➤
+                  </button>
+                </div>
               </form>
             </>
           ) : (
