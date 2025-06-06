@@ -114,6 +114,7 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <AppContent />
+        <ToastContainer />
       </BrowserRouter>
     </AuthProvider>
   );
