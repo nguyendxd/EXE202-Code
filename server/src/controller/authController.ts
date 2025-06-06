@@ -69,9 +69,15 @@ export const login = async (req: Request, res: Response) => {
             });
         }
 
-        // Check if user exists in MongoDB
-        const user = await getUserByFirebaseUID(firebaseUser.uid);
+        // Check if user exists in MongoDB (không filter isDeleted)
+        const user = await User.findOne({ firebaseUID: firebaseUser.uid });
         
+        // Nếu user bị xóa mềm thì không cho đăng nhập
+        if (user && user.isDeleted) {
+            await auth.signOut();
+            return res.status(403).json({ error: "Tài khoản đã bị khóa hoặc xóa." });
+        }
+
         if (!user) {
             // If user doesn't exist in MongoDB but email is verified, create the user
             const pendingUserRef = doc(db, "pending_users", firebaseUser.uid);

@@ -42,7 +42,7 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(data.error || data.message || 'Login failed');
       }
 
       // Store the token in localStorage
@@ -77,6 +77,17 @@ const LoginForm = () => {
       const errorMessage = err.message || 'An error occurred during login';
       if (errorMessage === 'Invalid email or password') {
         setError('Bạn đã nhập sai tài khoản hoặc mật khẩu, vui lòng thử lại');
+      } else if (
+        errorMessage.includes('auth/invalid-credential') ||
+        errorMessage.includes('auth/wrong-password')
+      ) {
+        setError('Bạn đã nhập sai tài khoản hoặc mật khẩu, vui lòng thử lại');
+      } else if (
+        errorMessage.includes('bị khóa') ||
+        errorMessage.includes('bị xóa') ||
+        errorMessage.includes('bị cấm')
+      ) {
+        setError('Tài khoản của bạn đã bị cấm');
       } else {
         setError(errorMessage);
       }
