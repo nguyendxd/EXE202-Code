@@ -5,7 +5,8 @@ import {
   getPetByIdController,
   updatePetController,
   deletePetController,
-  searchPetsController
+  searchPetsController,
+  getPetsByUserIdController
 } from "../controller/petController";
 import { authenticateToken } from '../middleware/auth';
 import multer from 'multer';
@@ -264,5 +265,25 @@ router.put(
  *         description: Error deleting pet
  */
 router.delete("/:id", authenticateToken as RequestHandler, deletePetController as RequestHandler);
+
+/**
+ * @swagger
+ * /pets/user/{userId}:
+ *   get:
+ *     summary: Get pets by user ID
+ *     tags: [Pets]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of pets belonging to the user
+ *       500:
+ *         description: Server error
+ */
+router.get("/user/:userId", getPetsByUserIdController);
 
 export default router;
