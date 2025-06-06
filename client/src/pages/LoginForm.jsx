@@ -47,7 +47,23 @@ const LoginForm = () => {
 
       // Store the token in localStorage
       localStorage.setItem('token', data.token);
-
+      // Store userId (MongoDB _id) nếu có
+      if (data.user && (data.user._id || data.user.id)) {
+        localStorage.setItem('userId', data.user._id || data.user.id);
+      } else if (data.user && data.user.uid) {
+        // Nếu chỉ có uid (firebaseUID), fetch danh sách user để lấy _id MongoDB
+        fetch('http://localhost:3000/api/users', {
+          headers: { Authorization: 'Bearer ' + data.token }
+        })
+          .then(res => res.json())
+          .then(users => {
+            // Tìm user có uid hoặc email trùng với user vừa đăng nhập
+            const user = users.find(u => u.uid === data.user.uid || u.email === data.user.email);
+            if (user && user._id) {
+              localStorage.setItem('userId', user._id);
+            }
+          });
+      }
       // Redirect to home page on successful login
       navigate('/');
     } catch (err) {

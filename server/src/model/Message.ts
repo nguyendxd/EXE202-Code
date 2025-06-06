@@ -6,6 +6,7 @@ export interface IMessage extends Document {
     content: string;
     attachments?: string[];
     createdAt: Date;
+    read: boolean;
 }
 
 const messageSchema = new Schema<IMessage>(
@@ -27,7 +28,8 @@ const messageSchema = new Schema<IMessage>(
             type: String,
             required: false,
         },
-        attachments: [{ type: String }]
+        attachments: [{ type: String }],
+        read: { type: Boolean, default: false },
     },
 
     {timestamps: true}

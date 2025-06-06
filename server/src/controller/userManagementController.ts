@@ -8,7 +8,7 @@ export interface AuthenticatedRequest extends Request {
 export const getAllUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
         const authenticatedUser = req.user;
-        if (!authenticatedUser || authenticatedUser.role !== 'admin') {
+        if (!authenticatedUser) {
             res.status(403).json({ message: 'You have no permission for this function' });
             return;
         }
@@ -56,11 +56,8 @@ export const getUserByEmailController = async (req: AuthenticatedRequest, res: R
 
 export const getUserByIdController = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
-        // const authenticatedUser = req.user;
-        // if (!authenticatedUser || authenticatedUser.role !== 'admin') {
-        //     res.status(403).json({ message: 'You have no permission for this function' });
-        //     return;
-        // }
+        const authenticatedUser = req.user;
+
 
         const user = await getUserById(req.params.id);
         if (!user) {

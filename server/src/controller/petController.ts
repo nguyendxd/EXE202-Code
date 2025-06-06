@@ -20,7 +20,7 @@ export const createPetController =
       const user = req.user;
       const userId = user?.id || user?.uid;
 
-      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter')){
+      if (!user || !userId || (user.role !== 'admin' && user.role !== 'shelter' && user.role !== 'customer')){
         console.log('Permission check failed in createPetController');
         return res.status(403).json({message: "You have no permission for this function "})
       }
