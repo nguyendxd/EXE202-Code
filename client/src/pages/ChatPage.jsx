@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
+import { useNavigate, useLocation } from "react-router-dom";
 import { db } from "../firebase"
 import {
   collection,
@@ -25,6 +26,15 @@ export default function ChatPage() {
   const userId = localStorage.getItem("userId")
   const token = localStorage.getItem("token")
   const [allUsers, setAllUsers] = useState([])
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Chặn truy cập nếu chưa đăng nhập
+  useEffect(() => {
+    if (!userId) {
+      navigate("/login");
+    }
+  }, [userId, navigate]);
 
   // Lấy danh sách user thực tế từ API
   useEffect(() => {
@@ -89,6 +99,16 @@ export default function ChatPage() {
 
     return () => unsubscribe()
   }, [userId, allUsers])
+
+  // Tự động chọn user nếu có query param 'to'
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const toId = params.get('to');
+    if (toId && allUsers.length > 0) {
+      const found = allUsers.find(u => u._id === toId);
+      if (found) setSelectedChat(found);
+    }
+  }, [location.search, allUsers]);
 
   // Khi click vào user, tạo hội thoại nếu chưa có
   const handleSelectUser = async (user) => {
@@ -177,21 +197,25 @@ export default function ChatPage() {
     }
   }
 
+  // Responsive styles
+  const responsiveStyles = `
+    @media (max-width: 900px) {
+      .chat-container { flex-direction: column !important; height: auto !important; }
+      .chat-sidebar { width: 100% !important; min-width: 0 !important; border-right: none !important; border-bottom: 1px solid #F5E8C7 !important; }
+      .chat-main { width: 100% !important; }
+    }
+    @media (max-width: 600px) {
+      .chat-container { padding: 0 !important; }
+      .chat-sidebar { display: ${selectedChat ? 'none' : 'block'} !important; }
+      .chat-main { width: 100vw !important; min-width: 0 !important; }
+      .chat-header { font-size: 16px !important; }
+      .chat-message-input { font-size: 14px !important; padding: 10px !important; }
+      .chat-send-btn { width: 36px !important; height: 36px !important; font-size: 16px !important; }
+    }
+  `;
+
   if (!userId) {
-    return (
-      <div
-        style={{
-          fontFamily: "'Roboto', sans-serif",
-          backgroundColor: "#FAF3E0",
-          minHeight: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <p style={{ color: "#A47148", fontSize: "24px" }}>Vui lòng đăng nhập để sử dụng tính năng chat.</p>
-      </div>
-    )
+    return null; // Đã redirect ở trên
   }
 
   return (
@@ -203,18 +227,20 @@ export default function ChatPage() {
         padding: "20px",
       }}
     >
+      <style>{responsiveStyles}</style>
       {/* Logo */}
       <div style={{ textAlign: "center", marginBottom: "30px" }}>
-        <img src={pawLetter || "/placeholder.svg"} alt="Pawmily" style={{ height: "200px", objectFit: "contain" }} />
+        <img src={pawLetter || "/placeholder.svg"} alt="Pawmily" style={{ height: "120px", objectFit: "contain" }} />
       </div>
 
       {/* Chat Container */}
       <div
+        className="chat-container"
         style={{
           display: "flex",
           maxWidth: "1200px",
           margin: "0 auto",
-          height: "calc(100vh - 280px)",
+          height: "calc(100vh - 200px)",
           borderRadius: "15px",
           overflow: "hidden",
           boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
@@ -222,11 +248,13 @@ export default function ChatPage() {
       >
         {/* Chat List - Hiển thị conversations đã có tin nhắn trước, sau đó là users chưa chat */}
         <div
+          className="chat-sidebar"
           style={{
             width: "350px",
             backgroundColor: "#FFFFFF",
             borderRight: "1px solid #F5E8C7",
             overflowY: "auto",
+            minWidth: 250,
           }}
         >
           {/* Conversations với tin nhắn */}
@@ -419,17 +447,20 @@ export default function ChatPage() {
 
         {/* Chat Messages */}
         <div
+          className="chat-main"
           style={{
             flex: 1,
             backgroundColor: "#FFFFFF",
             display: "flex",
             flexDirection: "column",
+            minWidth: 0,
           }}
         >
           {selectedChat ? (
             <>
               {/* Chat Header */}
               <div
+                className="chat-header"
                 style={{
                   padding: "15px 20px",
                   borderBottom: "1px solid #F5E8C7",
@@ -529,9 +560,9 @@ export default function ChatPage() {
                           >
                             {msg.createdAt && msg.createdAt.seconds
                               ? new Date(msg.createdAt.seconds * 1000).toLocaleTimeString("vi-VN", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })
                               : ""}
                           </div>
                         </div>
@@ -569,6 +600,7 @@ export default function ChatPage() {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Nhập tin nhắn..."
+                  className="chat-message-input"
                   style={{
                     flex: 1,
                     padding: "12px 15px",
@@ -582,6 +614,7 @@ export default function ChatPage() {
                 <button
                   type="submit"
                   disabled={!message.trim()}
+                  className="chat-send-btn"
                   style={{
                     backgroundColor: message.trim() ? "#D7A86E" : "#E0E0E0",
                     color: "white",
