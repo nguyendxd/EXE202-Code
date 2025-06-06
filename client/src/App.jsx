@@ -19,6 +19,7 @@ import LoginForm from './pages/LoginForm';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ChatPage from './pages/ChatPage';
 import AdminAccount from './pages/AdminAccount';
+import ProfilePage from './pages/ProfilePage';
 
 // Components
 import Navbar from './components/Navbar';
@@ -99,6 +100,14 @@ function AppContent() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/profile/:id"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
+              </PrivateRoute>
+            }
+          />
 
           {/* Admin Route */}
           <Route path="/admin/account" element={<AdminRoute><AdminAccount /></AdminRoute>} />
@@ -111,11 +120,9 @@ function AppContent() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <AppContent />
-        <ToastContainer />
-      </BrowserRouter>
-    </AuthProvider>
+    <BrowserRouter>
+      <AppContent />
+      <ToastContainer />
+    </BrowserRouter>
   );
 }

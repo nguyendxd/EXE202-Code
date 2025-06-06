@@ -9,7 +9,8 @@ export default function Navbar() {
     const [showUserMenu, setShowUserMenu] = useState(false)
     const userMenuRef = useRef(null)
     const navigate = useNavigate();
-    const { isAuthenticated, user, logout } = useAuth();
+    const { isAuthenticated, logout } = useAuth();
+    const userId = localStorage.getItem('userId');
 
     useEffect(() => {
         const handleResize = () => {
@@ -205,54 +206,6 @@ export default function Navbar() {
                             BÀI ĐĂNG
                         </Link>
                         <Link
-                            to="/wishlist"
-                            style={{
-                                textDecoration: 'none',
-                                color: '#333',
-                                padding: isMobile ? '10px' : '8px',
-                                transition: 'color 0.3s, background-color 0.3s, font-weight 0.1s, transform 0.1s',
-                                borderRadius: '50px'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.target.style.color = '#6B3A0F';
-                                e.target.style.backgroundColor = '#E8D7A3';
-                                e.target.style.fontWeight = '600';
-                                e.target.style.transform = 'scale(1.1)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.target.style.color = '#333';
-                                e.target.style.backgroundColor = 'transparent';
-                                e.target.style.fontWeight = '400';
-                                e.target.style.transform = 'scale(1)';
-                            }}
-                        >
-                            WISHLIST
-                        </Link>
-                        <Link
-                            to="/adopt-list"
-                            style={{
-                                textDecoration: 'none',
-                                color: '#333',
-                                padding: isMobile ? '10px' : '8px',
-                                transition: 'color 0.3s, background-color 0.3s, font-weight 0.1s, transform 0.1s',
-                                borderRadius: '50px'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.target.style.color = '#6B3A0F';
-                                e.target.style.backgroundColor = '#E8D7A3';
-                                e.target.style.fontWeight = '600';
-                                e.target.style.transform = 'scale(1.1)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.target.style.color = '#333';
-                                e.target.style.backgroundColor = 'transparent';
-                                e.target.style.fontWeight = '400';
-                                e.target.style.transform = 'scale(1)';
-                            }}
-                        >
-                            DANH SÁCH NHẬN NUÔI
-                        </Link>
-                        <Link
                             to="/rescue-map"
                             style={{
                                 textDecoration: 'none',
@@ -393,7 +346,7 @@ export default function Navbar() {
                                         position: 'absolute',
                                         top: 40,
                                         right: 0,
-                                        minWidth: 160,
+                                        minWidth: 200,
                                         background: '#fff',
                                         border: '1.5px solid #E5C299',
                                         borderRadius: 12,
@@ -401,9 +354,11 @@ export default function Navbar() {
                                         zIndex: 2000,
                                         padding: '8px 0',
                                     }}>
-                                        <button style={menuBtnStyle} onClick={() => { navigate(`/user/${user.id}`); setShowUserMenu(false); }}>Xem profile</button>
-                                        <button style={menuBtnStyle} onClick={() => { navigate('/setting'); setShowUserMenu(false); }}>Cài đặt</button>
-                                        <button style={menuBtnStyle} onClick={handleLogout}>Đăng xuất</button>
+                                        <button style={dropdownButtonStyle} onClick={() => { navigate(`/profile/${userId}`); setShowUserMenu(false); }}> Hồ sơ người dùng </button>
+                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/wishlist'); setShowUserMenu(false); }}>Wishlist</button>
+                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/adopt-list'); setShowUserMenu(false); }}>Danh sách nhận nuôi</button>
+                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/setting'); setShowUserMenu(false); }}>Cài đặt</button>
+                                        <button style={dropdownButtonStyle} onClick={handleLogout}>Đăng xuất</button>
                                     </div>
                                 )}
                             </div>
@@ -472,11 +427,27 @@ const menuBtnStyle = {
     fontSize: 16,
     color: '#5C4033',
     cursor: 'pointer',
-    transition: 'background 0.2s',
+    transition: 'all 0.2s ease',
     borderRadius: 8,
     outline: 'none',
     fontFamily: 'inherit',
     fontWeight: 500,
     margin: 0,
     display: 'block',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    ':hover': {
+        backgroundColor: '#FFF8E7',
+        color: '#6B3A0F',
+    }
+};
+
+// Thêm style cho các button trong dropdown
+const dropdownButtonStyle = {
+    ...menuBtnStyle,
+    '&:hover': {
+        backgroundColor: '#FFF8E7',
+        color: '#6B3A0F',
+    }
 };

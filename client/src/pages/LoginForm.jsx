@@ -4,6 +4,8 @@ import bgImage from '../assets/catdog.jpg'; // Using the same background
 import logoImg from '../assets/paw-logo.png'; // Using the same logo
 import pawLetter from '../assets/pawLetter.png';
 import '../styles/LoginForm.css'; // Corresponding CSS file
+import { useAuth } from '../contexts/AuthContext';
+
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +14,7 @@ const LoginForm = () => {
     password: ''
   });
   const [error, setError] = useState('');
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -31,43 +34,9 @@ const LoginForm = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || data.message || 'Login failed');
-      }
-
-      // Store the token in localStorage
-      localStorage.setItem('token', data.token);
-      // Store userId (MongoDB _id) nếu có
-      if (data.user && (data.user._id || data.user.id)) {
-        localStorage.setItem('userId', data.user._id || data.user.id);
-        // Lưu luôn thông tin user (bao gồm role) vào localStorage
-        localStorage.setItem('user', JSON.stringify(data.user));
-      } else if (data.user && data.user.uid) {
-        // Nếu chỉ có uid (firebaseUID), fetch danh sách user để lấy _id MongoDB
-        fetch('http://localhost:3000/api/users', {
-          headers: { Authorization: 'Bearer ' + data.token }
-        })
-          .then(res => res.json())
-          .then(users => {
-            // Tìm user có uid hoặc email trùng với user vừa đăng nhập
-            const user = users.find(u => u.uid === data.user.uid || u.email === data.user.email);
-            if (user && user._id) {
-              localStorage.setItem('userId', user._id);
-              localStorage.setItem('user', JSON.stringify(user));
-            }
-          });
-      }
-      // Redirect: nếu là admin thì sang /admin/account, ngược lại sang home
+      const data = await login(formData.email, formData.password);
+      console.log("data", data);
+      // Redirect: nếu là admin thì sang /admin/account, ngược lại sang homecon
       if (data.user && data.user.role === 'admin') {
         navigate('/admin/account');
       } else {
