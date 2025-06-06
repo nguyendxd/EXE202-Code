@@ -205,6 +205,54 @@ export default function Navbar() {
                             BÀI ĐĂNG
                         </Link>
                         <Link
+                            to="/wishlist"
+                            style={{
+                                textDecoration: 'none',
+                                color: '#333',
+                                padding: isMobile ? '10px' : '8px',
+                                transition: 'color 0.3s, background-color 0.3s, font-weight 0.1s, transform 0.1s',
+                                borderRadius: '50px'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.target.style.color = '#6B3A0F';
+                                e.target.style.backgroundColor = '#E8D7A3';
+                                e.target.style.fontWeight = '600';
+                                e.target.style.transform = 'scale(1.1)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.color = '#333';
+                                e.target.style.backgroundColor = 'transparent';
+                                e.target.style.fontWeight = '400';
+                                e.target.style.transform = 'scale(1)';
+                            }}
+                        >
+                            WISHLIST
+                        </Link>
+                        <Link
+                            to="/adopt-list"
+                            style={{
+                                textDecoration: 'none',
+                                color: '#333',
+                                padding: isMobile ? '10px' : '8px',
+                                transition: 'color 0.3s, background-color 0.3s, font-weight 0.1s, transform 0.1s',
+                                borderRadius: '50px'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.target.style.color = '#6B3A0F';
+                                e.target.style.backgroundColor = '#E8D7A3';
+                                e.target.style.fontWeight = '600';
+                                e.target.style.transform = 'scale(1.1)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.color = '#333';
+                                e.target.style.backgroundColor = 'transparent';
+                                e.target.style.fontWeight = '400';
+                                e.target.style.transform = 'scale(1)';
+                            }}
+                        >
+                            DANH SÁCH NHẬN NUÔI
+                        </Link>
+                        <Link
                             to="/rescue-map"
                             style={{
                                 textDecoration: 'none',

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import Loading from "../components/Loading"
 
 export default function BlogPage() {
   const navigate = useNavigate()
@@ -71,20 +72,7 @@ export default function BlogPage() {
   })
 
   if (loading) {
-    return (
-      <div
-        style={{
-          fontFamily: "'Roboto', sans-serif",
-          backgroundColor: "#FAF3E0",
-          minHeight: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <p style={{ color: "#A47148", fontSize: "24px" }}>Đang tải...</p>
-      </div>
-    )
+    return <Loading />
   }
 
   if (error) {

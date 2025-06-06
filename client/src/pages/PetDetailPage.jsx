@@ -17,6 +17,7 @@ export default function PetDetailPage() {
     const [carouselIndex, setCarouselIndex] = useState(0);
     const [zoomImgIdx, setZoomImgIdx] = useState(null);
     const [isWishlisted, setIsWishlisted] = useState(false);
+    const [isHeartHover, setIsHeartHover] = useState(false);
 
     useEffect(() => {
         const fetchPet = async () => {
@@ -61,7 +62,7 @@ export default function PetDetailPage() {
     };
 
     const handleNavigateToUserPage = () => {
-        navigate(`/user/${pet.shelterId}`);
+        navigate(`/user/${pet.shelterId._id}`);
     };
 
     if (loading) return <Loading />;
@@ -113,19 +114,21 @@ export default function PetDetailPage() {
                                     }}
                                     aria-label="Thêm vào wishlist"
                                     onClick={handleWishlistToggle}
+                                    onMouseEnter={() => setIsHeartHover(true)}
+                                    onMouseLeave={() => setIsHeartHover(false)}
                                 >
                                     <svg
                                         width="20"
                                         height="20"
                                         viewBox="0 0 24 24"
                                         fill={isWishlisted ? '#FF0000' : 'none'}
-                                        stroke={isWishlisted ? '#FF0000' : '#E5C299'}
+                                        stroke={isHeartHover ? '#5C4033' : (isWishlisted ? '#FF0000' : '#E5C299')}
                                         strokeWidth={isWishlisted ? '2.5' : '2'}
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         style={{
-                                            transform: isWishlisted ? 'scale(1.2)' : 'scale(1)',
-                                            transition: 'fill 0.3s ease-in-out, stroke 0.3s ease-in-out, stroke-width 0.3s ease-in-out, transform 0.3s ease-in-out'
+                                            transform: isHeartHover ? 'scale(1.05)' : (isWishlisted ? 'scale(1.2)' : 'scale(1)'),
+                                            transition: 'fill 0.3s, stroke 0.3s, stroke-width 0.3s, transform 0.3s',
                                         }}
                                     >
                                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />

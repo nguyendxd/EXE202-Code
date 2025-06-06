@@ -255,3 +255,273 @@ input:focus {
     font-size: 12px;
     margin-bottom: 15px;
 }
+
+/* Responsive cho UserPage giống PetDetailPage */
+.user-detail-root {
+    background-color: #FFF7E2;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.user-detail-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.user-detail-info-row {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.user-detail-avatar {
+    flex: 0 1 320px;
+    min-width: 260px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.user-detail-main {
+    flex: 1 1 340px;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media (max-width: 900px) {
+    .user-detail-info-row {
+        flex-direction: column;
+        gap: 24px;
+        padding: 18px;
+    }
+
+    .user-detail-avatar,
+    .user-detail-main {
+        min-width: 0;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .user-detail-container {
+        padding: 16px 2px;
+    }
+
+    .user-detail-info-row {
+        padding: 8px;
+        gap: 12px;
+    }
+
+    .user-detail-avatar {
+        margin-bottom: 12px;
+    }
+}
+
+/* Responsive cho ChatPage */
+.chat-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: calc(100vh - 200px);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.chat-sidebar {
+    width: 400px;
+    background-color: #FFFFFF;
+    border-right: 1px solid #F5E8C7;
+    overflow-y: auto;
+    min-width: 250px;
+    transition: all 0.3s;
+}
+
+.chat-main {
+    flex: 1;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.chat-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #F5E8C7;
+    display: flex;
+    align-items: center;
+    background-color: #FFF8E7;
+    font-size: 18px;
+}
+
+.chat-message-input {
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 20px;
+    border: 1.5px solid #E5C299;
+    outline: none;
+    width: 100%;
+    margin-right: 10px;
+}
+
+.chat-send-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #E5C299;
+    color: #5C4033;
+    border: none;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+@media (max-width: 900px) {
+    .chat-container {
+        flex-direction: column;
+        height: auto;
+        min-height: 80vh;
+    }
+
+    .chat-sidebar {
+        width: 100% !important;
+        min-width: 0 !important;
+        border-right: none !important;
+        border-bottom: 1px solid #F5E8C7 !important;
+        max-height: 300px;
+    }
+
+    .chat-main {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .chat-header {
+        font-size: 16px !important;
+        padding: 10px 8px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .chat-container {
+        padding: 0 !important;
+        min-height: 100vh;
+    }
+
+    .chat-sidebar {
+        display: none !important;
+    }
+
+    .chat-main {
+        width: 100vw !important;
+        min-width: 0 !important;
+    }
+
+    .chat-header {
+        font-size: 15px !important;
+        padding: 8px 4px !important;
+    }
+
+    .chat-message-input {
+        font-size: 14px !important;
+        padding: 10px !important;
+    }
+
+    .chat-send-btn {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 16px !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .chat-sidebar {
+        max-height: 70vh;
+        min-width: 0 !important;
+        width: 100vw !important;
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        padding-bottom: 10px;
+    }
+
+    .chat-sidebar>div {
+        border-radius: 12px;
+        margin: 6px 8px;
+        padding: 12px 10px !important;
+        font-size: 16px !important;
+    }
+
+    .chat-sidebar img {
+        width: 48px !important;
+        height: 48px !important;
+        margin-right: 12px !important;
+    }
+
+    .chat-sidebar .chat-item {
+        border-radius: 14px;
+        margin: 6px 8px;
+        padding: 12px 10px;
+        transition: background 0.2s;
+    }
+
+    .chat-sidebar .chat-item:hover {
+        background: #FFF8E7;
+    }
+}
+
+.chat-item {
+    background: #FFF8E7;
+    border-radius: 14px;
+    margin: 10px 10px 12px 10px;
+    box-shadow: 0 1px 3px #f5e8c7a0;
+    transition: background 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.chat-item:hover {
+    background: #FFE4A1;
+    box-shadow: 0 2px 8px #ffe4a1a0;
+}
+
+/* Custom scrollbar cho toàn bộ app và các khung chat */
+::-webkit-scrollbar {
+    width: 8px;
+    background: #FFF8E7;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #E5C299;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5C4033;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #E5C299 #FFF8E7;
+}
+
+/* Đảm bảo áp dụng cho các khung chat cụ thể */
+.chat-sidebar,
+.chat-main,
+.chat-item,
+.user-detail-info-row,
+.pet-detail-info-row {
+    scrollbar-width: thin;
+    scrollbar-color: #E5C299 #FFF8E7;
+}

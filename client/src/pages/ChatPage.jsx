@@ -33,6 +33,8 @@ export default function ChatPage() {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false)
   const [searchResults, setSearchResults] = useState([])
   const [isHoveringAttachment, setIsHoveringAttachment] = useState(false)
+  const [showSidebarMobile, setShowSidebarMobile] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
 
   // Lấy danh sách user thực tế từ API
   useEffect(() => {
@@ -185,6 +187,7 @@ export default function ChatPage() {
   // Khi click vào user, tạo hội thoại nếu chưa có
   const handleSelectUser = async (user) => {
     setSelectedChat(user)
+    if (isMobile) setShowSidebarMobile(false);
     const conversationId = userId < user._id ? `${userId}_${user._id}` : `${user._id}_${userId}`
     // Đảm bảo conversation tồn tại
     await setDoc(doc(db, "conversations", conversationId), {
@@ -192,6 +195,38 @@ export default function ChatPage() {
       createdAt: serverTimestamp(),
     })
   }
+
+  // Khi bấm back trên mobile, quay lại danh sách
+  const handleBackToSidebar = () => {
+    setSelectedChat(null);
+    setShowSidebarMobile(true);
+  };
+
+  // Lắng nghe resize để tự động show/hide sidebar phù hợp
+  useEffect(() => {
+    const handleResize = () => {
+      const wasMobile = isMobile;
+      const isNowMobile = window.innerWidth <= 900;
+      setIsMobile(isNowMobile);
+
+      if (isNowMobile) {
+        if (!selectedChat) setShowSidebarMobile(true);
+        if (selectedChat) setShowSidebarMobile(false);
+      } else {
+        setShowSidebarMobile(true);
+        // Nếu đang chuyển từ mobile sang desktop và chưa có cuộc trò chuyện nào được chọn
+        if (wasMobile && !selectedChat && chatList.length > 0) {
+          // Tự động chọn cuộc trò chuyện gần nhất
+          const mostRecentChat = chatList[0];
+          if (mostRecentChat && mostRecentChat.user) {
+            handleSelectUser(mostRecentChat.user);
+          }
+        }
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [selectedChat, chatList, isMobile]);
 
   // Lắng nghe tin nhắn realtime chỉ của conversationId đúng cặp user
   useEffect(() => {
@@ -209,6 +244,15 @@ export default function ChatPage() {
     })
     return () => unsubscribe()
   }, [selectedChat, userId])
+
+  // Thêm useEffect mới để xử lý scroll khi chuyển đổi màn hình
+  useEffect(() => {
+    if (selectedChat && messagesContainerRef.current) {
+      setTimeout(() => {
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
+      }, 100)
+    }
+  }, [selectedChat, showSidebarMobile])
 
   // Gửi tin nhắn
   const handleSendMessage = async (e) => {
@@ -353,7 +397,7 @@ export default function ChatPage() {
     >
       <style>{responsiveStyles}</style>
       {/* Logo */}
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+      <div style={{ textAlign: "center" }}>
         <img src={pawLetter || "/placeholder.svg"} alt="Pawmily" style={{ height: "150px", objectFit: "contain" }} />
       </div>
 
@@ -469,55 +513,59 @@ export default function ChatPage() {
           display: "flex",
           maxWidth: "1400px",
           margin: "0 auto",
-          height: "calc(100vh - 200px)",
+          height: "80vh",
           borderRadius: "15px",
           overflow: "hidden",
           boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
         }}
       >
-        {/* Chat List */}
+        {/* Sidebar: luôn render, chỉ ẩn/hiện bằng display */}
         <div
           className="chat-sidebar"
           style={{
-            width: "400px",
-            backgroundColor: "#FFFFFF",
-            borderRight: "1px solid #F5E8C7",
+            backgroundColor: "transparent",
+            borderRight: isMobile ? "none" : "1px solid #F5E8C7",
             overflowY: "auto",
-            minWidth: 250,
+            height: "100%",
+            width: "100%",
+            flex: 0.5,
+            borderRadius: isMobile ? "0" : undefined,
+            boxShadow: isMobile ? "none" : undefined,
+            display: (showSidebarMobile || !isMobile) ? 'block' : 'none',
           }}
         >
           {/* Conversations với tin nhắn */}
-          {chatList.length > 0 && (
+          {chatList.length > 0 ? (
             <>
               <div
                 style={{
                   padding: "10px 15px",
-                  backgroundColor: "#F5E8C7",
+                  backgroundColor: "#E5C299",
                   fontWeight: "bold",
-                  color: "#A47148",
+                  color: "#5C4033",
                   fontSize: "14px",
                 }}
               >
                 Tin nhắn gần đây
               </div>
               {chatList
-                .filter((chat) => chat && chat.user)
+                .filter((chat) => chat && chat.user && chat.lastMessage)
                 .map((chat) => (
                   <div
+                    className="chat-item"
                     key={`chat-${chat._id}`}
                     style={{
                       ...chatItemStyle(selectedChat?._id === chat._id),
-                      backgroundColor:
-                        selectedChat?._id === chat._id
-                          ? "#FFF8E7"
-                          : chat.isNewMessage
-                            ? "#FFF0D9"
-                            : chat.lastMessage
-                              ? "#FFFBF0"
-                              : "transparent",
-                      height: "70px",
+                      backgroundColor: selectedChat?._id === chat._id ? "#E5C299" : "#F5E8C7",
+                      borderRadius: "14px",
+                      margin: "10px 10px 12px 10px",
+                      boxShadow: selectedChat?._id === chat._id ? "0 2px 8px #e5c299a0" : "0 1px 3px #f5e8c7a0",
+                      transition: "background 0.2s, box-shadow 0.2s",
+                      cursor: "pointer",
                     }}
                     onClick={() => handleSelectUser(chat.user)}
+                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#E5C299'}
+                    onMouseLeave={e => e.currentTarget.style.backgroundColor = selectedChat?._id === chat._id ? '#E5C299' : '#F5E8C7'}
                   >
                     <img
                       src={
@@ -586,111 +634,32 @@ export default function ChatPage() {
                   </div>
                 ))}
             </>
-          )}
-
-          {/* Users chưa có conversation */}
-          {allUsers.filter((u) => u && u._id !== userId && !chatList.find((c) => c && c._id === u._id)).length > 0 && (
-            <>
-              <div
-                style={{
-                  padding: "10px 15px",
-                  backgroundColor: "#F0F0F0",
-                  fontWeight: "bold",
-                  color: "#888",
-                  fontSize: "14px",
-                }}
-              >
-                Người dùng khác
-              </div>
-              {allUsers
-                .filter((u) => u && u._id && u._id !== userId && !chatList.find((c) => c && c._id === u._id))
-                .map((user) => (
-                  <div
-                    key={`user-${user._id}`}
-                    style={{
-                      ...chatItemStyle(selectedChat?._id === user._id),
-                      height: "70px",
-                    }}
-                    onClick={() => handleSelectUser(user)}
-                  >
-                    <img
-                      src={
-                        user?.avatar && !user.avatar.includes("default-avatar.jpg") ? user.avatar : "/placeholder.svg"
-                      }
-                      alt={user?.username || user?.email || "No name"}
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                        marginRight: "15px",
-                        border: "1px solid #D7A86E",
-                        alignSelf: "center",
-                      }}
-                    />
-                    <div
-                      style={{
-                        flex: 1,
-                        minWidth: 0,
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontWeight: "bold",
-                          color: "#5D4037",
-                          fontSize: "16px",
-                          marginBottom: "6px",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {user?.username || user?.email || "No name"}
-                      </div>
-                      <div
-                        style={{
-                          color: "#B0B0B0",
-                          fontSize: "14px",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                          lineHeight: "1.2",
-                        }}
-                      >
-                        Bắt đầu cuộc trò chuyện
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </>
-          )}
-
-          {allUsers.length === 0 && (
-            <div
-              style={{
-                textAlign: "center",
-                color: "#A47148",
-                padding: "20px",
-              }}
-            >
-              Đang tải danh sách người dùng...
+          ) : (
+            <div style={{ textAlign: "center", color: "#A47148", margin: "auto", fontSize: "16px" }}>
+              Không có cuộc trò chuyện nào.
             </div>
           )}
         </div>
 
-        {/* Chat Messages */}
+        {/* Nội dung chat: luôn render, chỉ ẩn/hiện bằng display */}
         <div
           className="chat-main"
           style={{
             flex: 1,
             backgroundColor: "#FFFFFF",
-            display: "flex",
+            display: (selectedChat && (!showSidebarMobile || !isMobile)) ? 'flex' : 'none',
             flexDirection: "column",
             minWidth: 0,
+            height: "100%",
+            overflowY: "auto",
           }}
         >
+          {/* Nút back trên mobile */}
+          {isMobile && (
+            <button onClick={handleBackToSidebar} style={{ background: '#E5C299', color: '#5C4033', border: 'none', borderRadius: 16, padding: '8px 18px', margin: 12, fontWeight: 600, fontSize: 16, alignSelf: 'flex-start', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+              ← Quay lại danh sách
+            </button>
+          )}
           {selectedChat ? (
             <>
               {/* Chat Header */}
@@ -734,12 +703,14 @@ export default function ChatPage() {
               <div
                 ref={messagesContainerRef}
                 style={{
-                  flex: 1,
                   padding: "20px",
-                  overflowY: "auto",
                   display: "flex",
                   flexDirection: "column",
                   gap: "10px",
+                  overflowY: "auto",
+                  height: "60vh",
+                  width: "100%",
+                  boxSizing: "border-box",
                 }}
               >
                 {messages.length > 0 ? (
@@ -970,17 +941,8 @@ export default function ChatPage() {
               </form>
             </>
           ) : (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100%",
-                color: "#A47148",
-              }}
-            >
-              <p style={{ fontSize: "18px" }}>Chọn một cuộc trò chuyện để bắt đầu</p>
+            <div style={{ textAlign: "center", color: "#A47148", margin: "auto", fontSize: "16px" }}>
+              Chọn người dùng để bắt đầu trò chuyện
             </div>
           )}
         </div>

@@ -30,73 +30,75 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Navbar />
-        <ToastContainer />
-        <div style={{ paddingTop: '90px' }}>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/adopt" element={<AdoptPage />} />
-            <Route path="/pets/:id" element={<PetDetailPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/rescue-map" element={<RescueMapPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:id" element={<BlogDetailPage />} />
-            <Route path="/donate" element={<DonatePage />} />
+        <div style={{ minHeight: "100vh", display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <Navbar />
+          <div style={{ paddingTop: '90px' }}>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/adopt" element={<AdoptPage />} />
+              <Route path="/pets/:id" element={<PetDetailPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/rescue-map" element={<RescueMapPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:id" element={<BlogDetailPage />} />
+              <Route path="/donate" element={<DonatePage />} />
 
-            {/* Public Routes - Chỉ cho phép người dùng chưa đăng nhập */}
-            <Route
-              path="/login"
-              element={
-                <PublicRoute>
-                  <LoginPage />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <PublicRoute>
-                  <RegisterPage />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/login-form"
-              element={
-                <PublicRoute>
-                  <LoginForm />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/forgot-password"
-              element={
-                <PublicRoute>
-                  <ForgotPasswordPage />
-                </PublicRoute>
-              }
-            />
+              {/* Public Routes - Chỉ cho phép người dùng chưa đăng nhập */}
+              <Route
+                path="/login"
+                element={
+                  <PublicRoute>
+                    <LoginPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <PublicRoute>
+                    <RegisterPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/login-form"
+                element={
+                  <PublicRoute>
+                    <LoginForm />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/forgot-password"
+                element={
+                  <PublicRoute>
+                    <ForgotPasswordPage />
+                  </PublicRoute>
+                }
+              />
 
-            {/* Protected Routes - Chỉ cho phép người dùng đã đăng nhập */}
-            <Route
-              path="/user/:id"
-              element={
-                <PrivateRoute>
-                  <UserPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/chat"
-              element={
-                <PrivateRoute>
-                  <ChatPage />
-                </PrivateRoute>
-              }
-            />
-          </Routes>
+              {/* Protected Routes - Chỉ cho phép người dùng đã đăng nhập */}
+              <Route
+                path="/user/:id"
+                element={
+                  <PrivateRoute>
+                    <UserPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/chat"
+                element={
+                  <PrivateRoute>
+                    <ChatPage />
+                  </PrivateRoute>
+                }
+              />
+            </Routes>
+          </div>
+          <Footer />
         </div>
-        <Footer />
+        <ToastContainer />
       </BrowserRouter>
     </AuthProvider >
   );
