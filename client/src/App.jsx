@@ -19,6 +19,10 @@ import LoginForm from './pages/LoginForm';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ChatPage from './pages/ChatPage';
 import AdminAccount from './pages/AdminAccount';
+import AdminBlog from './pages/AdminBlog';
+import BlogCreate from './pages/BlogCreate';
+import BlogEdit from './pages/BlogEdit';
+import AdminAdopt from './pages/AdminAdopt';
 import ProfilePage from './pages/ProfilePage';
 
 // Components
@@ -119,6 +123,10 @@ function AppContent() {
           />
           {/* Admin Route */}
           <Route path="/admin/account" element={<AdminRoute><AdminAccount /></AdminRoute>} />
+          <Route path="/admin/blog" element={<AdminRoute><AdminBlog /></AdminRoute>} />
+          <Route path="/admin/blog/create" element={<AdminRoute><BlogCreate /></AdminRoute>} />
+          <Route path="/admin/blog/edit/:id" element={<AdminRoute><BlogEdit /></AdminRoute>} />
+          <Route path="/admin/adoption" element={<AdminRoute><AdminAdopt /></AdminRoute>} />
         </Routes>
       </div>
       <Footer />

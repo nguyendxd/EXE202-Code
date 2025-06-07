@@ -1,6 +1,5 @@
 import React from 'react'
 import AdminNavbar from './AdminNavbar'
-import Footer from './Footer'
 
 export default function AdminLayout({ children }) {
   return (
@@ -18,7 +17,6 @@ export default function AdminLayout({ children }) {
       >
         {children}
       </main>
-      <Footer />
     </div>
   )
 } 

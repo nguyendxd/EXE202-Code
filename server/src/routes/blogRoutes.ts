@@ -238,4 +238,10 @@ router.delete('/:id', authenticateToken as RequestHandler, deleteBlog as Request
  */
 router.get('/search', searchBlogs as RequestHandler);
 
+router.get('/imagekit-auth', (req, res) => {
+  const imagekit = require('../config/imagekit').default;
+  const authenticationParameters = imagekit.getAuthenticationParameters();
+  res.json(authenticationParameters);
+});
+
 export default router; 

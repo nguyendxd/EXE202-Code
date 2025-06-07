@@ -13,11 +13,12 @@
     "@goongmaps/goong-map-react": "^1.1.2",
     "axios": "^1.9.0",
     "formik": "^2.4.6",
+    "imagekit-javascript": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.6.1",
-    "socket.io-client": "^4.8.1",
     "react-toastify": "^11.0.5",
+    "socket.io-client": "^4.8.1",
     "yup": "^1.6.1"
   },
   "devDependencies": {
