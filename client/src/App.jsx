@@ -29,6 +29,7 @@ import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import AdminRoute from './routes/AdminRoute';
+import UserWishlist from './pages/UserWishlist';
 
 function AppContent() {
   const location = useLocation();
@@ -108,7 +109,14 @@ function AppContent() {
               </PrivateRoute>
             }
           />
-
+          <Route
+            path="/wishlist"
+            element={
+              <PrivateRoute>
+                <UserWishlist />
+              </PrivateRoute>
+            }
+          />
           {/* Admin Route */}
           <Route path="/admin/account" element={<AdminRoute><AdminAccount /></AdminRoute>} />
         </Routes>

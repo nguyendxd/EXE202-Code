@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../styles/index.css";
 import { getPetById } from '../services/petService';
+import { addToWishlist, removeFromWishlist, getWishlist } from '../services/wishlistService';
 import '../styles/PetGallery.css';
 import '../styles/PetDetailInfo.css';
 import Loading from '../components/Loading';
@@ -18,27 +19,46 @@ export default function PetDetailPage() {
     const [zoomImgIdx, setZoomImgIdx] = useState(null);
     const [isWishlisted, setIsWishlisted] = useState(false);
     const [isHeartHover, setIsHeartHover] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [modalAction, setModalAction] = useState(''); // 'add' hoặc 'remove'
 
     useEffect(() => {
-        const fetchPet = async () => {
+        const fetchPetAndWishlist = async () => {
             setLoading(true);
             setError(null);
             try {
-                const res = await getPetById(id);
-                setPet(res.data);
+                // Lấy thông tin pet
+                const petRes = await getPetById(id);
+                setPet(petRes.data);
+
+                // Kiểm tra wishlist
+                const wishlistRes = await getWishlist();
+                const isInWishlist = wishlistRes.data.some(item => item.pet._id === id);
+                setIsWishlisted(isInWishlist);
             } catch (err) {
                 setError("Không tìm thấy thông tin thú cưng.");
             } finally {
                 setLoading(false);
             }
         };
-        fetchPet();
+        fetchPetAndWishlist();
     }, [id]);
 
-    const handleWishlistToggle = () => {
-        setIsWishlisted((prev) => {
-            const newState = !prev;
-            if (newState) {
+    const handleWishlistToggle = async () => {
+        if (!isWishlisted) {
+            setModalAction('add');
+            setShowConfirmModal(true);
+        } else {
+            setModalAction('remove');
+            setShowConfirmModal(true);
+        }
+    };
+
+    const handleConfirmWishlist = async () => {
+        try {
+            if (modalAction === 'add') {
+                await addToWishlist(id);
+                setIsWishlisted(true);
                 toast.success('Đã thêm vào wishlist!', {
                     position: "top-right",
                     autoClose: 1000,
@@ -48,6 +68,8 @@ export default function PetDetailPage() {
                     draggable: true,
                 });
             } else {
+                await removeFromWishlist(id);
+                setIsWishlisted(false);
                 toast.info('Đã xóa khỏi wishlist!', {
                     position: "top-right",
                     autoClose: 1000,
@@ -57,8 +79,21 @@ export default function PetDetailPage() {
                     draggable: true,
                 });
             }
-            return newState;
-        });
+            setShowConfirmModal(false);
+        } catch (err) {
+            toast.error(modalAction === 'add' ? 'Thêm vào wishlist thất bại!' : 'Xóa khỏi wishlist thất bại!', {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+        }
+    };
+
+    const handleCancelWishlist = () => {
+        setShowConfirmModal(false);
     };
 
     const handleNavigateToUserPage = () => {
@@ -71,6 +106,82 @@ export default function PetDetailPage() {
     return (
         <div style={{ backgroundColor: "#FFF7E2", minHeight: "100vh", fontFamily: "Arial, sans-serif" }}>
             <ToastContainer />
+            {/* Modal xác nhận */}
+            {showConfirmModal && (
+                <div
+                    className="modal-overlay"
+                    onClick={handleCancelWishlist}
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0,0,0,0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 1000
+                    }}
+                >
+                    <div
+                        className="modal-content"
+                        onClick={e => e.stopPropagation()}
+                        style={{
+                            background: '#FAF3E0',
+                            padding: '24px',
+                            borderRadius: '12px',
+                            border: '2px solid #C69447',
+                            maxWidth: '400px',
+                            width: '90%',
+                            textAlign: 'center'
+                        }}
+                    >
+                        <div style={{ color: '#5C4033', fontSize: '20px', fontWeight: 600, marginBottom: '16px' }}>
+                            {modalAction === 'add' ? 'Thêm vào wishlist' : 'Xóa khỏi wishlist'}
+                        </div>
+                        <div style={{ color: '#5C4033', fontSize: '16px', marginBottom: '24px' }}>
+                            {modalAction === 'add'
+                                ? 'Bạn có chắc chắn muốn thêm thú cưng này vào danh sách yêu thích?'
+                                : 'Bạn có chắc chắn muốn xóa thú cưng này khỏi danh sách yêu thích?'}
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
+                            <button
+                                onClick={handleCancelWishlist}
+                                style={{
+                                    padding: '8px 24px',
+                                    borderRadius: '8px',
+                                    fontSize: '16px',
+                                    fontWeight: 500,
+                                    cursor: 'pointer',
+                                    background: '#F5E8C7',
+                                    border: '2px solid #C69447',
+                                    color: '#5C4033',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                Hủy
+                            </button>
+                            <button
+                                onClick={handleConfirmWishlist}
+                                style={{
+                                    padding: '8px 24px',
+                                    borderRadius: '8px',
+                                    fontSize: '16px',
+                                    fontWeight: 500,
+                                    cursor: 'pointer',
+                                    background: modalAction === 'add' ? '#C69447' : '#C94F4F',
+                                    border: `2px solid ${modalAction === 'add' ? '#C69447' : '#C94F4F'}`,
+                                    color: 'white',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                {modalAction === 'add' ? 'Thêm' : 'Xóa'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <section
                 style={{
                     backgroundImage: 'url("https://cdn.pixabay.com/photo/2022/10/25/04/55/cat-7544821_1280.jpg")',

@@ -8,3 +8,5 @@ export const createPet = (data) => axiosInstance.post(API_URL, data);
 export const getPetById = (id) => axiosInstance.get(`${API_URL}/${id}`);
 export const updatePet = (id, data) => axiosInstance.put(`${API_URL}/${id}`, data);
 export const deletePet = (id) => axiosInstance.delete(`${API_URL}/${id}`);
+export const searchPets = (params) => axiosInstance.get(`${API_URL}/search`, { params });
+export const getPetsByUserId = (userId) => axiosInstance.get(`${API_URL}/user/${userId}`);

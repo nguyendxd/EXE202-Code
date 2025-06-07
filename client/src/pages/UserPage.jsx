@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getUserById } from '../services/userService';
+import { getPetsByUserId } from '../services/petService';
 import Loading from '../components/Loading';
+import PetCard from '../components/PetCard';
 import "../styles/index.css";
 
 export default function UserPage() {
@@ -10,6 +12,9 @@ export default function UserPage() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [pets, setPets] = useState([]);
+    const [petsLoading, setPetsLoading] = useState(true);
+    const [petsError, setPetsError] = useState(null);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -25,6 +30,20 @@ export default function UserPage() {
             }
         };
         fetchUser();
+        // Fetch pets by user
+        const fetchPets = async () => {
+            setPetsLoading(true);
+            setPetsError(null);
+            try {
+                const res = await getPetsByUserId(id);
+                setPets(res.data.data || []);
+            } catch (err) {
+                setPetsError("Không thể tải danh sách thú cưng.");
+            } finally {
+                setPetsLoading(false);
+            }
+        };
+        fetchPets();
     }, [id]);
 
     if (loading) return <Loading />;
@@ -86,6 +105,29 @@ export default function UserPage() {
                         </div>
                     </div>
                 </div>
+            </div>
+            {/* Danh sách pet của user */}
+            <div style={{ maxWidth: "1100px", margin: "32px auto 0 auto", background: "#fff", borderRadius: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.08)", padding: "32px 40px" }}>
+                <div style={{ fontWeight: 700, fontSize: 22, color: '#5C4033', marginBottom: 24 }}>Các động vật cần nhận nuôi ở trạm này</div>
+                {petsLoading ? (
+                    <div style={{ textAlign: 'center', color: '#A47148' }}>Đang tải danh sách thú cưng...</div>
+                ) : petsError ? (
+                    <div style={{ textAlign: 'center', color: 'red' }}>{petsError}</div>
+                ) : pets.length === 0 ? (
+                    <div style={{ textAlign: 'center', color: '#A47148' }}>Chưa có thú cưng nào được đăng.</div>
+                ) : (
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                        gap: '32px',
+                        justifyItems: 'center',
+                        marginTop: 8
+                    }}>
+                        {pets.map(pet => (
+                            <PetCard key={pet._id} pet={pet} />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

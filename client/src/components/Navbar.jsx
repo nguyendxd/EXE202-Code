@@ -182,30 +182,6 @@ export default function Navbar() {
                             NHẬN NUÔI
                         </Link>
                         <Link
-                            to="/posts"
-                            style={{
-                                textDecoration: 'none',
-                                color: '#333',
-                                padding: isMobile ? '10px' : '8px',
-                                transition: 'color 0.3s, background-color 0.3s, font-weight 0.1s, transform 0.1s',
-                                borderRadius: '50px'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.target.style.color = '#6B3A0F';
-                                e.target.style.backgroundColor = '#E8D7A3';
-                                e.target.style.fontWeight = '600';
-                                e.target.style.transform = 'scale(1.1)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.target.style.color = '#333';
-                                e.target.style.backgroundColor = 'transparent';
-                                e.target.style.fontWeight = '400';
-                                e.target.style.transform = 'scale(1)';
-                            }}
-                        >
-                            BÀI ĐĂNG
-                        </Link>
-                        <Link
                             to="/rescue-map"
                             style={{
                                 textDecoration: 'none',
@@ -355,7 +331,7 @@ export default function Navbar() {
                                         padding: '8px 0',
                                     }}>
                                         <button style={dropdownButtonStyle} onClick={() => { navigate(`/profile/${userId}`); setShowUserMenu(false); }}> Hồ sơ người dùng </button>
-                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/wishlist'); setShowUserMenu(false); }}>Wishlist</button>
+                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/wishlist'); setShowUserMenu(false); }}>Danh sách yêu thích</button>
                                         <button style={dropdownButtonStyle} onClick={() => { navigate('/adopt-list'); setShowUserMenu(false); }}>Danh sách nhận nuôi</button>
                                         <button style={dropdownButtonStyle} onClick={() => { navigate('/setting'); setShowUserMenu(false); }}>Cài đặt</button>
                                         <button style={dropdownButtonStyle} onClick={handleLogout}>Đăng xuất</button>

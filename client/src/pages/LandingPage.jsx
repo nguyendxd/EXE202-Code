@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import landingpageimage from '../assets/landingpageimage.png';
 import chungminhlaaisection from '../assets/chungminhlaaisection.jpg';
 import { getAllPets } from '../services/petService';
+import qrCode from '../assets/image 9.png';
 
 const images = [
     'https://images.pexels.com/photos/46024/pexels-photo-46024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
@@ -489,27 +490,13 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {/* Location Map Section */}
-            <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#D7B99A' }}>
-                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Bản đồ</h2>
-                <p style={{ maxWidth: '800px', margin: '20px auto', fontSize: '18px' }}>
-                    Cửa hàng của chúng tôi nằm tại địa chỉ: FPT University HCM Campus
-                </p>
-                <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-                    <img
-                        src="https://via.placeholder.com/800x400?text=Map+of+HPT+Vietnam+FPT+University+HCM+Campus"
-                        alt="Map to HPT Vietnam FPT University HCM Campus"
-                        style={{ width: '100%', borderRadius: '10px' }}
-                    />
-                </div>
-            </section>
 
             {/* Donation QR Code Section */}
             <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#C8A484' }}>
                 <h2 style={{ fontSize: '30px', color: '#A47148' }}>Hỗ trợ chúng tôi donate theo cách của bạn!</h2>
                 <div style={{ maxWidth: '300px', margin: '20px auto' }}>
                     <img
-                        src="https://via.placeholder.com/200x200?text=QR+Code+for+Donation"
+                        src={qrCode}
                         alt="Donation QR Code"
                         style={{ width: '100%', borderRadius: '10px' }}
                     />
