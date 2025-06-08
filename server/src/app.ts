@@ -18,8 +18,19 @@ const app = express();
 app.use(express.json());
 app.use(helmet());
 app.use(cookieParser());
+
+const allowedOrigins = [
+  'http://103.28.32.101'
+];
+
 app.use(cors({
-  origin: '*', 
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 

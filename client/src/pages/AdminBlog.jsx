@@ -32,7 +32,7 @@ export default function AdminBlog() {
   useEffect(() => {
     setLoading(true)
     const token = localStorage.getItem('token');
-    fetch(`${import.meta.env.VITE_API_URL}/api/blogs`, {
+    fetch('http://103.28.32.101:3000/api/blogs', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -157,7 +157,7 @@ export default function AdminBlog() {
     setLoading(true)
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${blog._id}`, {
+      const res = await fetch(`http://103.28.32.101:3000/api/blogs/${blog._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -180,7 +180,7 @@ export default function AdminBlog() {
     setLoading(true)
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${blogId}`, {
+      const res = await fetch(`http://103.28.32.101:3000/api/blogs/${blogId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -783,45 +783,36 @@ export default function AdminBlog() {
                   try {
                     const token = localStorage.getItem('token');
                     // Xóa blog trước
-                    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${blogToDelete._id}`, {
+                    const res = await fetch(`http://103.28.32.101:3000/api/blogs/${blogToDelete._id}`, {
                       method: "DELETE",
                       headers: {
                         "Authorization": `Bearer ${token}`
                       }
                     });
-                    
-                    if (!res.ok) {
-                      throw new Error('Xóa blog thất bại');
-                    }
-
-                    // Nếu xóa thành công, cập nhật UI
-                    setBlogs(blogs.filter((b) => b._id !== blogToDelete._id))
-                    setShowDeleteModal(false)
-                    setBlogToDelete(null)
+                    if (!res.ok) throw new Error('Xóa thất bại');
+                    const updated = await res.json();
+                    setBlogs(blogs.map((b) => b._id === blogToDelete._id ? updated : b));
+                    setShowDeleteModal(false);
+                    setBlogToDelete(null);
                   } catch (err) {
-                    console.error("Error deleting blog:", err);
-                    alert("Xóa thất bại! Vui lòng thử lại sau.")
+                    alert("Xóa thất bại!");
                   }
                   setLoading(false)
                 }}
-                onMouseEnter={() => setHoveredButtons((prev) => ({ ...prev, confirmDelete: true }))}
-                onMouseLeave={() => setHoveredButtons((prev) => ({ ...prev, confirmDelete: false }))}
                 style={{
                   padding: "12px 24px",
                   borderRadius: "8px",
-                  border: "none",
-                  backgroundColor: hoveredButtons.confirmDelete ? "#C62828" : "#F44336",
-                  color: "white",
+                  border: "2px solid #D7A86E",
+                  backgroundColor: "#FFFFFF",
+                  color: "#A47148",
                   cursor: "pointer",
                   fontWeight: "bold",
                   transition: "all 0.3s ease",
-                  transform: hoveredButtons.confirmDelete ? "translateY(-2px)" : "translateY(0)",
-                  boxShadow: hoveredButtons.confirmDelete
-                    ? "0 4px 12px rgba(244, 67, 54, 0.3)"
-                    : "0 2px 6px rgba(244, 67, 54, 0.2)",
+                  transform: hoveredButtons.cancelDelete ? "translateY(-2px)" : "translateY(0)",
+                  boxShadow: hoveredButtons.cancelDelete ? "0 4px 8px rgba(0,0,0,0.1)" : "none",
                 }}
               >
-                Xóa bài viết
+                Xóa
               </button>
             </div>
           </div>
