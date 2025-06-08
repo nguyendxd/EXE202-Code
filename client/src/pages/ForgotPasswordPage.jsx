@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import bgImage from '../assets/catdog.jpg'; // Using the same background
 import logoImg from '../assets/paw-logo.png'; // Using the same logo
-import pawLetter from '../assets/pawLetter.png';
+import PawLetter from '../assets/PawLetter.png';
 import '../styles/ForgotPasswordPage.css'; // Corresponding CSS file
 
 const ForgotPasswordPage = () => {
@@ -57,7 +57,7 @@ const ForgotPasswordPage = () => {
       <div className="login-form-right">
         {/* Logo */}
         <div className="login-form-logo">
-          <img src={pawLetter} alt="Pawmily Logo" />
+          <img src={PawLetter} alt="Pawmily Logo" />
         </div>
         {/* Title */}
         <div className="login-form-title">
