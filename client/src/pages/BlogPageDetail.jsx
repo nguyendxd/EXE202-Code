@@ -19,7 +19,7 @@ export default function BlogDetailPage() {
       setError(null)
       try {
         // Fetch blog detail
-        const response = await axios.get(`http://localhost:3000/api/blogs/${id}`)
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`)
         const data = response.data
         if (!data || typeof data !== 'object' || Array.isArray(data)) {
           throw new Error('Dữ liệu chi tiết blog không hợp lệ')
@@ -28,7 +28,7 @@ export default function BlogDetailPage() {
         setBlog(data)
 
         // Fetch related blogs
-        const relatedResponse = await axios.get("http://localhost:3000/api/blogs", {
+        const relatedResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/blogs`, {
           params: {
             status: "published",
             limit: 3,

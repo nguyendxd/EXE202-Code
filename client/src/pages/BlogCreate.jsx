@@ -108,7 +108,7 @@ export default function BlogCreate() {
       form.append("status", status)
       images.forEach((img) => form.append("images", img))
 
-      const res = await fetch("http://localhost:3000/api/blogs", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("token")}`

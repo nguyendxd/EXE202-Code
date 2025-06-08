@@ -39,7 +39,7 @@ export default function ChatPage() {
   // Lấy danh sách user thực tế từ API
   useEffect(() => {
     if (!token) return
-    fetch("http://localhost:3000/api/users", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
       headers: { Authorization: "Bearer " + token },
     })
       .then((res) => res.json())

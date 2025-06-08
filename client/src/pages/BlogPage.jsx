@@ -16,7 +16,7 @@ export default function BlogPage() {
     const fetchBlogs = async () => {
       setLoading(true)
       try {
-        const response = await axios.get("http://localhost:3000/api/blogs", {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/blogs`, {
           params: {
             status: "published",
           },

@@ -68,7 +68,7 @@ export default function RescueMapPage() {
 
             try {
               // Fetch nearby stations
-              const response = await axios.get("http://localhost:3000/api/map/nearby-stations", {
+              const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/map/nearby-stations`, {
                 params: {
                   latitude,
                   longitude,

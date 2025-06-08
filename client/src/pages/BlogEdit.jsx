@@ -29,7 +29,7 @@ export default function BlogEdit() {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:3000/api/blogs/${id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         if (!res.ok) throw new Error("Không thể tải dữ liệu blog");
@@ -88,7 +88,7 @@ export default function BlogEdit() {
         images: formData.images,
         status: formData.status,
       };
-      const res = await fetch(`http://localhost:3000/api/blogs/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
