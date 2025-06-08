@@ -3,6 +3,26 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getProfileById, updateProfile } from '../services/profileService';
 
+// Thêm style responsive cho phần profile info
+const profileResponsiveStyle = `
+@media (max-width: 700px) {
+  .profile-info-container {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 48px !important;
+    padding: 18px !important;
+  }
+  .profile-info-left, .profile-info-right {
+    width: 100% !important;
+    max-width: 420px !important;
+    margin: 0 auto !important;
+  }
+}
+.profile-info-container {
+  gap: 64px !important;
+}
+`;
+
 export default function ProfilePage() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -12,9 +32,11 @@ export default function ProfilePage() {
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [form, setForm] = useState({
-        fullName: '',
+        email: '',
         phone: '',
         address: '',
+        socialLink: '',
+        description: '',
         avatar: ''
     });
     const [avatarFile, setAvatarFile] = useState(null);
@@ -44,14 +66,28 @@ export default function ProfilePage() {
     useEffect(() => {
         if (user) {
             setForm({
-                fullName: user.fullName || '',
+                email: user.email || '',
                 phone: user.phone || '',
                 address: user.address || '',
+                socialLink: user.socialLink || '',
+                description: user.description || '',
                 avatar: user.avatar || ''
             });
             setAvatarFile(null);
         }
     }, [user]);
+
+    // Không cho scroll khi mở modal
+    useEffect(() => {
+        if (showModal) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [showModal]);
 
     if (loading) {
         return (
@@ -101,101 +137,246 @@ export default function ProfilePage() {
             backgroundColor: '#FAF3E0',
             padding: '100px 20px 20px 20px'
         }}>
+            <style>{profileResponsiveStyle}</style>
             {/* Modal cập nhật thông tin */}
             {showModal && (
                 <div style={{
                     position: 'fixed',
                     top: 0, left: 0, right: 0, bottom: 0,
-                    background: 'rgba(0,0,0,0.25)',
+                    background: 'rgba(0,0,0,0.5)',
                     zIndex: 1000,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backdropFilter: 'blur(4px)'
                 }}>
                     <div style={{
                         background: '#fff',
-                        borderRadius: 12,
-                        padding: 32,
-                        minWidth: 340,
-                        boxShadow: '0 4px 24px rgba(0,0,0,0.18)',
-                        position: 'relative'
+                        borderRadius: 20,
+                        padding: '40px',
+                        width: '500px',
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+                        position: 'relative',
+                        animation: 'modalFadeIn 0.3s ease-out'
                     }}>
-                        <h2 style={{ color: '#5C4033', marginBottom: 18, fontSize: 22 }}>Cập nhật thông tin</h2>
-                        <form onSubmit={async (e) => {
-                            e.preventDefault();
-                            setUpdating(true);
-                            setUpdateError(null);
-                            try {
-                                let updateData = { ...form };
-                                if (avatarFile) {
-                                    // upload file lên server hoặc cloud, lấy url trả về
-                                    // ở đây giả lập upload, thực tế bạn cần gọi API upload
-                                    // ví dụ: const url = await uploadAvatar(avatarFile);
-                                    // updateData.avatar = url;
-                                    // demo: dùng URL.createObjectURL
-                                    updateData.avatar = form.avatar;
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                            <h2 style={{
+                                color: '#5C4033',
+                                marginBottom: 28,
+                                fontSize: 24,
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                                width: 400
+                            }}>Cập nhật thông tin</h2>
+                            <form onSubmit={async (e) => {
+                                e.preventDefault();
+                                setUpdating(true);
+                                setUpdateError(null);
+                                try {
+                                    const updateData = { ...form };
+                                    const res = await updateProfile(user._id, updateData);
+                                    setUser(prev => ({ ...prev, ...updateData }));
+                                    setShowModal(false);
+                                } catch (err) {
+                                    setUpdateError(err.response?.data?.message || 'Cập nhật thất bại');
+                                } finally {
+                                    setUpdating(false);
                                 }
-                                const res = await updateProfile(user._id, updateData);
-                                setUser(prev => ({ ...prev, ...updateData }));
-                                setShowModal(false);
-                            } catch (err) {
-                                setUpdateError(err.response?.data?.message || 'Cập nhật thất bại');
-                            } finally {
-                                setUpdating(false);
-                            }
-                        }}>
-                            <div style={{ marginBottom: 16, textAlign: 'center' }}>
-                                <label style={{ color: '#8B4513', fontWeight: 600, display: 'block', marginBottom: 8 }}>Ảnh đại diện</label>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={e => {
-                                        const file = e.target.files[0];
-                                        if (file) {
-                                            setAvatarFile(file);
-                                            setForm(f => ({ ...f, avatar: URL.createObjectURL(file) }));
-                                        }
-                                    }}
-                                    style={{ marginBottom: 10 }}
-                                />
-                                {form.avatar && (
-                                    <img src={form.avatar} alt="avatar preview" style={{ width: 90, height: 90, borderRadius: '50%', objectFit: 'cover', border: '2px solid #E5C299', marginTop: 8 }} />
+                            }} style={{ width: 400 }}>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: 18,
+                                    width: '100%'
+                                }}>
+                                    <div style={{ width: '100%' }}>
+                                        <label style={{
+                                            color: '#8B4513',
+                                            fontWeight: 600,
+                                            display: 'block',
+                                            marginBottom: 6,
+                                            fontSize: 15,
+                                            textAlign: 'left'
+                                        }}>Email</label>
+                                        <input
+                                            type="email"
+                                            value={form.email}
+                                            onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px 14px',
+                                                borderRadius: 8,
+                                                border: '2px solid #E5C299',
+                                                fontSize: 15,
+                                                outline: 'none',
+                                                boxSizing: 'border-box',
+                                                marginBottom: 2
+                                            }}
+                                            required
+                                        />
+                                    </div>
+                                    <div style={{ width: '100%' }}>
+                                        <label style={{
+                                            color: '#8B4513',
+                                            fontWeight: 600,
+                                            display: 'block',
+                                            marginBottom: 6,
+                                            fontSize: 15,
+                                            textAlign: 'left'
+                                        }}>Số điện thoại</label>
+                                        <input
+                                            type="text"
+                                            value={form.phone}
+                                            onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px 14px',
+                                                borderRadius: 8,
+                                                border: '2px solid #E5C299',
+                                                fontSize: 15,
+                                                outline: 'none',
+                                                boxSizing: 'border-box',
+                                                marginBottom: 2
+                                            }}
+                                            required
+                                        />
+                                    </div>
+                                    <div style={{ width: '100%' }}>
+                                        <label style={{
+                                            color: '#8B4513',
+                                            fontWeight: 600,
+                                            display: 'block',
+                                            marginBottom: 6,
+                                            fontSize: 15,
+                                            textAlign: 'left'
+                                        }}>Địa chỉ</label>
+                                        <input
+                                            type="text"
+                                            value={form.address}
+                                            onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px 14px',
+                                                borderRadius: 8,
+                                                border: '2px solid #E5C299',
+                                                fontSize: 15,
+                                                outline: 'none',
+                                                boxSizing: 'border-box',
+                                                marginBottom: 2
+                                            }}
+                                            required
+                                        />
+                                    </div>
+                                    <div style={{ width: '100%' }}>
+                                        <label style={{
+                                            color: '#8B4513',
+                                            fontWeight: 600,
+                                            display: 'block',
+                                            marginBottom: 6,
+                                            fontSize: 15,
+                                            textAlign: 'left'
+                                        }}>Link mạng xã hội</label>
+                                        <input
+                                            type="text"
+                                            value={form.socialLink}
+                                            onChange={e => setForm(f => ({ ...f, socialLink: e.target.value }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px 14px',
+                                                borderRadius: 8,
+                                                border: '2px solid #E5C299',
+                                                fontSize: 15,
+                                                outline: 'none',
+                                                boxSizing: 'border-box',
+                                                marginBottom: 2
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{ width: '100%' }}>
+                                        <label style={{
+                                            color: '#8B4513',
+                                            fontWeight: 600,
+                                            display: 'block',
+                                            marginBottom: 6,
+                                            fontSize: 15,
+                                            textAlign: 'left'
+                                        }}>Miêu tả</label>
+                                        <textarea
+                                            value={form.description}
+                                            onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px 14px',
+                                                borderRadius: 8,
+                                                border: '2px solid #E5C299',
+                                                fontSize: 15,
+                                                outline: 'none',
+                                                boxSizing: 'border-box',
+                                                marginBottom: 2,
+                                                minHeight: 70,
+                                                resize: 'vertical'
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                {updateError && (
+                                    <div style={{
+                                        color: '#FF6B6B',
+                                        margin: '18px auto',
+                                        padding: '10px',
+                                        backgroundColor: '#FFF0F0',
+                                        borderRadius: 8,
+                                        fontSize: 14,
+                                        maxWidth: 340,
+                                        textAlign: 'center'
+                                    }}>{updateError}</div>
                                 )}
-                            </div>
-                            <div style={{ marginBottom: 16 }}>
-                                <label style={{ color: '#8B4513', fontWeight: 600 }}>Họ tên</label>
-                                <input
-                                    type="text"
-                                    value={form.fullName}
-                                    onChange={e => setForm(f => ({ ...f, fullName: e.target.value }))}
-                                    style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #E5C299', marginTop: 4 }}
-                                    required
-                                />
-                            </div>
-                            <div style={{ marginBottom: 16 }}>
-                                <label style={{ color: '#8B4513', fontWeight: 600 }}>Số điện thoại</label>
-                                <input
-                                    type="text"
-                                    value={form.phone}
-                                    onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                                    style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #E5C299', marginTop: 4 }}
-                                    required
-                                />
-                            </div>
-                            <div style={{ marginBottom: 16 }}>
-                                <label style={{ color: '#8B4513', fontWeight: 600 }}>Địa chỉ</label>
-                                <input
-                                    type="text"
-                                    value={form.address}
-                                    onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
-                                    style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #E5C299', marginTop: 4 }}
-                                    required
-                                />
-                            </div>
-                            {updateError && <div style={{ color: 'red', marginBottom: 10 }}>{updateError}</div>}
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
-                                <button type="button" onClick={() => setShowModal(false)} style={{ padding: '8px 18px', borderRadius: 8, border: 'none', background: '#eee', color: '#5C4033', fontWeight: 600, cursor: 'pointer' }}>Huỷ</button>
-                                <button type="submit" disabled={updating} style={{ padding: '8px 18px', borderRadius: 8, border: 'none', background: '#E5C299', color: '#5C4033', fontWeight: 600, cursor: updating ? 'not-allowed' : 'pointer' }}>{updating ? 'Đang lưu...' : 'Lưu'}</button>
-                            </div>
-                        </form>
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    gap: 16,
+                                    marginTop: 26
+                                }}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowModal(false)}
+                                        style={{
+                                            padding: '10px 28px',
+                                            borderRadius: 8,
+                                            border: '2px solid #E5C299',
+                                            background: 'transparent',
+                                            color: '#5C4033',
+                                            fontWeight: 600,
+                                            cursor: 'pointer',
+                                            fontSize: 15,
+                                            transition: 'all 0.2s',
+                                            boxShadow: '0 2px 8px rgba(229,194,153,0.08)'
+                                        }}
+                                    >
+                                        Huỷ
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={updating}
+                                        style={{
+                                            padding: '10px 28px',
+                                            borderRadius: 8,
+                                            border: 'none',
+                                            background: '#E5C299',
+                                            color: '#5C4033',
+                                            fontWeight: 600,
+                                            cursor: updating ? 'not-allowed' : 'pointer',
+                                            fontSize: 15,
+                                            transition: 'all 0.2s',
+                                            opacity: updating ? 0.7 : 1,
+                                            boxShadow: '0 2px 8px rgba(229,194,153,0.12)'
+                                        }}
+                                    >
+                                        {updating ? 'Đang lưu...' : 'Lưu thay đổi'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             )}
@@ -217,9 +398,9 @@ export default function ProfilePage() {
                     borderRadius: 18,
                     boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
                     padding: 32,
-                }}>
+                }} className="profile-info-container">
                     {/* Bên trái: avatar và mô tả */}
-                    <div style={{ flex: 0.38, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18 }}>
+                    <div className="profile-info-left" style={{ flex: 0.38, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18 }}>
                         <div style={{ position: 'relative', marginBottom: 10 }}>
                             <img
                                 src={form.avatar || '/placeholder.svg'}
@@ -246,7 +427,7 @@ export default function ProfilePage() {
                         </div>
                     </div>
                     {/* Bên phải: thông tin chi tiết */}
-                    <div style={{ flex: 0.62, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 18 }}>
+                    <div className="profile-info-right" style={{ flex: 0.62, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 18 }}>
                         <div style={{ fontWeight: 800, fontSize: 26, color: '#5C4033', marginBottom: 10, letterSpacing: 0.5, display: 'flex', alignItems: 'center', gap: 10 }}>
                             <span>Thông tin người dùng</span>
                         </div>
