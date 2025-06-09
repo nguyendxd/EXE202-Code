@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getProfileById, updateProfile } from '../services/profileService';
+import { getPetsByUserId, createPet, updatePet } from '../services/petService';
+import PetCard from '../components/PetCard';
 
 // Thêm style responsive cho phần profile info
 const profileResponsiveStyle = `
@@ -42,6 +44,29 @@ export default function ProfilePage() {
     const [avatarFile, setAvatarFile] = useState(null);
     const [updating, setUpdating] = useState(false);
     const [updateError, setUpdateError] = useState(null);
+    const [pets, setPets] = useState([]);
+    const [petsLoading, setPetsLoading] = useState(true);
+    const [petsError, setPetsError] = useState(null);
+    const [showPetModal, setShowPetModal] = useState(false);
+    const [petForm, setPetForm] = useState({
+        name: '',
+        species: '',
+        breed: '',
+        age: '',
+        size: '',
+        gender: '',
+        healthStatus: '',
+        color: '',
+        weight: '',
+        temperament: '',
+        address: '',
+        contactPhone: '',
+        story: '',
+    });
+    const [petImages, setPetImages] = useState([]);
+    const [petSubmitting, setPetSubmitting] = useState(false);
+    const [petSubmitError, setPetSubmitError] = useState(null);
+    const [editingPet, setEditingPet] = useState(null);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -61,6 +86,21 @@ export default function ProfilePage() {
             setUser(currentUser);
             setLoading(false);
         }
+
+        // Fetch pets by user
+        const fetchPets = async () => {
+            setPetsLoading(true);
+            setPetsError(null);
+            try {
+                const res = await getPetsByUserId(id || currentUser._id);
+                setPets(res.data.data || []);
+            } catch (err) {
+                setPetsError("Không thể tải danh sách thú cưng.");
+            } finally {
+                setPetsLoading(false);
+            }
+        };
+        fetchPets();
     }, [id, currentUser]);
 
     useEffect(() => {
@@ -88,6 +128,29 @@ export default function ProfilePage() {
             document.body.style.overflow = 'auto';
         };
     }, [showModal]);
+
+    // Khi mở modal cập nhật, điền sẵn thông tin pet
+    useEffect(() => {
+        if (editingPet) {
+            setShowPetModal(true);
+            setPetForm({
+                name: editingPet.name || '',
+                species: editingPet.species || '',
+                breed: editingPet.breed || '',
+                age: editingPet.age || '',
+                size: editingPet.size || '',
+                gender: editingPet.gender || '',
+                healthStatus: Array.isArray(editingPet.healthStatus) ? editingPet.healthStatus.join(', ') : (editingPet.healthStatus || ''),
+                color: editingPet.color || '',
+                weight: editingPet.weight || '',
+                temperament: editingPet.temperament || '',
+                address: editingPet.address || '',
+                contactPhone: editingPet.contactPhone || '',
+                story: editingPet.story || '',
+            });
+            setPetImages([]); // Không tự động fill ảnh cũ, chỉ cho chọn lại ảnh mới nếu muốn
+        }
+    }, [editingPet]);
 
     if (loading) {
         return (
@@ -380,6 +443,109 @@ export default function ProfilePage() {
                     </div>
                 </div>
             )}
+            {/* Modal đăng động vật */}
+            {showPetModal && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0,0,0,0.5)',
+                    zIndex: 1000,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backdropFilter: 'blur(4px)'
+                }}>
+                    <div style={{
+                        background: '#fff',
+                        borderRadius: 20,
+                        padding: '40px',
+                        width: '520px',
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+                        position: 'relative',
+                        animation: 'modalFadeIn 0.3s ease-out',
+                        maxHeight: '90vh',
+                        overflowY: 'auto'
+                    }}>
+                        <h2 style={{ color: '#5C4033', marginBottom: 18, fontSize: 22, fontWeight: 'bold', textAlign: 'center' }}>Đăng động vật mới</h2>
+                        <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            setPetSubmitting(true);
+                            setPetSubmitError(null);
+                            try {
+                                const formData = new FormData();
+                                Object.entries(petForm).forEach(([key, value]) => {
+                                    if (key === 'healthStatus') {
+                                        value.split(',').map(s => s.trim()).forEach(v => formData.append('healthStatus', v));
+                                    } else {
+                                        formData.append(key, value);
+                                    }
+                                });
+                                formData.append('user', user._id);
+                                if (petImages && petImages.length > 0) {
+                                    petImages.forEach(img => formData.append('images', img));
+                                }
+                                if (editingPet) {
+                                    await updatePet(editingPet._id, formData);
+                                } else {
+                                    await createPet(formData);
+                                }
+                                const res = await getPetsByUserId(user._id);
+                                setPets(res.data.data || []);
+                                setShowPetModal(false);
+                                setPetForm({
+                                    name: '', species: '', breed: '', age: '', size: '', gender: '', healthStatus: '', color: '', weight: '', temperament: '', address: '', contactPhone: '', story: ''
+                                });
+                                setPetImages([]);
+                                setEditingPet(null);
+                            } catch (err) {
+                                setPetSubmitError(err.response?.data?.message || 'Lưu thông tin thất bại');
+                            } finally {
+                                setPetSubmitting(false);
+                            }
+                        }} encType="multipart/form-data">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                                <input required placeholder="Tên động vật" value={petForm.name} onChange={e => setPetForm(f => ({ ...f, name: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }} />
+                                <input required placeholder="Loài (species)" value={petForm.species} onChange={e => setPetForm(f => ({ ...f, species: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }} />
+                                <input placeholder="Giống (breed)" value={petForm.breed} onChange={e => setPetForm(f => ({ ...f, breed: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }} />
+                                <input placeholder="Tuổi (age)" value={petForm.age} onChange={e => setPetForm(f => ({ ...f, age: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }} />
+
+                                <div style={{ display: 'flex', gap: 8 }}>
+                                    <label style={{ fontWeight: 500, color: '#8B4513', minWidth: 80 }}>Giới tính:</label>
+                                    <select value={petForm.gender} onChange={e => setPetForm(f => ({ ...f, gender: e.target.value }))} style={{ flex: 1, padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }}>
+                                        <option value="">Chọn</option>
+                                        <option value="male">Đực</option>
+                                        <option value="female">Cái</option>
+                                    </select>
+                                </div>
+                                <input placeholder="Tình trạng sức khoẻ (cách nhau bởi dấu phẩy)" value={petForm.healthStatus} onChange={e => setPetForm(f => ({ ...f, healthStatus: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }} />
+                                <input placeholder="Màu sắc (color)" value={petForm.color} onChange={e => setPetForm(f => ({ ...f, color: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }} />
+                                <input placeholder="Cân nặng (weight)" value={petForm.weight} onChange={e => setPetForm(f => ({ ...f, weight: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }} />
+                                <input placeholder="Tính cách (temperament)" value={petForm.temperament} onChange={e => setPetForm(f => ({ ...f, temperament: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }} />
+                                <input placeholder="Địa chỉ (address)" value={petForm.address} onChange={e => setPetForm(f => ({ ...f, address: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }} />
+                                <input placeholder="Số điện thoại liên hệ" value={petForm.contactPhone} onChange={e => setPetForm(f => ({ ...f, contactPhone: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299' }} />
+                                <textarea placeholder="Câu chuyện (story)" value={petForm.story} onChange={e => setPetForm(f => ({ ...f, story: e.target.value }))} style={{ padding: 8, borderRadius: 6, border: '1.5px solid #E5C299', minHeight: 60 }} />
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                                    <label style={{ fontWeight: 500, color: '#8B4513' }}>Ảnh động vật (có thể chọn nhiều):</label>
+                                    <input type="file" accept="image/*" multiple onChange={e => setPetImages(Array.from(e.target.files))} />
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 6 }}>
+                                        {petImages && petImages.map((img, idx) => (
+                                            <div key={idx} style={{ position: 'relative' }}>
+                                                <img src={URL.createObjectURL(img)} alt="pet" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, border: '1.5px solid #E5C299' }} />
+                                                <button type="button" onClick={() => setPetImages(petImages.filter((_, i) => i !== idx))} style={{ position: 'absolute', top: -8, right: -8, background: '#FF6B6B', color: '#fff', border: 'none', borderRadius: '50%', width: 20, height: 20, cursor: 'pointer', fontSize: 13, fontWeight: 700, lineHeight: '20px', padding: 0 }}>×</button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                {petSubmitError && <div style={{ color: '#FF6B6B', background: '#FFF0F0', borderRadius: 8, padding: 8, textAlign: 'center' }}>{petSubmitError}</div>}
+                                <div style={{ display: 'flex', justifyContent: 'center', gap: 16, marginTop: 18 }}>
+                                    <button type="button" onClick={() => { setShowPetModal(false); setEditingPet(null); }} style={{ padding: '10px 28px', borderRadius: 8, border: '2px solid #E5C299', background: 'transparent', color: '#5C4033', fontWeight: 600, cursor: 'pointer', fontSize: 15 }}>Huỷ</button>
+                                    <button type="submit" disabled={petSubmitting} style={{ padding: '10px 28px', borderRadius: 8, border: 'none', background: '#E5C299', color: '#5C4033', fontWeight: 600, cursor: petSubmitting ? 'not-allowed' : 'pointer', fontSize: 15, opacity: petSubmitting ? 0.7 : 1 }}>{petSubmitting ? 'Đang đăng...' : 'Đăng động vật'}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
             <div style={{
                 maxWidth: '800px',
                 margin: '0 auto',
@@ -477,6 +643,40 @@ export default function ProfilePage() {
                         Chỉnh sửa thông tin
                     </button>
                 </div>
+            </div>
+
+            {/* Danh sách pet của user */}
+            <div style={{
+                maxWidth: '800px',
+                margin: '32px auto 0 auto',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '15px',
+                padding: '30px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+            }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+                    <div style={{ fontWeight: 700, fontSize: 22, color: '#5C4033' }}>Các động vật đã đăng</div>
+                    <button onClick={() => setShowPetModal(true)} style={{ background: '#E5C299', color: '#5C4033', border: 'none', borderRadius: '20px', padding: '10px 24px', fontSize: 16, fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(229,194,153,0.12)' }}>Đăng động vật</button>
+                </div>
+                {petsLoading ? (
+                    <div style={{ textAlign: 'center', color: '#A47148' }}>Đang tải danh sách thú cưng...</div>
+                ) : petsError ? (
+                    <div style={{ textAlign: 'center', color: 'red' }}>{petsError}</div>
+                ) : pets.length === 0 ? (
+                    <div style={{ textAlign: 'center', color: '#A47148' }}>Chưa có thú cưng nào được đăng.</div>
+                ) : (
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                        gap: '32px',
+                        justifyItems: 'center',
+                        marginTop: 8
+                    }}>
+                        {pets.map(pet => (
+                            <PetCard key={pet._id} pet={pet} showUpdate={true} onUpdate={pet => setEditingPet(pet)} />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

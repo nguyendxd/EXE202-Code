@@ -15,28 +15,31 @@ export const createPet = async (
     avatar?: Express.Multer.File[];
   }
 ): Promise<IPet> => {
+
+  console.log('files.images:', files?.images);
+
   const imageUrls = files?.images && files.images.length > 0
     ? (await Promise.all(
-        files.images.map(f =>
-          imagekit.upload({
-            file: f.buffer.toString("base64"),
-            fileName: f.originalname,
-            folder: "/pet-image",
-          })
-        )
-      )).map(r => r.url)
+      files.images.map(f =>
+        imagekit.upload({
+          file: f.buffer.toString("base64"),
+          fileName: f.originalname,
+          folder: "/pet-image",
+        })
+      )
+    )).map(r => r.url)
     : [DEFAULT_PET_IMAGE_URL];
-    
+
   const avatarUrls = files?.avatar && files.avatar.length > 0
-  ? (await Promise.all(
-        files.avatar.map(f =>
-          imagekit.upload({
-            file: f.buffer.toString("base64"),
-            fileName: f.originalname,
-            folder: "/pet-image",
-          })
-        )
-      )).map(r => r.url)
+    ? (await Promise.all(
+      files.avatar.map(f =>
+        imagekit.upload({
+          file: f.buffer.toString("base64"),
+          fileName: f.originalname,
+          folder: "/pet-image",
+        })
+      )
+    )).map(r => r.url)
     : [DEFAULT_PET_IMAGE_URL];
 
   return new Pet({
@@ -56,10 +59,10 @@ export const getAllPets = () =>
     .populate('shelterId', 'name address phone email');
 
 export const getPetById = (id: string) => {
-    if (!Types.ObjectId.isValid(id)) {
-        throw new Error("Invalid pet ID");
-    }
-    return Pet.findOne({ _id: id }).populate('shelterId');
+  if (!Types.ObjectId.isValid(id)) {
+    throw new Error("Invalid pet ID");
+  }
+  return Pet.findOne({ _id: id }).populate('shelterId');
 };
 
 export const updatePetById = async (
@@ -71,7 +74,7 @@ export const updatePetById = async (
     throw new Error("Invalid pet ID");
   }
 
-   if (files?.images && files.images.length > 0) {
+  if (files?.images && files.images.length > 0) {
     const uploadResults = await Promise.all(
       files.images.map((file) =>
         imagekit.upload({
@@ -102,59 +105,59 @@ export const softDeletePetById = (id: string) =>
   Pet.findByIdAndUpdate(id, { isAdopted: true }, { new: true });
 
 export const searchPets = async (filters: {
-    breed?: string;
-    gender?: string;
-    color?: string;
-    isAdopted?: boolean;
-    address?: string;
-    age?: string;
+  breed?: string;
+  gender?: string;
+  color?: string;
+  isAdopted?: boolean;
+  address?: string;
+  age?: string;
 }) => {
-    try {
-        const query: any = { isDeleted: false };
+  try {
+    const query: any = { isDeleted: false };
 
-        // Tìm kiếm theo giống
-        if (filters.breed) {
-            query.breed = { $regex: new RegExp(filters.breed, 'i') };
-        }
-
-        // Tìm kiếm theo giới tính
-        if (filters.gender) {
-            query.gender = filters.gender.toLowerCase();
-        }
-
-        // Tìm kiếm theo màu sắc
-        if (filters.color) {
-            query.color = { $regex: new RegExp(filters.color, 'i') };
-        }
-
-        // Tìm kiếm theo trạng thái nhận nuôi
-        if (filters.isAdopted !== undefined) {
-            query.isAdopted = filters.isAdopted;
-        }
-
-        // Tìm kiếm theo địa chỉ
-        if (filters.address) {
-            query.address = { $regex: new RegExp(filters.address, 'i') };
-        }
-
-        // Tìm kiếm theo tuổi
-        if (filters.age) {
-            query.age = { $regex: new RegExp(filters.age, 'i') };
-        }
-
-        console.log('Search query:', JSON.stringify(query, null, 2));
-
-        const pets = await Pet.find(query)
-            .sort({ createdAt: -1 })
-            .populate('shelterId', 'name address phone email');
-
-        console.log(`Found ${pets.length} pets matching the criteria`);
-
-        return pets;
-    } catch (error) {
-        console.error('Error in searchPets:', error);
-        throw error;
+    // Tìm kiếm theo giống
+    if (filters.breed) {
+      query.breed = { $regex: new RegExp(filters.breed, 'i') };
     }
+
+    // Tìm kiếm theo giới tính
+    if (filters.gender) {
+      query.gender = filters.gender.toLowerCase();
+    }
+
+    // Tìm kiếm theo màu sắc
+    if (filters.color) {
+      query.color = { $regex: new RegExp(filters.color, 'i') };
+    }
+
+    // Tìm kiếm theo trạng thái nhận nuôi
+    if (filters.isAdopted !== undefined) {
+      query.isAdopted = filters.isAdopted;
+    }
+
+    // Tìm kiếm theo địa chỉ
+    if (filters.address) {
+      query.address = { $regex: new RegExp(filters.address, 'i') };
+    }
+
+    // Tìm kiếm theo tuổi
+    if (filters.age) {
+      query.age = { $regex: new RegExp(filters.age, 'i') };
+    }
+
+    console.log('Search query:', JSON.stringify(query, null, 2));
+
+    const pets = await Pet.find(query)
+      .sort({ createdAt: -1 })
+      .populate('shelterId', 'name address phone email');
+
+    console.log(`Found ${pets.length} pets matching the criteria`);
+
+    return pets;
+  } catch (error) {
+    console.error('Error in searchPets:', error);
+    throw error;
+  }
 };
 
 // Lấy tất cả pet theo shelterId (userId)

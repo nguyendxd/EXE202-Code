@@ -173,6 +173,10 @@ export default function LandingPage() {
         navigate('/donate');
     };
 
+    const handlePetDetailClick = () => {
+        navigate(`/pets/${pet._id}`);
+    };
+
     return (
         <div style={{ fontFamily: "'Roboto', sans-serif", backgroundColor: '#FAF3E0' }}>
 
@@ -373,26 +377,45 @@ export default function LandingPage() {
                                 key={pet._id}
                                 style={{
                                     ...cardStyle(hoveredCards[`pet${index}`]),
-                                    width: '100',
+                                    width: '100%',
                                     maxWidth: '220px',
                                     margin: '0 auto',
+                                    minHeight: '350px', // Đảm bảo chiều cao tối thiểu
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    boxSizing: 'border-box',
+                                    padding: '16px',
                                 }}
                                 onMouseEnter={() => setHoveredCards(prev => ({ ...prev, [`pet${index}`]: true }))}
                                 onMouseLeave={() => setHoveredCards(prev => ({ ...prev, [`pet${index}`]: false }))}
                             >
                                 <img
-                                    src={pet.images?.[0]}
+                                    src={pet.images?.[0] || 'https://via.placeholder.com/220x160?text=No+Image'}
                                     alt={pet.name}
-                                    style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '10px' }}
+                                    style={{
+                                        width: '100%',
+                                        height: '160px',
+                                        objectFit: 'cover',
+                                        borderRadius: '10px',
+                                        marginBottom: '10px',
+                                        background: '#eee',
+                                    }}
                                 />
-                                <h3 style={{ fontSize: '20px', margin: '8px 0', color: '#6D4C41' }}>
-                                    {pet.name}, {pet.age} tuổi
-                                </h3>
-                                <p style={{ fontSize: '14px', color: '#5D4037', marginBottom: '10px' }}>{pet.description}</p>
+                                <div style={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                                    <h3 style={{ fontSize: '20px', margin: '8px 0', color: '#6D4C41', textAlign: 'center' }}>
+                                        {pet.name}, {pet.age} tuổi
+                                    </h3>
+                                    <p style={{ fontSize: '14px', color: '#5D4037', marginBottom: '10px', textAlign: 'center' }}>
+                                        {pet.description}
+                                    </p>
+                                </div>
                                 <button
                                     style={cardButtonStyle(hoveredCards[`btnPet${index}`])}
                                     onMouseEnter={() => setHoveredCards(prev => ({ ...prev, [`btnPet${index}`]: true }))}
                                     onMouseLeave={() => setHoveredCards(prev => ({ ...prev, [`btnPet${index}`]: false }))}
+                                    onClick={() => handlePetDetailClick(pet._id)}
                                 >
                                     Xem chi tiết
                                 </button>

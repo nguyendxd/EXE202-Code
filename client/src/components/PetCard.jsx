@@ -58,7 +58,7 @@ const boldText = {
     },
 };
 
-export default function PetCard({ pet }) {
+export default function PetCard({ pet, showUpdate = false, onUpdate }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -72,19 +72,52 @@ export default function PetCard({ pet }) {
                     .pet-card {
                         transition: transform 0.3s ease;
                         cursor: pointer;
+                        position: relative;
                     }
                     .pet-card:hover {
                         transform: scale(1.05);
                     }
+                    .update-btn {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        background: #fff;
+                        border: 2px solid #E5C299;
+                        border-radius: 50%;
+                        width: 36px;
+                        height: 36px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 2px 8px rgba(229,194,153,0.12);
+                        cursor: pointer;
+                        z-index: 2;
+                        transition: background 0.2s;
+                    }
+                    .update-btn:hover {
+                        background: #E5C299;
+                    }
                 `}
             </style>
             <div className="pet-card" style={cardStyle} onClick={handleClick}>
-                <div style={topSectionStyle}>
+                <div style={{ ...topSectionStyle, position: 'relative' }}>
                     <img
-                        src={pet.image}
+                        src={pet?.images?.[0]}
                         alt={`A ${pet.breed} named ${pet.name}`}
                         style={imageStyle}
                     />
+                    {showUpdate && (
+                        <button
+                            className="update-btn"
+                            type="button"
+                            title="Cập nhật thông tin"
+                            onClick={e => { e.stopPropagation(); onUpdate && onUpdate(pet); }}
+                        >
+                            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14.7 2.29a1 1 0 0 1 1.42 0l1.59 1.59a1 1 0 0 1 0 1.42l-9.3 9.3-2.12.71.71-2.12 9.3-9.3zM3 17h14v2H3v-2z" fill="#A47148" />
+                            </svg>
+                        </button>
+                    )}
                 </div>
                 <div style={bottomSectionStyle}>
                     <p style={boldText}>{pet.name}</p>

@@ -60,7 +60,7 @@ export default function AboutUsPage() {
             </p>
           </div>
           <img
-            src="https://via.placeholder.com/400x200" // Replace with actual team image URL
+            src="https://images.pexels.com/photos/1963622/pexels-photo-1963622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual team image URL
             alt="Team Photo"
             style={{ width: '400px', height: '200px', borderRadius: '10px' }}
           />
@@ -107,7 +107,7 @@ export default function AboutUsPage() {
               >
                 {/* Placeholder for circular image */}
                 <img
-                  src="https://via.placeholder.com/100" // Replace with actual image URL
+                  src="https://images.pexels.com/photos/5998829/pexels-photo-5998829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual image URL
                   alt="Icon 1"
                   style={{ width: '100px', height: '100px', borderRadius: '50%' }}
                 />
@@ -145,7 +145,7 @@ export default function AboutUsPage() {
                 }}
               >
                 <img
-                  src="https://via.placeholder.com/100" // Replace with actual image URL
+                  src="https://images.pexels.com/photos/5998829/pexels-photo-5998829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual image URL
                   alt="Icon 2"
                   style={{ width: '100px', height: '100px', borderRadius: '50%' }}
                 />
@@ -183,7 +183,7 @@ export default function AboutUsPage() {
                 }}
               >
                 <img
-                  src="https://via.placeholder.com/100" // Replace with actual image URL
+                  src="https://images.pexels.com/photos/5998829/pexels-photo-5998829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual image URL
                   alt="Icon 3"
                   style={{ width: '100px', height: '100px', borderRadius: '50%' }}
                 />
@@ -247,12 +247,12 @@ export default function AboutUsPage() {
               </h3>
               <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
                 <img
-                  src="https://via.placeholder.com/100x100" // Replace with actual pet image URL
+                  src="https://images.pexels.com/photos/31404259/pexels-photo-31404259/free-photo-of-c-n-c-nh-m-t-chu-meo-nha-th-gian-trong-nha.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual pet image URL
                   alt="Pet 1 Before"
                   style={{ width: '100px', height: '100px', borderRadius: '10px' }}
                 />
                 <img
-                  src="https://via.placeholder.com/100x100" // Replace with actual pet image URL
+                  src="https://images.pexels.com/photos/31108762/pexels-photo-31108762.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual pet image URL
                   alt="Pet 1 After"
                   style={{ width: '100px', height: '100px', borderRadius: '10px' }}
                 />
@@ -282,12 +282,12 @@ export default function AboutUsPage() {
               </h3>
               <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
                 <img
-                  src="https://via.placeholder.com/100x100" // Replace with actual pet image URL
+                  src="https://images.pexels.com/photos/31216021/pexels-photo-31216021/free-photo-of-c-n-c-nh-chu-meo-g-ng-th-gian-v-i-doi-m-t-xanh-la-cay.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual pet image URL
                   alt="Pet 2 Before"
                   style={{ width: '100px', height: '100px', borderRadius: '10px' }}
                 />
                 <img
-                  src="https://via.placeholder.com/100x100" // Replace with actual pet image URL
+                  src="https://images.pexels.com/photos/8882601/pexels-photo-8882601.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual pet image URL
                   alt="Pet 2 After"
                   style={{ width: '100px', height: '100px', borderRadius: '10px' }}
                 />
@@ -303,14 +303,19 @@ export default function AboutUsPage() {
         <div
           style={{
             position: 'relative',
-            backgroundImage: 'url("https://via.placeholder.com/1200x400")', // Replace with actual background image URL
+            backgroundImage: 'url("https://images.pexels.com/photos/15364527/pexels-photo-15364527/free-photo-of-thu-v-t-d-ng-v-t-con-v-t-loai-v-t.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
             borderRadius: '10px',
-            padding: '40px 20px',
+            padding: '100px 20px',
             marginBottom: '40px',
             color: '#FFF',
-            textAlign: 'left',
+            textAlign: 'center',
+            minHeight: '300px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <div
@@ -320,59 +325,60 @@ export default function AboutUsPage() {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.5)', // Overlay for readability
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
               borderRadius: '10px',
             }}
           />
-          <div style={{ position: 'relative', zIndex: 1, maxWidth: '800px', margin: '0 auto' }}>
+          <div
+            style={{
+              position: 'relative',
+              zIndex: 1,
+              maxWidth: '800px',
+              margin: '0 auto',
+              transform: 'translateY(0)',
+              transition: 'transform 0.3s ease',
+              ':hover': {
+                transform: 'translateY(-10px)'
+              }
+            }}
+          >
             <h2
               style={{
                 fontSize: '24px',
                 fontWeight: '600',
                 marginBottom: '20px',
                 fontFamily: '"Varela Round", sans-serif',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
               }}
             >
               VÌ SAO CHỌN PAWMILY
             </h2>
             <p
               style={{
-                fontSize: '16px',
+                fontSize: '20px',
                 fontFamily: '"Varela Round", sans-serif',
-                marginBottom: '20px',
+                marginBottom: '30px',
+                textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
               }}
             >
               Chúng mình luôn nỗ lực để yêu thương động vật: các tình nguyện viên, chuyên gia đều có lòng nhân ái và sẵn sàng giúp đỡ. Đưa bạn tới gần hơn với các bé động vật hoang dã, để bạn hiểu và yêu thương các bé, cùng chung tay giúp đỡ chúng mình nhé!
             </p>
-            <button
-              style={{
-                backgroundColor: '#FFF',
-                color: '#6B3A0F',
-                padding: '10px 20px',
-                border: 'none',
-                borderRadius: '20px',
-                fontSize: '16px',
-                fontFamily: '"Varela Round", sans-serif',
-                cursor: 'pointer',
-              }}
-            >
-              Đọc thêm
-            </button>
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
-                marginTop: '20px',
-                fontSize: '14px',
+                justifyContent: 'center',
+                gap: '20px',
+                marginTop: '40px',
+                fontSize: '16px',
                 fontFamily: '"Varela Round", sans-serif',
               }}
             >
               <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                📧 <a href="mailto:chungminh@pawmily.com" style={{ color: '#FFF', textDecoration: 'none' }}>chungminh@pawmily.com</a>
+                📧 <a href="mailto:chungminh@pawmily.com" style={{ color: '#FFF', textDecoration: 'none', transition: 'color 0.3s ease', ':hover': { color: '#F5A623' } }}>Liên Hệ Chúng Mình:  pawmily@gmail.com</a>
               </span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                📞 <a href="tel:1900xxxx" style={{ color: '#FFF', textDecoration: 'none' }}>1900xxxx</a>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '5px', paddingLeft: '50px' }}>
+                📞 <a href="tel:1900xxxx" style={{ color: '#FFF', textDecoration: 'none', transition: 'color 0.3s ease', ':hover': { color: '#F5A623' } }}>1900xxxx</a>
               </span>
             </div>
           </div>
