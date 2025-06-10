@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import bgImage from '../assets/catdog.jpg'; // Using the same background
 import logoImg from '../assets/paw-logo.png'; // Using the same logo
-import pawLetter from '../assets/pawLetter.png';
+import PawLetter from '../assets/PawLetter.png';
 import '../styles/ForgotPasswordPage.css'; // Corresponding CSS file
 
 const ForgotPasswordPage = () => {
@@ -17,7 +17,7 @@ const ForgotPasswordPage = () => {
     setSuccessMessage(''); // Reset success message
     
     try {
-      const response = await fetch('http://localhost:3000/api/auth/reset-password', {
+      const response = await fetch('http://103.28.32.101:3000/api/auth/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const ForgotPasswordPage = () => {
       <div className="login-form-right">
         {/* Logo */}
         <div className="login-form-logo">
-          <img src={pawLetter} alt="Pawmily Logo" />
+          <img src={PawLetter} alt="Pawmily Logo" />
         </div>
         {/* Title */}
         <div className="login-form-title">

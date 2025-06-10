@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axiosInstance from '../config/axios';
 
 const API_URL = '/blogs';
 
-export const createBlog = (data) => axios.post(API_URL, data);
-export const getAllBlogs = () => axios.get(API_URL);
-export const getBlogById = (id) => axios.get(`${API_URL}/${id}`);
-export const updateBlog = (id, data) => axios.put(`${API_URL}/${id}`, data);
-export const deleteBlog = (id) => axios.delete(`${API_URL}/${id}`);
+export const createBlog = (data) => axiosInstance.post(API_URL, data);
+export const getAllBlogs = () => axiosInstance.get(API_URL);
+export const getBlogById = (id) => axiosInstance.get(`${API_URL}/${id}`);
+export const updateBlog = (id, data) => axiosInstance.put(`${API_URL}/${id}`, data);
+export const deleteBlog = (id) => axiosInstance.delete(`${API_URL}/${id}`);

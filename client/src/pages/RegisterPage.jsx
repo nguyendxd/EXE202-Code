@@ -53,7 +53,7 @@ const RegisterPage = () => {
                 ...values,
                 avatar: values.avatar || 'https://ik.imagekit.io/nguyenn120404/avatars/images.jpg?updatedAt=1747396770898'
               };
-              const response = await fetch('http://localhost:3000/api/auth/register', {
+              const response = await fetch('http://103.28.32.101:3000/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formDataWithAvatar)

@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateUserById = exports.softDeleteUserById = exports.getUserByEmail = exports.createUser = exports.getUserByFirebaseUID = exports.getUserById = exports.getUsers = void 0;
+const User_1 = __importDefault(require("../model/User"));
+const getUsers = () => User_1.default.find({ isDeleted: false });
+exports.getUsers = getUsers;
+const getUserById = (id) => User_1.default.findOne({ _id: id });
+exports.getUserById = getUserById;
+const getUserByFirebaseUID = (firebaseUID) => User_1.default.findOne({ firebaseUID, isDeleted: false });
+exports.getUserByFirebaseUID = getUserByFirebaseUID;
+const createUser = (values) => new User_1.default(values).save().then((user) => user.toObject());
+exports.createUser = createUser;
+const getUserByEmail = (email) => User_1.default.findOne({ email, isDeleted: false });
+exports.getUserByEmail = getUserByEmail;
+const softDeleteUserById = (id) => User_1.default.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+exports.softDeleteUserById = softDeleteUserById;
+const updateUserById = (id, values) => User_1.default.findByIdAndUpdate(id, values, { new: true });
+exports.updateUserById = updateUserById;

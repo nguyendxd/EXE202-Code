@@ -16,9 +16,23 @@ import rescueStationRoutes from './routes/rescueStationRoutes';
 
 const app = express();
 app.use(express.json());
-app.use(cors());
 app.use(helmet());
 app.use(cookieParser());
+
+const allowedOrigins = [
+  'http://103.28.32.101'
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/profiles", profileRoutes);

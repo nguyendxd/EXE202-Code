@@ -34,7 +34,7 @@ export default function AdminAccount() {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:3000/api/users/all', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/all`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
@@ -145,7 +145,7 @@ export default function AdminAccount() {
     if (!userToDelete) return;
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:3000/api/users/${userToDelete._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${userToDelete._id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -173,7 +173,7 @@ export default function AdminAccount() {
     if (!selectedUser) return;
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:3000/api/users/${selectedUser._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${selectedUser._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

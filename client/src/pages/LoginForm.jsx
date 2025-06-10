@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import bgImage from '../assets/catdog.jpg'; // Using the same background
 import logoImg from '../assets/paw-logo.png'; // Using the same logo
-import pawLetter from '../assets/pawLetter.png';
+import pawLetter from '../assets/PawLetter.png';
 import '../styles/LoginForm.css'; // Corresponding CSS file
 import { useAuth } from '../contexts/AuthContext';
 

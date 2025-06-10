@@ -39,7 +39,7 @@ export default function ChatPage() {
   // Lấy danh sách user thực tế từ API
   useEffect(() => {
     if (!token) return
-    fetch("http://localhost:3000/api/users", {
+    fetch('http://103.28.32.101:3000/api/users', {
       headers: { Authorization: "Bearer " + token },
     })
       .then((res) => res.json())
