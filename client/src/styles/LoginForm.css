@@ -340,7 +340,9 @@
     .login-form-container {
         flex-direction: column !important;
         min-height: 100vh !important;
-        height: auto !important;
+        height: 100vh !important;
+        width: 100vw !important;
+        overflow: hidden;
     }
 
     .login-form-left {
@@ -352,12 +354,13 @@
         width: 100vw !important;
         min-width: 0 !important;
         min-height: 100vh !important;
-        height: auto !important;
+        height: 100vh !important;
         padding: 32px 8px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         background: #fff5e1 !important;
+        box-sizing: border-box;
     }
 }

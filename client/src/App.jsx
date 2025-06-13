@@ -139,7 +139,7 @@ function AppContent() {
           <Route path="/admin/adoption" element={<AdminRoute><AdminAdopt /></AdminRoute>} />
         </Routes>
       </div>
-      <Footer />
+      {!location.pathname.includes('/login') && !location.pathname.includes('/login-form') && !location.pathname.includes('/register') && <Footer />}
     </>
   );
 }

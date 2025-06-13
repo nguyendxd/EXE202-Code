@@ -72,7 +72,9 @@ export default function AboutUsPage() {
                 fontFamily: '"Varela Round", sans-serif',
               }}
             >
-              Tới Pawmily, chúng mình tin rằng mọi động vật đều xứng đáng được yêu thương và chăm sóc. Với tình yêu và sự tận tâm, chúng mình đã và đang cố gắng mang đến một cuộc sống tốt đẹp hơn cho các bé động vật hoang dã và bị bỏ rơi. Cùng chúng mình lan tỏa tình yêu thương, để thế giới của các bé thêm hạnh phúc!
+              Pawmily là dự án cho môn học Khởi nghiệp do team 117 của Đại học FPT HCM thực hiện.
+
+              Pawmily - website hỗ trợ các bạn trong việc tìm kiếm trạm cứu hộ, thú y gần bạn bằng tích hợp bản đồ. Ngoài ra, Pawmily còn đóng vai trò là nền tảng kết nối chủ nuôi, trạm cứu hộ và shelter trong việc nhận nuôi các bé chó mèo hoang.
             </p>
           </div>
           <img

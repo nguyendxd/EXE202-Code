@@ -196,11 +196,20 @@
     width: 100vw;
     min-height: 100vh;
     height: auto;
-    padding: 32px 8px;
+    padding: 40px 8px 16px 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background: #fff5e1;
+  }
+
+  .terms-text {
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    text-align: center;
+    word-break: break-word;
   }
 }
