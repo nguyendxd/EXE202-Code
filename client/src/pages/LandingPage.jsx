@@ -173,7 +173,7 @@ export default function LandingPage() {
         navigate('/donate');
     };
 
-    const handlePetDetailClick = () => {
+    const handlePetDetailClick = (pet) => {
         navigate(`/pets/${pet._id}`);
     };
 
@@ -415,7 +415,7 @@ export default function LandingPage() {
                                     style={cardButtonStyle(hoveredCards[`btnPet${index}`])}
                                     onMouseEnter={() => setHoveredCards(prev => ({ ...prev, [`btnPet${index}`]: true }))}
                                     onMouseLeave={() => setHoveredCards(prev => ({ ...prev, [`btnPet${index}`]: false }))}
-                                    onClick={() => handlePetDetailClick(pet._id)}
+                                    onClick={() => handlePetDetailClick(pet)}
                                 >
                                     Xem chi tiết
                                 </button>

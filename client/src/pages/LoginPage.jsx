@@ -1,17 +1,32 @@
 // src/pages/LoginPage.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // dùng để quay về trang chủ ("/")
 import bgImage from '../assets/catdog.jpg';
 import logoImg from '../assets/paw-logo.png';
 import pawLetter from '../assets/PawLetter.png';
+import Loading from '../components/Loading';
 import '../styles/LoginPage.css';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Giả lập thời gian tải
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleGoogleSignup = () => {
     navigate('/register');
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="login-container">
@@ -30,12 +45,12 @@ const LoginPage = () => {
       {/* =====================
            Phần cột bên phải: form/login box
            ===================== */}
-      <div className="login-right">
+      <div className="login-right" style={{ paddingTop: '100px' }}>
         {/* Logo and PawLetter */}
         <div className="login-logo">
-          <img src={logoImg} alt="Pawmily Logo" /> 
+          <img src={logoImg} alt="Pawmily Logo" />
         </div>
-          
+
         {/* Tagline */}
         <div className="login-tagline">
           <p>Gia nhập cộng đồng</p>

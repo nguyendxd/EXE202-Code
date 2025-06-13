@@ -78,7 +78,7 @@ const LoginForm = () => {
       </div>
 
       {/* Right column: form/login box */}
-      <div className="login-form-right">
+      <div className="login-form-right" style={{ paddingTop: '100px' }}>
         {/* Logo */}
         <div className="login-form-logo">
           <img src={logoImg} alt="Pawmily Logo" />

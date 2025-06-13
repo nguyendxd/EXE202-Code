@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import registerBg from '../assets/short-cute-kitten.png';
 import pawLogo from '../assets/paw-logo.png';
 import pawLetter from '../assets/PawLetter.png';
+import Loading from '../components/Loading';
 import '../styles/RegisterPage.css';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -19,9 +20,23 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [error, setError] = React.useState('');
   const [successMessage, setSuccessMessage] = React.useState('');
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Giả lập thời gian tải
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="register-container">

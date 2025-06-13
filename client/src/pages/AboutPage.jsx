@@ -1,8 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import pawLogo from '../assets/paw-logo.png'; // Ensure this image exists in assets
+import Loading from '../components/Loading';
 
 export default function AboutUsPage() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Giả lập thời gian tải
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div style={{ backgroundColor: '#FFF5E1', minHeight: '100vh', paddingBottom: '20px' }}>
       {/* Main Content */}

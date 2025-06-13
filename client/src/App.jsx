@@ -1,7 +1,9 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/index.css';
+import { useEffect } from 'react';
+import { useAuth } from './contexts/AuthContext';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -37,11 +39,19 @@ import UserWishlist from './pages/UserWishlist';
 
 function AppContent() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const isAdminRoute = location.pathname.startsWith('/admin');
+
+  useEffect(() => {
+    if (user && user.role === 'admin' && !isAdminRoute) {
+      navigate('/admin/account');
+    }
+  }, [user, isAdminRoute, navigate]);
 
   return (
     <>
-      {isAdminRoute ? <AdminNavbar /> : <Navbar />}
+      {isAdminRoute ? <AdminNavbar key="admin-nav" /> : <Navbar key={user?.id || 'guest-nav'} />}
       <ToastContainer />
       <div style={{ paddingTop: '90px' }}>
         <Routes>
