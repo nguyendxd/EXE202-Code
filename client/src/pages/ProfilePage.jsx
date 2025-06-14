@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { getProfileById, updateProfile } from '../services/profileService';
 import { getPetsByUserId, createPet, updatePet } from '../services/petService';
 import PetCard from '../components/PetCard';
+import Pagination from '../components/Pagination';
 
 // Thêm style responsive cho phần profile info
 const profileResponsiveStyle = `
@@ -67,6 +68,8 @@ export default function ProfilePage() {
     const [petSubmitting, setPetSubmitting] = useState(false);
     const [petSubmitError, setPetSubmitError] = useState(null);
     const [editingPet, setEditingPet] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const petsPerPage = 6;
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -151,6 +154,12 @@ export default function ProfilePage() {
             setPetImages([]); // Không tự động fill ảnh cũ, chỉ cho chọn lại ảnh mới nếu muốn
         }
     }, [editingPet]);
+
+    // Thêm logic phân trang
+    const indexOfLastPet = currentPage * petsPerPage;
+    const indexOfFirstPet = indexOfLastPet - petsPerPage;
+    const currentPets = pets.slice(indexOfFirstPet, indexOfLastPet);
+    const totalPages = Math.ceil(pets.length / petsPerPage);
 
     if (loading) {
         return (
@@ -665,17 +674,24 @@ export default function ProfilePage() {
                 ) : pets.length === 0 ? (
                     <div style={{ textAlign: 'center', color: '#A47148' }}>Chưa có thú cưng nào được đăng.</div>
                 ) : (
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                        gap: '32px',
-                        justifyItems: 'center',
-                        marginTop: 8
-                    }}>
-                        {pets.map(pet => (
-                            <PetCard key={pet._id} pet={pet} showUpdate={true} onUpdate={pet => setEditingPet(pet)} />
-                        ))}
-                    </div>
+                    <>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                            gap: '32px',
+                            justifyItems: 'center',
+                            marginTop: 8
+                        }}>
+                            {currentPets.map(pet => (
+                                <PetCard key={pet._id} pet={pet} showUpdate={true} onUpdate={pet => setEditingPet(pet)} />
+                            ))}
+                        </div>
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            setCurrentPage={setCurrentPage}
+                        />
+                    </>
                 )}
             </div>
         </div>

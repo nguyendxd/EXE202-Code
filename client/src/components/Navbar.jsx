@@ -341,8 +341,8 @@ export default function Navbar() {
                                     }}>
                                         <button style={dropdownButtonStyle} onClick={() => { navigate(`/profile/${userId}`); setShowUserMenu(false); }}> Hồ sơ người dùng </button>
                                         <button style={dropdownButtonStyle} onClick={() => { navigate('/wishlist'); setShowUserMenu(false); }}>Danh sách yêu thích</button>
-                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/adopt-list'); setShowUserMenu(false); }}>Danh sách nhận nuôi</button>
-                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/setting'); setShowUserMenu(false); }}>Cài đặt</button>
+
+
                                         <button style={dropdownButtonStyle} onClick={handleLogout}>Đăng xuất</button>
                                     </div>
                                 )}
