@@ -89,9 +89,9 @@ export default function LandingPage() {
     }];
 
     const stories = [{
-        name: 'Luna', story: 'Rescued from the streets, Luna now enjoys a cozy home with her new family.', img: 'https://via.placeholder.com/300x200?text=Luna'
+        name: 'Luna', story: 'Rescued from the streets, Luna now enjoys a cozy home with her new family.', img: 'https://images.pexels.com/photos/31404259/pexels-photo-31404259/free-photo-of-c-n-c-nh-m-t-chu-meo-nha-th-gian-trong-nha.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
     }, {
-        name: 'Max', story: 'Once abandoned, Max is now a loyal companion to a loving couple.', img: 'https://via.placeholder.com/300x200?text=Max'
+        name: 'Max', story: 'Once abandoned, Max is now a loyal companion to a loving couple.', img: 'https://images.pexels.com/photos/8882601/pexels-photo-8882601.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
     }];
 
     const arrowStyle = (side) => ({
@@ -325,9 +325,10 @@ export default function LandingPage() {
                             Chúng mình là ai?
                         </h2>
                         <p style={{ fontSize: '18px', margin: '0 0 40px 0' }}>
-                            Chúng mình là đã tạo Pawmily – nền tảng kết nối chủ nuôi, bác sĩ thú y và trạm cứu hộ,
-                            hỗ trợ chăm sóc, cứu hộ và tìm lại thú cưng nhanh chóng, hiệu quả. Sứ mệnh của chúng mình là xây dựng cộng đồng yêu thương,
-                            bảo vệ động vật, để mọi bé thú cưng đều được sống khỏe và hạnh phúc. Cùng lan tỏa yêu thương vì thế giới tốt đẹp hơn cho thú cưng! 🐾💙
+                            Pawmily là dự án cho môn học Khởi nghiệp do team 117 của Đại học FPT HCM thực hiện. <br />
+                            <br />
+
+                            Pawmily - website hỗ trợ các bạn trong việc tìm kiếm trạm cứu hộ, thú y gần bạn bằng tích hợp bản đồ. Ngoài ra, Pawmily còn đóng vai trò là nền tảng kết nối chủ nuôi, trạm cứu hộ và shelter trong việc nhận nuôi các bé chó mèo hoang.
                         </p>
                         <button
                             style={mainButtonStyle('about', hoveredButtons['about'])}
@@ -407,9 +408,13 @@ export default function LandingPage() {
                                     <h3 style={{ fontSize: '20px', margin: '8px 0', color: '#6D4C41', textAlign: 'center' }}>
                                         {pet.name}, {pet.age} tuổi
                                     </h3>
-                                    <p style={{ fontSize: '14px', color: '#5D4037', marginBottom: '10px', textAlign: 'center' }}>
-                                        {pet.description}
-                                    </p>
+                                    <div style={{ fontSize: '14px', color: '#5D4037', marginBottom: '10px', textAlign: 'center' }}>
+                                        <p style={{ margin: '4px 0' }}>Giới tính: {pet.gender}</p>
+                                        <p style={{ margin: '4px 0' }}>Giống: {pet.breed}</p>
+                                        <p style={{ margin: '4px 0' }}>Tình trạng: {pet.status}</p>
+                                        <p style={{ margin: '4px 0' }}>Nơi ở: {pet.location}</p>
+
+                                    </div>
                                 </div>
                                 <button
                                     style={cardButtonStyle(hoveredCards[`btnPet${index}`])}
@@ -423,6 +428,39 @@ export default function LandingPage() {
                         ))}
                     </div>
                 )}
+                <div style={{ marginTop: '30px' }}>
+                    <button
+                        style={{
+                            backgroundColor: '#A47140',
+                            color: 'white',
+                            padding: '12px 30px',
+                            border: 'none',
+                            borderRadius: '25px',
+                            fontSize: '16px',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                            ':hover': {
+                                backgroundColor: '#8B5E3C',
+                                transform: 'translateY(-2px)',
+                                boxShadow: '0 6px 12px rgba(0,0,0,0.15)'
+                            }
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.backgroundColor = '#8B5E3C';
+                            e.target.style.transform = 'translateY(-2px)';
+                            e.target.style.boxShadow = '0 6px 12px rgba(0,0,0,0.15)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.backgroundColor = '#A47148';
+                            e.target.style.transform = 'translateY(0)';
+                            e.target.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                        }}
+                        onClick={() => navigate('/adopt')}
+                    >
+                        Xem thêm thú cưng
+                    </button>
+                </div>
                 <style>
                     {`
             @media (min-width: 1280px) {
@@ -451,7 +489,7 @@ export default function LandingPage() {
 
             {/* Success Stories */}
             <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#FFF5E1' }}>
-                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Success Stories</h2>
+                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Những câu chuyện ở Pawmily</h2>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -467,7 +505,7 @@ export default function LandingPage() {
                             onMouseEnter={() => setHoveredCards(prev => ({ ...prev, [`story${index}`]: true }))}
                             onMouseLeave={() => setHoveredCards(prev => ({ ...prev, [`story${index}`]: false }))}
                         >
-                            <img src={story.img} alt={story.name} style={{ width: '100%', borderRadius: '10px' }} />
+                            <img src={story.img} alt={story.name} style={{ width: '100%', borderRadius: '10px', objectFit: 'cover', height: '180px', maxHeight: '180px' }} />
                             <h3 style={{ fontSize: '22px', margin: '10px 0', color: '#6D4C41' }}>{story.name}</h3>
                             <p style={{ fontSize: '16px', color: '#5D4037' }}>{story.story}</p>
                         </div>

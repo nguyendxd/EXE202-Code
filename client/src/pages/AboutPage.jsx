@@ -73,7 +73,8 @@ export default function AboutUsPage() {
               }}
             >
               Pawmily là dự án cho môn học Khởi nghiệp do team 117 của Đại học FPT HCM thực hiện.
-
+              <br />
+              <br />
               Pawmily - website hỗ trợ các bạn trong việc tìm kiếm trạm cứu hộ, thú y gần bạn bằng tích hợp bản đồ. Ngoài ra, Pawmily còn đóng vai trò là nền tảng kết nối chủ nuôi, trạm cứu hộ và shelter trong việc nhận nuôi các bé chó mèo hoang.
             </p>
           </div>
@@ -138,10 +139,11 @@ export default function AboutUsPage() {
                   fontFamily: '"Varela Round", sans-serif',
                 }}
               >
-                Hỗ trợ nhận nuôi các bé không nhà
+                Sứ mệnh:
               </h3>
               <p style={{ fontSize: '14px', fontFamily: '"Varela Round", sans-serif' }}>
-                Gặp gỡ bạn thân mới tại trung tâm nhận nuôi của chúng mình.
+                Là cầu nối của cộng đồng những người yêu động vật nhằm cứu trợ, chăm sóc và tìm mái ấm cho chó mèo hoang. Đồng thời nâng cao nhận thức và trách nhiệm với bảo vệ động vật.
+
               </p>
             </div>
             <div
@@ -176,10 +178,10 @@ export default function AboutUsPage() {
                   fontFamily: '"Varela Round", sans-serif',
                 }}
               >
-                Trao gửi khám chữa bệnh và yêu thương
+                Tầm nhìn:
               </h3>
               <p style={{ fontSize: '14px', fontFamily: '"Varela Round", sans-serif' }}>
-                Hỗ trợ bác sĩ và các bé có hoàn cảnh đặc biệt.
+                Chúng mình sẽ là website đầu tiên và tốt nhất xây dựng được cộng đồng yêu thương và bảo vệ động vật, để mọi  bé chó mèo hoang có cho mình một mái ấm riêng cùng tình yêu thương trọn đời.
               </p>
             </div>
             <div
@@ -214,10 +216,16 @@ export default function AboutUsPage() {
                   fontFamily: '"Varela Round", sans-serif',
                 }}
               >
-                Kết nối cộng đồng yêu thú cưng
+                Giá trị cốt lõi:
               </h3>
               <p style={{ fontSize: '14px', fontFamily: '"Varela Round", sans-serif' }}>
-                Tham gia tri ân, quyên góp và các sự kiện của chúng mình.
+                Trắc ẩn <br />
+                <br />
+                Cộng đồng <br />
+                <br />
+                Trách nhiệm <br />
+                <br />
+                Minh bạch
               </p>
             </div>
           </div>
@@ -240,77 +248,84 @@ export default function AboutUsPage() {
             style={{
               display: 'flex',
               justifyContent: 'center',
-              gap: '20px',
+              gap: '32px',
               flexWrap: 'wrap',
+              marginTop: '32px'
             }}
           >
+            {/* Card 1 */}
             <div
               style={{
-                backgroundColor: '#FFF',
-                width: '300px',
-                padding: '20px',
-                borderRadius: '10px',
-                textAlign: 'left',
+                background: '#fff',
+                borderRadius: '18px',
+                boxShadow: '0 4px 24px rgba(164,113,72,0.10)',
+                padding: '28px 20px',
+                width: '340px',
+                transition: 'box-shadow 0.3s, transform 0.3s',
+                textAlign: 'center',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.boxShadow = '0 8px 32px rgba(164,113,72,0.18)';
+                e.currentTarget.style.transform = 'translateY(-6px)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.boxShadow = '0 4px 24px rgba(164,113,72,0.10)';
+                e.currentTarget.style.transform = 'none';
               }}
             >
-              <h3
-                style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  marginBottom: '10px',
-                  fontFamily: '"Varela Round", sans-serif',
-                }}
-              >
-                Cậu bé 1 tuổi
-              </h3>
-              <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '16px' }}>
                 <img
-                  src="https://images.pexels.com/photos/31404259/pexels-photo-31404259/free-photo-of-c-n-c-nh-m-t-chu-meo-nha-th-gian-trong-nha.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual pet image URL
-                  alt="Pet 1 Before"
-                  style={{ width: '100px', height: '100px', borderRadius: '10px' }}
+                  src="https://images.pexels.com/photos/31404259/pexels-photo-31404259/free-photo-of-c-n-c-nh-m-t-chu-meo-nha-th-gian-trong-nha.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="Trước"
+                  style={{ width: '110px', height: '110px', borderRadius: '12px', objectFit: 'cover', border: '2px solid #E5C299' }}
                 />
                 <img
-                  src="https://images.pexels.com/photos/31108762/pexels-photo-31108762.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual pet image URL
-                  alt="Pet 1 After"
-                  style={{ width: '100px', height: '100px', borderRadius: '10px' }}
+                  src="https://images.pexels.com/photos/31108762/pexels-photo-31108762.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="Sau"
+                  style={{ width: '110px', height: '110px', borderRadius: '12px', objectFit: 'cover', border: '2px solid #E5C299' }}
                 />
               </div>
-              <p style={{ fontSize: '14px', fontFamily: '"Varela Round", sans-serif' }}>
+              <h3 style={{ color: '#A47148', fontSize: '20px', fontWeight: 700, margin: '10px 0 8px 0' }}>Cậu bé 1 tuổi</h3>
+              <p style={{ color: '#5D4037', fontSize: '15px', fontFamily: '"Varela Round", sans-serif', margin: 0, textAlign: 'center' }}>
                 The need of travelers has made Sinh Cafe feel that it is necessary to introduce travelers its friendly culture, its people with its friendly instinct. Sinh Cafe hospitality suggest who has provided travelers with travel and transport to ease their travel!
               </p>
             </div>
+            {/* Card 2 */}
             <div
               style={{
-                backgroundColor: '#FFF',
-                width: '300px',
-                padding: '20px',
-                borderRadius: '10px',
-                textAlign: 'left',
+                background: '#fff',
+                borderRadius: '18px',
+                boxShadow: '0 4px 24px rgba(164,113,72,0.10)',
+                padding: '28px 20px',
+                width: '340px',
+                transition: 'box-shadow 0.3s, transform 0.3s',
+                textAlign: 'center',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.boxShadow = '0 8px 32px rgba(164,113,72,0.18)';
+                e.currentTarget.style.transform = 'translateY(-6px)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.boxShadow = '0 4px 24px rgba(164,113,72,0.10)';
+                e.currentTarget.style.transform = 'none';
               }}
             >
-              <h3
-                style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  marginBottom: '10px',
-                  fontFamily: '"Varela Round", sans-serif',
-                }}
-              >
-                Cậu bé 6 tháng
-              </h3>
-              <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '16px' }}>
                 <img
-                  src="https://images.pexels.com/photos/31216021/pexels-photo-31216021/free-photo-of-c-n-c-nh-chu-meo-g-ng-th-gian-v-i-doi-m-t-xanh-la-cay.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual pet image URL
-                  alt="Pet 2 Before"
-                  style={{ width: '100px', height: '100px', borderRadius: '10px' }}
+                  src="https://images.pexels.com/photos/31216021/pexels-photo-31216021/free-photo-of-c-n-c-nh-chu-meo-g-ng-th-gian-v-i-doi-m-t-xanh-la-cay.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="Trước"
+                  style={{ width: '110px', height: '110px', borderRadius: '12px', objectFit: 'cover', border: '2px solid #E5C299' }}
                 />
                 <img
-                  src="https://images.pexels.com/photos/8882601/pexels-photo-8882601.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual pet image URL
-                  alt="Pet 2 After"
-                  style={{ width: '100px', height: '100px', borderRadius: '10px' }}
+                  src="https://images.pexels.com/photos/8882601/pexels-photo-8882601.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="Sau"
+                  style={{ width: '110px', height: '110px', borderRadius: '12px', objectFit: 'cover', border: '2px solid #E5C299' }}
                 />
               </div>
-              <p style={{ fontSize: '14px', fontFamily: '"Varela Round", sans-serif' }}>
+              <h3 style={{ color: '#A47148', fontSize: '20px', fontWeight: 700, margin: '10px 0 8px 0' }}>Cậu bé 6 tháng</h3>
+              <p style={{ color: '#5D4037', fontSize: '15px', fontFamily: '"Varela Round", sans-serif', margin: 0, textAlign: 'center' }}>
                 The need of travelers has made Sinh Cafe feel that it is necessary to introduce travelers its friendly culture, its people with its friendly instinct. Sinh Cafe hospitality suggest who has provided travelers with travel and transport to ease their travel!
               </p>
             </div>
@@ -393,7 +408,7 @@ export default function AboutUsPage() {
               }}
             >
               <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                📧 <a href="mailto:chungminh@pawmily.com" style={{ color: '#FFF', textDecoration: 'none', transition: 'color 0.3s ease', ':hover': { color: '#F5A623' } }}>Liên Hệ Chúng Mình:  pawmily@gmail.com</a>
+                📧 <a href="mailto:pawmily.pet@gmail.com" style={{ color: '#FFF', textDecoration: 'none', transition: 'color 0.3s ease', ':hover': { color: '#F5A623' } }}>Liên Hệ Chúng Mình:  pawmily.pet@gmail.com</a>
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '5px', paddingLeft: '50px' }}>
                 📞 <a href="tel:1900xxxx" style={{ color: '#FFF', textDecoration: 'none', transition: 'color 0.3s ease', ':hover': { color: '#F5A623' } }}>1900xxxx</a>

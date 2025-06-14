@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Loading from "../components/Loading"
 import axios from "axios"
 import { useParams, useNavigate } from "react-router-dom"
 
@@ -98,20 +99,7 @@ export default function BlogDetailPage() {
   })
 
   if (loading) {
-    return (
-      <div
-        style={{
-          fontFamily: "'Roboto', sans-serif",
-          backgroundColor: "#FAF3E0",
-          minHeight: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <p style={{ color: "#A47148", fontSize: "24px" }}>Đang tải bài viết...</p>
-      </div>
-    )
+    return <Loading />
   }
 
   if (error) {

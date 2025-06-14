@@ -50,7 +50,7 @@ export default function Pagination({ currentPage, totalPages, setCurrentPage }) 
     };
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px", backgroundColor: "#FFF5E1", padding: "10px 0" }}>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px", padding: "10px 0", background: 'transparent' }}>
             <button
                 onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}
                 style={{
