@@ -20,7 +20,8 @@ app.use(helmet());
 app.use(cookieParser());
 
 const allowedOrigins = [
-  'http://103.28.32.101'
+  'http://localhost:3000',
+
 ];
 
 app.use(cors({

@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react';
-
 import qrCode from '../assets/image 9.png';
-
+import Loading from '../components/Loading';
 
 export default function DonatePage() {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Giả lập thời gian tải
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleQrScan = () => {
     setIsNotificationOpen(true);
@@ -13,6 +22,10 @@ export default function DonatePage() {
   const closeNotification = () => {
     setIsNotificationOpen(false);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div

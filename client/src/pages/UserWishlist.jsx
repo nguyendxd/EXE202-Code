@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getWishlist, removeFromWishlist } from '../services/wishlistService';
 import { useNavigate } from 'react-router-dom';
+import Pagination from '../components/Pagination';
 
 export default function UserWishlist() {
     const [wishlist, setWishlist] = useState([]);
@@ -8,6 +9,8 @@ export default function UserWishlist() {
     const navigate = useNavigate();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [selectedPetId, setSelectedPetId] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6;
 
     useEffect(() => {
         const fetchWishlist = async () => {
@@ -23,6 +26,12 @@ export default function UserWishlist() {
         };
         fetchWishlist();
     }, []);
+
+    // Tính toán danh sách hiển thị cho trang hiện tại
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = wishlist.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(wishlist.length / itemsPerPage);
 
     const handleCardClick = (petId) => {
         navigate(`/pets/${petId}`);
@@ -265,10 +274,10 @@ export default function UserWishlist() {
                         justifyContent: "center"
                     }}
                 >
-                    {wishlist.length === 0 ? (
+                    {currentItems.length === 0 ? (
                         <div style={{ gridColumn: '1/-1', textAlign: 'center', color: '#8B4513', fontSize: 18 }}>Chưa có thú cưng nào trong wishlist.</div>
                     ) : (
-                        wishlist.map((item, idx) => {
+                        currentItems.map((item, idx) => {
                             const pet = item.pet;
                             return (
                                 <div
@@ -302,6 +311,13 @@ export default function UserWishlist() {
                         })
                     )}
                 </div>
+                {wishlist.length > 0 && (
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        setCurrentPage={setCurrentPage}
+                    />
+                )}
             </div>
         </div>
     );

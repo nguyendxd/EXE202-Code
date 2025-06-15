@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Loading from "../components/Loading"
+import Pagination from "../components/Pagination"
 
 export default function BlogPage() {
   const navigate = useNavigate()
@@ -11,6 +12,8 @@ export default function BlogPage() {
   const [blogPosts, setBlogPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const postsPerPage = 6
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -70,6 +73,11 @@ export default function BlogPage() {
     transition: "all 0.3s ease",
     border: "2px solid #D7A86E",
   })
+
+  const indexOfLastPost = currentPage * postsPerPage
+  const indexOfFirstPost = indexOfLastPost - postsPerPage
+  const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost)
+  const totalPages = Math.ceil(blogPosts.length / postsPerPage)
 
   if (loading) {
     return <Loading />
@@ -148,10 +156,11 @@ export default function BlogPage() {
           gap: "30px",
           maxWidth: "1400px",
           margin: "0 auto 60px auto",
-          justifyItems: "center",
+          justifyItems: "start",
+          paddingLeft: "60px",
         }}
       >
-        {blogPosts.map((post) => (
+        {currentPosts.map((post) => (
           <div
             key={post.id}
             style={cardStyle(hoveredCards[post.id])}
@@ -220,6 +229,11 @@ export default function BlogPage() {
           </div>
         ))}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   )
 }

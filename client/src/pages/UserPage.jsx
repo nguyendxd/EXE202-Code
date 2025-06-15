@@ -4,6 +4,7 @@ import { getUserById } from '../services/userService';
 import { getPetsByUserId } from '../services/petService';
 import Loading from '../components/Loading';
 import PetCard from '../components/PetCard';
+import Pagination from '../components/Pagination';
 import "../styles/index.css";
 
 export default function UserPage() {
@@ -15,6 +16,8 @@ export default function UserPage() {
     const [pets, setPets] = useState([]);
     const [petsLoading, setPetsLoading] = useState(true);
     const [petsError, setPetsError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 6;
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -48,6 +51,10 @@ export default function UserPage() {
 
     if (loading) return <Loading />;
     if (error || !user) return <div style={{ textAlign: 'center', marginTop: 40, color: 'red' }}>{error || "Không có dữ liệu."}</div>;
+
+    // Sau khi lấy pets xong
+    const totalPages = Math.ceil(pets.length / pageSize);
+    const pagedPets = pets.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     return (
         <div style={{ backgroundColor: "#FFF7E2", minHeight: "100vh", fontFamily: "Arial, sans-serif", padding: "40px 20px" }}>
@@ -116,17 +123,24 @@ export default function UserPage() {
                 ) : pets.length === 0 ? (
                     <div style={{ textAlign: 'center', color: '#A47148' }}>Chưa có thú cưng nào được đăng.</div>
                 ) : (
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                        gap: '32px',
-                        justifyItems: 'center',
-                        marginTop: 8
-                    }}>
-                        {pets.map(pet => (
-                            <PetCard key={pet._id} pet={pet} />
-                        ))}
-                    </div>
+                    <>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                            gap: '32px',
+                            justifyItems: 'center',
+                            marginTop: 8
+                        }}>
+                            {pagedPets.map(pet => (
+                                <PetCard key={pet._id} pet={pet} />
+                            ))}
+                        </div>
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            setCurrentPage={setCurrentPage}
+                        />
+                    </>
                 )}
             </div>
         </div>

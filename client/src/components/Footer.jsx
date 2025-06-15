@@ -32,7 +32,7 @@ function Footer() {
                         Đại học FPT Hồ Chí Minh
                     </p>
                     <p style={{ fontSize: '14px', marginBottom: '10px' }}>
-                        pawmily@gmail.com
+                        pawmily.pet@gmail.com
                     </p>
                 </div>
 
@@ -73,11 +73,7 @@ function Footer() {
                             Tiktok
                         </a>
                     </p>
-                    <p style={{ fontSize: '14px', marginBottom: '10px' }}>
-                        <a href="#" style={{ color: '#FFF', textDecoration: 'none', textTransform: 'capitalize' }}>
-                            Instagram
-                        </a>
-                    </p>
+
                 </div>
 
                 {/* Cột 4: Thông tin */}

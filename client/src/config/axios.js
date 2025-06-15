@@ -8,6 +8,16 @@ const axiosInstance = axios.create({
     },
 });
 
+// Hàm xử lý đăng xuất
+const handleLogout = () => {
+    // Xóa tất cả thông tin người dùng
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('userId');
+    // Chuyển hướng về trang đăng nhập
+    window.location.href = '/login';
+};
+
 // Request interceptor
 axiosInstance.interceptors.request.use(
     (config) => {
@@ -33,13 +43,16 @@ axiosInstance.interceptors.response.use(
             // Xử lý lỗi từ server
             switch (error.response.status) {
                 case 401:
-                    // Xử lý lỗi unauthorized
-                    localStorage.removeItem('token');
-                    window.location.href = '/login';
+                    // Xử lý lỗi unauthorized (token hết hạn hoặc không hợp lệ)
+                    handleLogout();
                     break;
                 case 403:
                     // Xử lý lỗi forbidden
                     console.error('Bạn không có quyền truy cập');
+                    // Nếu là lỗi token hết hạn, đăng xuất
+                    if (error.response.data?.message?.includes('token expired')) {
+                        handleLogout();
+                    }
                     break;
                 case 404:
                     // Xử lý lỗi not found

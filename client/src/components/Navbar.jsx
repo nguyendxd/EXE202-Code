@@ -15,15 +15,17 @@ export default function Navbar() {
     useEffect(() => {
         const handleResize = () => {
             const newIsMobile = window.innerWidth <= 1024
-            setIsMobile(newIsMobile)
-            if (!newIsMobile) {
-                setIsOpen(false) // Close menu when switching to larger screen
+            if (newIsMobile !== isMobile) {
+                setIsMobile(newIsMobile)
+                if (!newIsMobile) {
+                    setIsOpen(false)
+                }
             }
         }
 
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
-    }, [])
+    }, [isMobile])
 
     // Đóng menu user khi click ra ngoài
     useEffect(() => {
@@ -114,24 +116,31 @@ export default function Navbar() {
 
                     {/* Navigation Links */}
                     <div className="nav-links" style={{
-                        display: isMobile ? (isOpen ? 'flex' : 'none') : 'flex',
+                        display: isMobile ? 'flex' : 'flex',
                         flexDirection: isMobile ? 'column' : 'row',
-                        gap: isMobile ? '15px' : '20px',
+                        gap: isMobile ? '30px' : '20px',
                         fontSize: isMobile ? '18px' : '16px',
                         fontWeight: '400',
                         color: '#333',
                         width: isMobile ? '100%' : 'auto',
-                        textAlign: isMobile ? 'center' : 'left',
+                        textAlign: 'center',
                         backgroundColor: isMobile ? '#FFF5E1' : 'transparent',
                         position: isMobile ? 'absolute' : 'static',
                         top: isMobile ? '80px' : 'auto',
                         left: isMobile ? 0 : 'auto',
-                        padding: isMobile ? '20px' : 0,
+                        padding: isMobile ? '20px 0 100px 0' : 0,
                         zIndex: '10',
-                        transition: isMobile ? 'all 0.3s ease-in-out' : 'none',
+                        transition: isMobile
+                            ? 'transform 0.3s ease-in-out, opacity 0.3s ease-in-out'
+                            : 'none',
                         transform: isMobile ? (isOpen ? 'translateY(0)' : 'translateY(-100%)') : 'none',
+                        opacity: isMobile ? (isOpen ? 1 : 0) : 1,
+                        visibility: isMobile ? (isOpen ? 'visible' : 'hidden') : 'visible',
+                        pointerEvents: isMobile ? (isOpen ? 'auto' : 'none') : 'auto',
                         flexShrink: 0,
                         whiteSpace: 'nowrap',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                     }}>
                         <Link
                             to="/"
@@ -332,8 +341,8 @@ export default function Navbar() {
                                     }}>
                                         <button style={dropdownButtonStyle} onClick={() => { navigate(`/profile/${userId}`); setShowUserMenu(false); }}> Hồ sơ người dùng </button>
                                         <button style={dropdownButtonStyle} onClick={() => { navigate('/wishlist'); setShowUserMenu(false); }}>Danh sách yêu thích</button>
-                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/adopt-list'); setShowUserMenu(false); }}>Danh sách nhận nuôi</button>
-                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/setting'); setShowUserMenu(false); }}>Cài đặt</button>
+
+
                                         <button style={dropdownButtonStyle} onClick={handleLogout}>Đăng xuất</button>
                                     </div>
                                 )}
