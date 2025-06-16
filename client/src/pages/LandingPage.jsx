@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import landingpageimage from '../assets/landingpageimage.png';
 import chungminhlaaisection from '../assets/chungminhlaaisection.jpg';
 import { getAllPets } from '../services/petService';
-import qrCode from '../assets/image 9.png';
+import qrCode from '../assets/QRcode.png';
 
 const images = [
     'https://images.pexels.com/photos/46024/pexels-photo-46024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
@@ -554,7 +554,7 @@ export default function LandingPage() {
 
             {/* Donation QR Code Section */}
             <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#C8A484' }}>
-                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Hỗ trợ chúng tôi donate theo cách của bạn!</h2>
+                <h2 style={{ fontSize: '30px', color: '#fff4e1' }}>Hỗ trợ chúng tôi donate theo cách của bạn!</h2>
                 <div style={{ maxWidth: '300px', margin: '20px auto' }}>
                     <img
                         src={qrCode}
@@ -562,12 +562,15 @@ export default function LandingPage() {
                         style={{ width: '100%', borderRadius: '10px' }}
                     />
                 </div>
-                <p style={{ fontSize: '16px', color: '#5D4037' }}>
-                    Pawmily - Petbank: 0354698035<br />
-                    Memo: 0123456799<br />
-                    Chúng tôi rất biết ơn nếu bạn donate số tiền dù là nhỏ!
+                <p style={{ fontSize: '18px', color: '#5D4037', alignItems: 'center', padding: '1.5em' }}>
+                    Nguyen Bao Chau - 1907 4447 2290 18<br />
+                    <br />
+                    Mỗi đóng góp của bạn, dù nhỏ, đều là nguồn động viên to lớn với chúng mình! <br />
+                    <br />
+                    Chúng mình cam kết sử dụng 100% số tiền quyên góp để duy trì website và chăm sóc, cứu trợ những bé động vật kém may mắn.
                 </p>
+
             </section>
-        </div>
+        </div >
     );
 }
