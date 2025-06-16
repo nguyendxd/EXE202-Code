@@ -34,7 +34,7 @@ export default function AdminAdopt() {
   useEffect(() => {
     setLoading(true)
     setError(null)
-    fetch(`${import.meta.env.VITE_API_URL}/api/pets`)
+    fetch(`${import.meta.env.VITE_API_URL}/pets`)
       .then(res => res.json())
       .then(data => {
         const petsArray = Array.isArray(data.data) ? data.data : [];
@@ -228,7 +228,7 @@ export default function AdminAdopt() {
     const token = localStorage.getItem("token");
     console.log('PUT pet', updatedPet._id, petData);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pets/${updatedPet._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/pets/${updatedPet._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -254,7 +254,7 @@ export default function AdminAdopt() {
     const token = localStorage.getItem("token");
     console.log('DELETE pet', petToDelete._id);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pets/${petToDelete._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/pets/${petToDelete._id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

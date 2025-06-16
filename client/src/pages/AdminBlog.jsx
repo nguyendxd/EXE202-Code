@@ -32,7 +32,7 @@ export default function AdminBlog() {
   useEffect(() => {
     setLoading(true)
     const token = localStorage.getItem('token');
-    fetch('http://103.28.32.101:3000/api/blogs', {
+    fetch(`${import.meta.env.VITE_API_URL}/blogs`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -157,7 +157,7 @@ export default function AdminBlog() {
     setLoading(true)
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://103.28.32.101:3000/api/blogs/${blog._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/blogs/${blog._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -180,7 +180,7 @@ export default function AdminBlog() {
     setLoading(true)
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://103.28.32.101:3000/api/blogs/${blogId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/blogs/${blogId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -783,7 +783,7 @@ export default function AdminBlog() {
                   try {
                     const token = localStorage.getItem('token');
                     // Xóa blog trước
-                    const res = await fetch(`http://103.28.32.101:3000/api/blogs/${blogToDelete._id}`, {
+                    const res = await fetch(`${import.meta.env.VITE_API_URL}/blogs/${blogToDelete._id}`, {
                       method: "DELETE",
                       headers: {
                         "Authorization": `Bearer ${token}`
