@@ -23,8 +23,9 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://103.28.32.101',
   'http://pawmily.site',
-  'https://pawmily.site'
-
+  'https://pawmily.site',
+  'http://localhost:5173',
+  'http://localhost:5174'
 ];
 
 app.use(cors({
