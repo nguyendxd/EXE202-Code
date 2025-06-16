@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import qrCode from '../assets/image 9.png';
+import QRcode from '../assets/QRcode.png';
 import Loading from '../components/Loading';
 
 export default function DonatePage() {
@@ -88,23 +88,16 @@ export default function DonatePage() {
             marginBottom: '15px',
             fontFamily: '"Varela Round", sans-serif',
           }}>
-            <strong>Pawmily</strong> - Petbonk - 83861836
+            <strong>Nguyen Bao Chau</strong> - 1907 4447 2290 18
           </p>
-          <p style={{
-            fontSize: '20px',
-            color: '#333',
-            marginBottom: '30px',
-            fontFamily: '"Varela Round", sans-serif',
-          }}>
-            <strong>Momo</strong> - 0123456789
-          </p>
+
           <p style={{
             fontSize: '18px',
             color: '#666',
             fontStyle: 'italic',
             fontFamily: '"Varela Round", sans-serif',
           }}>
-            Chuyển mình kèm 100% số tiền donate sẽ được sử dụng để duy trì website và hỗ trợ cứu hộ chăm sóc các bé động vật
+            Chúng mình cam kết 100% số tiền donate sẽ được sử dụng để duy trì website và hỗ trợ cứu hộ chăm sóc các bé động vật
           </p>
         </div>
         {/* QR code bên phải */}
@@ -116,7 +109,7 @@ export default function DonatePage() {
           alignItems: 'center',
         }}>
           <img
-            src={qrCode}
+            src={QRcode}
             alt="QR Code Donate"
             onClick={handleQrScan}
             style={{

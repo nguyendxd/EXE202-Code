@@ -286,9 +286,10 @@ export default function AboutUsPage() {
                   style={{ width: '110px', height: '110px', borderRadius: '12px', objectFit: 'cover', border: '2px solid #E5C299' }}
                 />
               </div>
-              <h3 style={{ color: '#A47148', fontSize: '20px', fontWeight: 700, margin: '10px 0 8px 0' }}>Cậu bé 1 tuổi</h3>
+              <h3 style={{ color: '#A47148', fontSize: '20px', fontWeight: 700, margin: '10px 0 8px 0' }}>🐱 Bé Miu – “Từ đống rác đến chiếc giường êm”</h3>
               <p style={{ color: '#5D4037', fontSize: '15px', fontFamily: '"Varela Round", sans-serif', margin: 0, textAlign: 'center' }}>
-                The need of travelers has made Sinh Cafe feel that it is necessary to introduce travelers its friendly culture, its people with its friendly instinct. Sinh Cafe hospitality suggest who has provided travelers with travel and transport to ease their travel!
+                Miu được tìm thấy trong cơn mưa, lấm lem, yếu ớt nằm co ro bên đống rác. Sau nhiều ngày điều trị và chăm sóc, bé đã dần khỏe lại, mắt sáng hơn, ăn ngon miệng và biết kêu “meo” mỗi khi được gọi tên. Giờ đây, Miu nằm ngủ yên bình bên khung cửa sổ ngập nắng – nơi bắt đầu cuộc sống mới.
+
               </p>
             </div>
             {/* Card 2 */}
@@ -324,9 +325,9 @@ export default function AboutUsPage() {
                   style={{ width: '110px', height: '110px', borderRadius: '12px', objectFit: 'cover', border: '2px solid #E5C299' }}
                 />
               </div>
-              <h3 style={{ color: '#A47148', fontSize: '20px', fontWeight: 700, margin: '10px 0 8px 0' }}>Cậu bé 6 tháng</h3>
+              <h3 style={{ color: '#A47148', fontSize: '20px', fontWeight: 700, margin: '10px 0 8px 0' }}>🐾 Bé Xám – “Chú mèo chiến binh nhỏ”</h3>
               <p style={{ color: '#5D4037', fontSize: '15px', fontFamily: '"Varela Round", sans-serif', margin: 0, textAlign: 'center' }}>
-                The need of travelers has made Sinh Cafe feel that it is necessary to introduce travelers its friendly culture, its people with its friendly instinct. Sinh Cafe hospitality suggest who has provided travelers with travel and transport to ease their travel!
+                Xám bị gãy chân do tai nạn, nằm run rẩy dưới gầm xe. Ai cũng nghĩ bé không qua nổi. Nhưng sau phẫu thuật và nhiều tuần phục hồi, Xám đã đi lại được, dù hơi khập khiễng. Giờ bé là “anh cả” trong nhà chung, luôn đón các bạn mèo mới bằng những cái dụi đầu đầy thân thương.
               </p>
             </div>
           </div>
