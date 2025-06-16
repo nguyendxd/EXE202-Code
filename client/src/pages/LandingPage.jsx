@@ -46,7 +46,7 @@ export default function LandingPage() {
                     status: pet.temperament || pet.healthStatus?.join(', ') || 'Chưa xác định',
                     location: pet.address || 'Chưa xác định',
                     images: pet.images || [],
-                    description: pet.description || 'Chưa có mô tả'
+
                 }));
                 // Lấy 5 thú cưng đầu tiên
                 setFeaturedPets(formattedPets.slice(0, 5));
@@ -181,7 +181,7 @@ export default function LandingPage() {
         <div style={{ fontFamily: "'Roboto', sans-serif", backgroundColor: '#FAF3E0' }}>
 
             {/* Carousel */}
-            <div style={{ position: 'relative', height: '500px', overflow: 'hidden' }}>
+            <div style={{ position: 'relative', height: '400px', overflow: 'hidden' }}>
                 {images.map((src, idx) => (
                     <img
                         key={idx}
@@ -300,6 +300,7 @@ export default function LandingPage() {
 
             <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#FFF5E1' }}>
                 <div
+                    className="about-section"
                     style={{
                         maxWidth: '1200px',
                         margin: '0 auto',
@@ -312,10 +313,7 @@ export default function LandingPage() {
                         justifyContent: 'space-between',
                         flexWrap: 'wrap',
                         gap: '20px',
-                        transition: 'transform 0.3s ease', // Add transition for smooth scaling
-                        ':hover': {
-                            transform: 'scale(1.02)', // Slight scale-up on hover
-                        },
+                        transition: 'transform 0.3s ease',
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')} // Scale up on hover
                     onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Reset scale on leave
@@ -411,7 +409,6 @@ export default function LandingPage() {
                                     <div style={{ fontSize: '14px', color: '#5D4037', marginBottom: '10px', textAlign: 'center' }}>
                                         <p style={{ margin: '4px 0' }}>Giới tính: {pet.gender}</p>
                                         <p style={{ margin: '4px 0' }}>Giống: {pet.breed}</p>
-                                        <p style={{ margin: '4px 0' }}>Tình trạng: {pet.status}</p>
                                         <p style={{ margin: '4px 0' }}>Nơi ở: {pet.location}</p>
 
                                     </div>
@@ -481,6 +478,15 @@ export default function LandingPage() {
             @media (max-width: 479px) {
                 section > div {
                     grid-template-columns: 1fr;
+                }
+            }
+            @media (max-width: 900px) {
+                .about-section {
+                    flex-direction: column !important;
+                    padding: 16px !important;
+                }
+                .about-section > div {
+                    max-width: 100% !important;
                 }
             }
         `}
@@ -563,7 +569,7 @@ export default function LandingPage() {
                     />
                 </div>
                 <p style={{ fontSize: '18px', color: '#5D4037', alignItems: 'center', padding: '1.5em' }}>
-                    Nguyen Bao Chau - 1907 4447 2290 18<br />
+                    <strong>Techcombank - 1907 4447 2290 18 - Nguyen Bao Chau</strong><br />
                     <br />
                     Mỗi đóng góp của bạn, dù nhỏ, đều là nguồn động viên to lớn với chúng mình! <br />
                     <br />

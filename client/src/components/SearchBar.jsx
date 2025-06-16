@@ -40,8 +40,8 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
     // Hàm xử lý tìm kiếm
     const handleSearch = async () => {
         try {
-            // Chuyển đổi filter sang định dạng phù hợp với API
             const searchParams = {
+                name: search,
                 breed: filter.loai,
                 gender: filter.gioiTinh === "Đực" ? "male" : filter.gioiTinh === "Cái" ? "female" : "",
                 color: filter.mauSac,
@@ -49,7 +49,13 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
                 age: filter.doTuoi
             };
 
-            // Gọi API tìm kiếm
+            // Nếu chọn đúng 'Chó' hoặc 'Mèo' thì fetch riêng, nếu không thì fetch tất cả
+            if (filter.loai === "Chó" || filter.loai === "Mèo") {
+                searchParams.breed = filter.loai;
+            } else {
+                searchParams.breed = "";
+            }
+
             const response = await searchPets(searchParams);
             if (response.data.success) {
                 onSearchResults(response.data.data);
@@ -59,10 +65,10 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
         }
     };
 
-    // Thêm useEffect để tự động tìm kiếm khi filter thay đổi
     useEffect(() => {
         handleSearch();
-    }, [filter]);
+        // eslint-disable-next-line
+    }, [search, filter]);
 
     return (
         <div>
@@ -88,42 +94,32 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
                 }}
             >
                 <select
-                    value={filter.loai}
+                    value={filter.loai || ""}
                     onChange={(e) => setFilter({ ...filter, loai: e.target.value })}
                     style={selectStyle}
                 >
-                    <option value="">Loài thú nuôi</option>
+                    <option value="">Tất cả loài</option>
                     <option value="Chó">Chó</option>
                     <option value="Mèo">Mèo</option>
                 </select>
 
                 <select
-                    value={filter.gioiTinh}
+                    value={filter.gioiTinh || ""}
                     onChange={(e) => setFilter({ ...filter, gioiTinh: e.target.value })}
                     style={selectStyle}
                 >
-                    <option value="">Giới tính</option>
-                    <option value="Đực">Đực</option>
-                    <option value="Cái">Cái</option>
+                    <option value="">Tất cả giới tính</option>
+                    <option value="Male">Đực</option>
+                    <option value="Female">Cái</option>
                 </select>
 
-                <select
-                    value={filter.mauSac}
-                    onChange={(e) => setFilter({ ...filter, mauSac: e.target.value })}
-                    style={selectStyle}
-                >
-                    <option value="">Màu sắc</option>
-                    <option value="Nâu">Nâu</option>
-                    <option value="Đen">Đen</option>
-                    <option value="Trắng">Trắng</option>
-                </select>
 
                 <select
-                    value={filter.tinhTrang}
+                    value={filter.tinhTrang || ""}
                     onChange={(e) => setFilter({ ...filter, tinhTrang: e.target.value })}
                     style={selectStyle}
                 >
-                    <option value="">Tình trạng</option>
+                    <option value="">Tất cả tình trạng</option>
                     <option value="Khỏe mạnh">Khỏe mạnh</option>
                     <option value="Đã tiêm phòng">Đã tiêm phòng</option>
                     <option value="Đã triệt sản">Đã triệt sản</option>
@@ -131,11 +127,11 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
                 </select>
 
                 <select
-                    value={filter.viTri}
+                    value={filter.viTri || ""}
                     onChange={(e) => setFilter({ ...filter, viTri: e.target.value })}
                     style={selectStyle}
                 >
-                    <option value="">Vị trí</option>
+                    <option value="">Tất cả vị trí</option>
                     <option value="Quận Thủ Đức">Quận Thủ Đức</option>
                     <option value="Quận Bình Thạnh">Quận Bình Thạnh</option>
                     <option value="Quận Gò Vấp">Quận Gò Vấp</option>
@@ -145,13 +141,13 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
                 </select>
 
                 <select
-                    value={filter.doTuoi}
+                    value={filter.doTuoi || ""}
                     onChange={(e) => setFilter({ ...filter, doTuoi: e.target.value })}
                     style={selectStyle}
                 >
-                    <option value="">Độ tuổi</option>
+                    <option value="">Tất cả độ tuổi</option>
                     <option value="Dưới 6 tháng">Dưới 6 tháng</option>
-                    <option value="Trên 6 tháng">Trên 6 tháng</option>
+                    <option value="Trưởng thành">Trên 6 tháng</option>
                 </select>
             </div>
         </div>

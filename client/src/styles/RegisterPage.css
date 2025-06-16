@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   /* canh card nằm chính giữa theo chiều ngang */
-  align-items: center;
+  align-items: flex-start;
   /* canh card ngay góc trên của container */
   min-height: 100vh;
   /* toàn bộ vùng chứa cao 100% viewport */
@@ -13,13 +13,13 @@
   overflow: auto;
 
   /* XÓA margin‐top: 90px; chỉ cần padding‐top rất nhỏ hoặc bằng 0 */
-  padding: 30px 0 20px 0;
+  padding: 25px 0 20px 0;
   /* chính xác là không cần "thụt xuống" nữa */
   animation: fadeIn 0.3s ease-in-out;
 
   /* Background image */
   background-image: url('../assets/fullbganimal.jpg');
-  background-size: 100%;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -30,7 +30,7 @@
   background-color: rgba(210, 180, 140, 0.9);
   /* Màu nâu nhạt với độ trong suốt */
   /* Đổi màu nền sang vàng nhạt với độ trong suốt */
-  padding: 8px;
+  padding-top: 30px;
   /* bạn có thể giảm thêm nếu muốn */
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -101,11 +101,9 @@
 
 .register-tagline h2 {
   font-size: 1.6rem;
-  color: #ffab62;
+  color: #333;
   margin-bottom: 1px;
-  /* chỉ 1px khoảng trống dưới */
-  font-weight: bold;
-  /* Làm chữ đậm hơn */
+  font-weight: 800;
 }
 
 .register-tagline p {
@@ -143,17 +141,28 @@
 .register-form .form-group textarea,
 .register-form .form-group select {
   width: 100%;
-  padding: 4px;
-  /* rút gọn padding bên trong input */
+  padding: 8px 12px;
+  /* Tăng padding cho thoáng */
   border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border-radius: 14px;
+  /* Bo tròn nhiều hơn */
+  font-size: 1rem;
   box-sizing: border-box;
   margin-top: 1px;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.97);
+  /* Sáng hơn một chút */
   color: #333;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.register-form .form-group input:focus,
+.register-form .form-group textarea:focus {
+  outline: none;
+  border-color: #ffab62;
+  /* Viền cam nhạt khi focus */
+  box-shadow: 0 0 0 3px rgba(255, 171, 98, 0.15);
+  background-color: #fff;
 }
 
 /* Style for the password input container */
@@ -169,20 +178,24 @@
 .register-form .form-group .password-input-container input[type="password"],
 .register-form .form-group .password-input-container input[type="text"] {
   flex-grow: 1;
-  /* Allow input to take available space */
-  padding-right: 30px;
-  /* Add padding to make space for the icon */
-  /* Keep existing input styles */
-  padding: 4px;
+  padding: 8px 12px;
   border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border-radius: 14px;
+  font-size: 1rem;
   box-sizing: border-box;
   margin-top: 1px;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.97);
   color: #333;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.register-form .form-group .password-input-container input[type="password"]:focus,
+.register-form .form-group .password-input-container input[type="text"]:focus {
+  outline: none;
+  border-color: #ffab62;
+  box-shadow: 0 0 0 3px rgba(255, 171, 98, 0.15);
+  background-color: #fff;
 }
 
 /* Style for the password toggle icon */
@@ -235,15 +248,26 @@
 }
 
 .has-account-text a {
-  color: #ffab62;
+  color: #333;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 800;
 }
 
 .has-account-text a:hover {
   text-decoration: underline;
 }
 
+/* Thêm style cho link quên mật khẩu */
+.forgot-password-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
 
 /* 8) Animation (không thay đổi) */
 @keyframes fadeIn {

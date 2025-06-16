@@ -13,7 +13,7 @@ const RegisterSchema = Yup.object().shape({
   email: Yup.string().email('Email không hợp lệ').required('Bắt buộc'),
   password: Yup.string().min(6, 'Mật khẩu ít nhất 6 ký tự').required('Bắt buộc'),
   phone: Yup.string().matches(/^\d{9,11}$/, 'Số điện thoại không hợp lệ').required('Bắt buộc'),
-  address: Yup.string().min(10, 'Địa chỉ quá ngắn').max(100, 'Địa chỉ quá dài').required('Bắt buộc'),
+  address: Yup.string().min(10, 'Địa chỉ quá ngắn').max(100, 'Địa chỉ quá dài'),
 });
 
 const RegisterPage = () => {
@@ -75,7 +75,7 @@ const RegisterPage = () => {
               });
               const data = await response.json();
               if (!response.ok) throw new Error(data.message || 'Registration failed');
-              setSuccessMessage('Hãy xác nhận email của bạn');
+              setSuccessMessage('Chúng mình đã gửi link xác nhận đến địa chỉ email của bạn. Vui lòng mở email của bạn và xác nhận để đăng ký tài khoản.');
               resetForm();
             } catch (err) {
               setError(err.message || 'An error occurred during registration');

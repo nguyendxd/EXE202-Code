@@ -5,11 +5,19 @@ import Pagination from "../components/Pagination";
 import Loading from "../components/Loading";
 import "../styles/index.css";
 import { getAllPets } from '../services/petService';
+import defaultImage from '../assets/default-image.jpg';
 
 export default function AdoptPage() {
     const [pets, setPets] = useState([]);
     const [search, setSearch] = useState("");
-    const [filter, setFilter] = useState("");
+    const [filter, setFilter] = useState({
+        loai: "",
+        gioiTinh: "",
+        mauSac: "",
+        tinhTrang: "",
+        viTri: "",
+        doTuoi: ""
+    });
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -36,7 +44,7 @@ export default function AdoptPage() {
                     breed: pet.breed || 'Not specified',
                     status: pet.temperament || pet.healthStatus?.join(', ') || 'Unknown',
                     location: pet.address || 'Unknown location',
-                    image: pet.images?.[0] || 'https://via.placeholder.com/200',
+                    image: pet.images?.[0] || defaultImage,
                 }));
                 setPets(formattedPets);
             } catch (error) {
@@ -50,11 +58,16 @@ export default function AdoptPage() {
         fetchPets();
     }, []);
 
-    const filteredPets = pets.filter(
-        (pet) =>
-            (pet.name || "").toLowerCase().includes(search.toLowerCase()) &&
-            (filter === "" || (pet.breed || "").toLowerCase().includes(filter.toLowerCase()))
-    );
+    const filteredPets = pets.filter((pet) => {
+        const matchName = (pet.name || "").toLowerCase().includes(search.toLowerCase());
+        const matchBreed = !filter.loai || (pet.breed || "").toLowerCase().includes(filter.loai.toLowerCase());
+        const matchGender = !filter.gioiTinh || (pet.gender || "").toLowerCase().includes(filter.gioiTinh.toLowerCase());
+        const matchColor = !filter.mauSac || (pet.color || "").toLowerCase().includes(filter.mauSac.toLowerCase());
+        const matchLocation = !filter.viTri || (pet.location || "").toLowerCase().includes(filter.viTri.toLowerCase());
+        const matchAge = !filter.doTuoi || (pet.age || "").toLowerCase().includes(filter.doTuoi.toLowerCase());
+        // Có thể bổ sung matchTinhTrang nếu cần
+        return matchName && matchBreed && matchGender && matchColor && matchLocation && matchAge;
+    });
 
     const petsPerPage = 8;
     const totalPages = Math.ceil(filteredPets.length / petsPerPage);
@@ -64,6 +77,22 @@ export default function AdoptPage() {
         display: 'grid',
         gap: '30px',
         padding: '0 20px',
+    };
+
+    const handleSearchResults = (results) => {
+        // Format lại dữ liệu để đảm bảo có trường image
+        const formattedPets = (results || []).map(pet => ({
+            _id: pet._id || `temp-id-${Math.random()}`,
+            name: pet.name || 'Unknown',
+            age: pet.age || 'Not specified',
+            gender: pet.gender || 'Not specified',
+            breed: pet.breed || 'Not specified',
+            status: pet.temperament || (pet.healthStatus?.join(', ') || 'Unknown'),
+            location: pet.address || 'Unknown location',
+            image: (pet.images && pet.images[0]) ? pet.images[0] : defaultImage,
+        }));
+        setPets(formattedPets);
+        setCurrentPage(1);
     };
 
     return (
@@ -77,13 +106,14 @@ export default function AdoptPage() {
                         Cho bé một mái ấm - Trọn đời yêu thương!
                     </p>
 
-                    <SearchBar search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} />
+                    <SearchBar search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} onSearchResults={handleSearchResults} />
 
                     {loading ? (
                         <Loading />
                     ) : (
                         <div className="pet-grid" style={gridStyle}>
                             {displayedPets.map((pet, idx) => (
+                                console.log(pet),
                                 <PetCard key={pet._id || idx} pet={pet} />
                             ))}
                         </div>

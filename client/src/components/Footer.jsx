@@ -1,8 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import pawLogo from '../assets/paw-logo.png'; // Logo Pawmily
 
 function Footer() {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Hàm xử lý điều hướng và scroll
+    const handleFooterNav = (hash) => {
+        if (location.pathname === '/about') {
+            const el = document.getElementById(hash);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        } else {
+            navigate(`/about#${hash}`);
+        }
+    };
+
     return (
         <>
             <style>
@@ -12,29 +27,43 @@ function Footer() {
                     display: flex !important;
                     flex-direction: column !important;
                     align-items: center !important;
-                    gap: 18px !important;
+                    gap: 10px !important;
                     text-align: center !important;
                     padding-left: 0 !important;
                   }
                   .footer-col {
                     width: 100% !important;
-                    max-width: 300px !important;
-                    margin: 0 auto 10px auto !important;
+                    max-width: 250px !important;
+                    margin: 0 auto 5px auto !important;
                     align-items: center !important;
                     justify-content: center !important;
                     text-align: center !important;
                     padding-left: 0 !important;
                   }
                   .footer-logo {
-                    margin: 0 auto 10px auto !important;
+                    margin: 0 auto 5px auto !important;
                     display: block !important;
-                    height: 50px !important;
+                    height: 40px !important;
                   }
                   .footer-brand {
                     flex-direction: column !important;
                     align-items: center !important;
                     justify-content: center !important;
                     text-align: center !important;
+                  }
+                  .footer-col h4 {
+                    font-size: 15px !important;
+                    margin-bottom: 8px !important;
+                  }
+                  .footer-col p, .footer-col button {
+                    font-size: 12px !important;
+                    margin-bottom: 6px !important;
+                  }
+                  footer {
+                    padding: 15px 0 !important;
+                  }
+                  .footer-grid {
+                    gap: 5px !important;
                   }
                 }
                 `}
@@ -59,7 +88,9 @@ function Footer() {
                         textAlign: 'left',
                     }}
                 >
-                    {/* Cột 1: Thông tin liên hệ */}
+
+
+                    {/* Cột 2: Thông tin liên hệ */}
                     <div className="footer-col">
                         <div className="footer-brand" style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
                             <img src={pawLogo} alt="Pawmily Logo" className="footer-logo" style={{ height: '80px', marginRight: '10px' }} />
@@ -72,31 +103,48 @@ function Footer() {
                             pawmily.pet@gmail.com
                         </p>
                     </div>
+                    {/* Cột 1: Liên hệ */}
+                    <div className="footer-col" style={{ paddingLeft: '60px' }}>
+                        <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '15px', textTransform: 'uppercase' }}>
+                            Liên hệ
+                        </h4>
+                        <p style={{ fontSize: '14px', marginBottom: '10px' }}>
+                            <span role="img" aria-label="email">📧</span> <a href="mailto:pawmily.pet@gmail.com" style={{ color: '#FFF', textDecoration: 'none' }}>pawmily.pet@gmail.com</a>
+                        </p>
+                        <p style={{ fontSize: '14px', marginBottom: '10px' }}>
+                            <span role="img" aria-label="phone">📞</span> <a href="tel:1900xxxx" style={{ color: '#FFF', textDecoration: 'none' }}>1900xxxx</a>
+                        </p>
+                    </div>
 
                     {/* Cột 2: Link */}
                     <div className="footer-col" style={{ paddingLeft: '40px' }}>
                         <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '15px', textTransform: 'uppercase' }}>
-                            Thông Tin
+                            Về chúng mình
                         </h4>
                         <p style={{ fontSize: '14px', marginBottom: '10px' }}>
-                            <Link to="/about" style={{ color: '#FFF', textDecoration: 'none', textTransform: 'uppercase' }}>
-                                Về Chúng Mình
-                            </Link>
+                            <button onClick={() => handleFooterNav('ve-pawmily')} style={{ color: '#FFF', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'none', textTransform: 'uppercase', padding: 0 }}>
+                                Về Pawmily
+                            </button>
                         </p>
                         <p style={{ fontSize: '14px', marginBottom: '10px' }}>
-                            <Link to="/donate" style={{ color: '#FFF', textDecoration: 'none', textTransform: 'uppercase' }}>
-                                Quyên Góp
-                            </Link>
+                            <button onClick={() => handleFooterNav('su-menh')} style={{ color: '#FFF', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'none', textTransform: 'uppercase', padding: 0 }}>
+                                Sứ mệnh
+                            </button>
+                        </p>
+                        <p style={{ fontSize: '14px', marginBottom: '10px' }}>
+                            <button onClick={() => handleFooterNav('tam-nhin')} style={{ color: '#FFF', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'none', textTransform: 'uppercase', padding: 0 }}>
+                                Tầm nhìn
+                            </button>
                         </p>
                         <p style={{ fontSize: '14px' }}>
-                            <Link to="/blog" style={{ color: '#FFF', textDecoration: 'none', textTransform: 'uppercase' }}>
-                                Blog
-                            </Link>
+                            <button onClick={() => handleFooterNav('gia-tri-cot-loi')} style={{ color: '#FFF', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'none', textTransform: 'uppercase', padding: 0 }}>
+                                Giá trị cốt lõi
+                            </button>
                         </p>
                     </div>
 
                     {/* Cột 3: Mạng xã hội */}
-                    <div className="footer-col">
+                    <div className="footer-col" style={{ paddingLeft: '40px' }}>
                         <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '15px', textTransform: 'uppercase' }}>
                             Mạng Xã Hội
                         </h4>

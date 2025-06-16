@@ -34,7 +34,7 @@ export default function RescueMapPage() {
       // Get user's location
       if (navigator.geolocation) {
         console.log("Geolocation is supported");
-        
+
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             console.log("Full position object:", position);
@@ -43,10 +43,10 @@ export default function RescueMapPage() {
             console.log("Position altitudeAccuracy:", position.coords.altitudeAccuracy);
             console.log("Position heading:", position.coords.heading);
             console.log("Position speed:", position.coords.speed);
-            
+
             const { latitude, longitude } = position.coords;
             console.log("Raw coordinates:", { latitude, longitude });
-            
+
             // Kiểm tra tính hợp lệ của tọa độ
             if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
               console.error("Invalid coordinates received");
@@ -60,7 +60,7 @@ export default function RescueMapPage() {
             // Center map on user's location
             const mapCenter = [longitude, latitude];
             console.log("Setting map center to:", mapCenter);
-            
+
             map.current.flyTo({
               center: mapCenter,
               zoom: 14
@@ -196,6 +196,23 @@ export default function RescueMapPage() {
           {error}
         </div>
       )}
+
+      <div style={{
+        position: "fixed",
+        bottom: "30px",
+        right: "30px",
+        background: "rgba(255, 255, 255, 0.95)",
+        padding: "25px",
+        borderRadius: "8px",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+        fontSize: "20px",
+        fontWeight: "500",
+        color: "#333",
+        zIndex: 1000,
+        border: "1px solid rgba(0,0,0,0.1)"
+      }}>
+        Hãy thử reload lại trang nếu vị trí truy cập bị sai bạn nhé
+      </div>
     </div>
   );
 }

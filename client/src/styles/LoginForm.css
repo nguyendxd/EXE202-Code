@@ -159,8 +159,9 @@
 }
 
 .login-form-options a {
-    color: #ff7f50;
+    color: #fff8da;
     text-decoration: none;
+    font-weight: bold;
 }
 
 .login-form-options a:hover {
@@ -195,7 +196,7 @@
 }
 
 .register-link-text a {
-    color: #ff7f50;
+    color: #fff8da;
     text-decoration: none;
     font-weight: bold;
 }

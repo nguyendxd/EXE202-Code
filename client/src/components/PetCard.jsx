@@ -37,6 +37,7 @@ const imageStyle = {
 const bottomSectionStyle = {
     backgroundColor: '#f7e2b8',
     padding: '1rem',
+    paddingBottom: '2rem',
     textAlign: 'center',
     color: '#4e2d14',
     fontSize: '0.9rem',
@@ -102,7 +103,7 @@ export default function PetCard({ pet, showUpdate = false, onUpdate }) {
             <div className="pet-card" style={cardStyle} onClick={handleClick}>
                 <div style={{ ...topSectionStyle, position: 'relative' }}>
                     <img
-                        src={pet?.images?.[0]}
+                        src={pet?.image}
                         alt={`A ${pet.breed} named ${pet.name}`}
                         style={imageStyle}
                     />
@@ -124,7 +125,6 @@ export default function PetCard({ pet, showUpdate = false, onUpdate }) {
                     <p>Tuổi: {pet.age}</p>
                     <p>Giới tính: {pet.gender}</p>
                     <p>Giống: {pet.breed}</p>
-                    <p>Tình trạng: {pet.status}</p>
                     <p>Nơi ở: {pet.location}</p>
                 </div>
             </div>

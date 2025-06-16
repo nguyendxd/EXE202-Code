@@ -88,7 +88,7 @@ export default function DonatePage() {
             marginBottom: '15px',
             fontFamily: '"Varela Round", sans-serif',
           }}>
-            <strong>Nguyen Bao Chau</strong> - 1907 4447 2290 18
+            <strong>Techcombank - 1907 4447 2290 18</strong> - Nguyen Bao Chau
           </p>
 
           <p style={{

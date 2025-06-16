@@ -8,6 +8,7 @@ export default function Navbar() {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024) // Increased breakpoint to 1024px
     const [showUserMenu, setShowUserMenu] = useState(false)
     const userMenuRef = useRef(null)
+    const navRef = useRef(null)
     const navigate = useNavigate();
     const { isAuthenticated, logout } = useAuth();
     const userId = localStorage.getItem('userId');
@@ -42,10 +43,29 @@ export default function Navbar() {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [showUserMenu]);
 
+    // Thêm useEffect để xử lý click outside
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (navRef.current && !navRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     const handleLogout = () => {
         logout();
         setShowUserMenu(false);
         navigate('/');
+    };
+
+    // Thêm hàm handleLinkClick
+    const handleLinkClick = () => {
+        setIsOpen(false);
     };
 
     return (
@@ -73,7 +93,7 @@ export default function Navbar() {
                     }
                 `}
             </style>
-            <nav className="nav-container" style={{
+            <nav className="nav-container" ref={navRef} style={{
                 backgroundColor: '#FFF5E1',
                 padding: '20px',
                 fontFamily: '"Varela Round", Arial, sans-serif',
@@ -97,7 +117,10 @@ export default function Navbar() {
                     </Link>
 
                     {/* Hamburger Menu Button (for mobile) */}
-                    <div style={{ display: isMobile ? 'block' : 'none', flexShrink: 0 }}>
+                    <div style={{
+                        display: isMobile && !isOpen ? 'block' : 'none',
+                        flexShrink: 0
+                    }}>
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             style={{
@@ -107,10 +130,9 @@ export default function Navbar() {
                                 cursor: 'pointer',
                                 color: '#333',
                                 transition: 'transform 0.3s',
-                                transform: isOpen ? 'rotate(90deg)' : 'none',
                             }}
                         >
-                            {isOpen ? '✖' : '☰'}
+                            ☰
                         </button>
                     </div>
 
@@ -144,6 +166,7 @@ export default function Navbar() {
                     }}>
                         <Link
                             to="/"
+                            onClick={handleLinkClick}
                             style={{
                                 textDecoration: 'none',
                                 color: '#333',
@@ -168,6 +191,7 @@ export default function Navbar() {
                         </Link>
                         <Link
                             to="/adopt"
+                            onClick={handleLinkClick}
                             style={{
                                 textDecoration: 'none',
                                 color: '#333',
@@ -192,6 +216,7 @@ export default function Navbar() {
                         </Link>
                         <Link
                             to="/rescue-map"
+                            onClick={handleLinkClick}
                             style={{
                                 textDecoration: 'none',
                                 color: '#333',
@@ -216,6 +241,7 @@ export default function Navbar() {
                         </Link>
                         <Link
                             to="/blog"
+                            onClick={handleLinkClick}
                             style={{
                                 textDecoration: 'none',
                                 color: '#333',
@@ -240,6 +266,7 @@ export default function Navbar() {
                         </Link>
                         <Link
                             to="/donate"
+                            onClick={handleLinkClick}
                             style={{
                                 textDecoration: 'none',
                                 color: '#333',
@@ -264,6 +291,7 @@ export default function Navbar() {
                         </Link>
                         <Link
                             to="/about"
+                            onClick={handleLinkClick}
                             style={{
                                 textDecoration: 'none',
                                 color: '#333',
@@ -339,11 +367,10 @@ export default function Navbar() {
                                         zIndex: 2000,
                                         padding: '8px 0',
                                     }}>
-                                        <button style={dropdownButtonStyle} onClick={() => { navigate(`/profile/${userId}`); setShowUserMenu(false); }}> Hồ sơ người dùng </button>
-                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/wishlist'); setShowUserMenu(false); }}>Danh sách yêu thích</button>
-
-
-                                        <button style={dropdownButtonStyle} onClick={handleLogout}>Đăng xuất</button>
+                                        <button style={dropdownButtonStyle} onClick={() => { navigate(`/profile/${userId}`); setShowUserMenu(false); handleLinkClick(); }}> Hồ sơ người dùng </button>
+                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/wishlist'); setShowUserMenu(false); handleLinkClick(); }}>Danh sách yêu thích</button>
+                                        <button style={dropdownButtonStyle} onClick={() => { navigate('/chat'); setShowUserMenu(false); handleLinkClick(); }}>Tin nhắn</button>
+                                        <button style={dropdownButtonStyle} onClick={() => { handleLogout(); handleLinkClick(); }}>Đăng xuất</button>
                                     </div>
                                 )}
                             </div>
@@ -351,6 +378,7 @@ export default function Navbar() {
                             <div style={{ display: 'flex', gap: '10px' }}>
                                 <Link
                                     to="/login"
+                                    onClick={handleLinkClick}
                                     style={{
                                         textDecoration: 'none',
                                         color: '#333',
@@ -375,6 +403,7 @@ export default function Navbar() {
                                 </Link>
                                 <Link
                                     to="/register"
+                                    onClick={handleLinkClick}
                                     style={{
                                         textDecoration: 'none',
                                         color: '#fff',

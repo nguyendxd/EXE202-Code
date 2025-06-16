@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import pawLogo from '../assets/paw-logo.png'; // Ensure this image exists in assets
 import Loading from '../components/Loading';
+import { useLocation } from 'react-router-dom';
 
 export default function AboutUsPage() {
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     // Giả lập thời gian tải
@@ -14,6 +16,17 @@ export default function AboutUsPage() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Scroll tới đúng mục nếu có hash
+  useEffect(() => {
+    if (!loading && location.hash) {
+      const id = location.hash.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [loading, location]);
 
   if (loading) {
     return <Loading />;
@@ -43,18 +56,43 @@ export default function AboutUsPage() {
 
         {/* Who We Are Section */}
         <div
+          id="ve-pawmily"
           style={{
             backgroundColor: '#FFF',
             color: '#6B3A0F',
-            padding: '20px',
+            padding: '50px',
             marginBottom: '40px',
             borderRadius: '10px',
             display: 'flex',
+            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '20px',
+            flexWrap: 'wrap',
+            overflow: 'hidden',
           }}
         >
+          <style>{`
+            @media (max-width: 800px) {
+              #ve-pawmily {
+                flex-direction: column !important;
+                text-align: center !important;
+                padding: 30px !important;
+              }
+              #ve-pawmily img {
+                margin: 0 auto !important;
+                display: block !important;
+                max-width: 98vw !important;
+                width: 100% !important;
+                height: auto !important;
+                border-radius: 12px !important;
+              }
+              #ve-pawmily > div {
+                text-align: center !important;
+                max-width: 100% !important;
+              }
+            }
+          `}</style>
           <div style={{ maxWidth: '500px', textAlign: 'left' }}>
             <h2
               style={{
@@ -79,14 +117,14 @@ export default function AboutUsPage() {
             </p>
           </div>
           <img
-            src="https://images.pexels.com/photos/1963622/pexels-photo-1963622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual team image URL
+            src={pawLogo}
             alt="Team Photo"
-            style={{ width: '400px', height: '200px', borderRadius: '10px' }}
+            style={{ width: '200px', height: '200px', borderRadius: '10px', maxWidth: '50%', objectFit: 'contain', display: 'block', margin: '0 auto', background: '#fff' }}
           />
         </div>
 
         {/* Pawmily Up Section */}
-        <div style={{ marginBottom: '40px' }}>
+        <div id="su-menh-tam-nhin-gia-tri" style={{ marginBottom: '40px' }}>
           <h2
             style={{
               fontSize: '24px',
@@ -107,6 +145,7 @@ export default function AboutUsPage() {
             }}
           >
             <div
+              id="su-menh"
               style={{
                 backgroundColor: '#F5C07A',
                 width: '250px',
@@ -124,11 +163,10 @@ export default function AboutUsPage() {
                   margin: '0 auto 10px',
                 }}
               >
-                {/* Placeholder for circular image */}
                 <img
-                  src="https://images.pexels.com/photos/5998829/pexels-photo-5998829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual image URL
+                  src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                   alt="Icon 1"
-                  style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                  style={{ width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover', background: '#fff', display: 'block', margin: '0 auto' }}
                 />
               </div>
               <h3
@@ -137,6 +175,7 @@ export default function AboutUsPage() {
                   fontWeight: '600',
                   marginBottom: '10px',
                   fontFamily: '"Varela Round", sans-serif',
+                  marginTop: '32px',
                 }}
               >
                 Sứ mệnh:
@@ -147,6 +186,7 @@ export default function AboutUsPage() {
               </p>
             </div>
             <div
+              id="tam-nhin"
               style={{
                 backgroundColor: '#F5C07A',
                 width: '250px',
@@ -165,9 +205,9 @@ export default function AboutUsPage() {
                 }}
               >
                 <img
-                  src="https://images.pexels.com/photos/5998829/pexels-photo-5998829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual image URL
+                  src="https://images.pexels.com/photos/1056251/pexels-photo-1056251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                   alt="Icon 2"
-                  style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                  style={{ width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover', background: '#fff', display: 'block', margin: '0 auto' }}
                 />
               </div>
               <h3
@@ -176,6 +216,7 @@ export default function AboutUsPage() {
                   fontWeight: '600',
                   marginBottom: '10px',
                   fontFamily: '"Varela Round", sans-serif',
+                  marginTop: '32px',
                 }}
               >
                 Tầm nhìn:
@@ -185,6 +226,7 @@ export default function AboutUsPage() {
               </p>
             </div>
             <div
+              id="gia-tri-cot-loi"
               style={{
                 backgroundColor: '#F5C07A',
                 width: '250px',
@@ -203,9 +245,9 @@ export default function AboutUsPage() {
                 }}
               >
                 <img
-                  src="https://images.pexels.com/photos/5998829/pexels-photo-5998829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" // Replace with actual image URL
+                  src="https://images.pexels.com/photos/127028/pexels-photo-127028.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                   alt="Icon 3"
-                  style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                  style={{ width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover', background: '#fff', display: 'block', margin: '0 auto' }}
                 />
               </div>
               <h3
@@ -214,6 +256,7 @@ export default function AboutUsPage() {
                   fontWeight: '600',
                   marginBottom: '10px',
                   fontFamily: '"Varela Round", sans-serif',
+                  marginTop: '32px',
                 }}
               >
                 Giá trị cốt lõi:
@@ -286,9 +329,9 @@ export default function AboutUsPage() {
                   style={{ width: '110px', height: '110px', borderRadius: '12px', objectFit: 'cover', border: '2px solid #E5C299' }}
                 />
               </div>
-              <h3 style={{ color: '#A47148', fontSize: '20px', fontWeight: 700, margin: '10px 0 8px 0' }}>🐱 Bé Miu – “Từ đống rác đến chiếc giường êm”</h3>
+              <h3 style={{ color: '#A47148', fontSize: '20px', fontWeight: 700, margin: '10px 0 8px 0' }}>🐱 Bé Miu – "Từ đống rác đến chiếc giường êm"</h3>
               <p style={{ color: '#5D4037', fontSize: '15px', fontFamily: '"Varela Round", sans-serif', margin: 0, textAlign: 'center' }}>
-                Miu được tìm thấy trong cơn mưa, lấm lem, yếu ớt nằm co ro bên đống rác. Sau nhiều ngày điều trị và chăm sóc, bé đã dần khỏe lại, mắt sáng hơn, ăn ngon miệng và biết kêu “meo” mỗi khi được gọi tên. Giờ đây, Miu nằm ngủ yên bình bên khung cửa sổ ngập nắng – nơi bắt đầu cuộc sống mới.
+                Miu được tìm thấy trong cơn mưa, lấm lem, yếu ớt nằm co ro bên đống rác. Sau nhiều ngày điều trị và chăm sóc, bé đã dần khỏe lại, mắt sáng hơn, ăn ngon miệng và biết kêu "meo" mỗi khi được gọi tên. Giờ đây, Miu nằm ngủ yên bình bên khung cửa sổ ngập nắng – nơi bắt đầu cuộc sống mới.
 
               </p>
             </div>
@@ -325,9 +368,9 @@ export default function AboutUsPage() {
                   style={{ width: '110px', height: '110px', borderRadius: '12px', objectFit: 'cover', border: '2px solid #E5C299' }}
                 />
               </div>
-              <h3 style={{ color: '#A47148', fontSize: '20px', fontWeight: 700, margin: '10px 0 8px 0' }}>🐾 Bé Xám – “Chú mèo chiến binh nhỏ”</h3>
+              <h3 style={{ color: '#A47148', fontSize: '20px', fontWeight: 700, margin: '10px 0 8px 0' }}>🐾 Bé Xám – "Chú mèo chiến binh nhỏ"</h3>
               <p style={{ color: '#5D4037', fontSize: '15px', fontFamily: '"Varela Round", sans-serif', margin: 0, textAlign: 'center' }}>
-                Xám bị gãy chân do tai nạn, nằm run rẩy dưới gầm xe. Ai cũng nghĩ bé không qua nổi. Nhưng sau phẫu thuật và nhiều tuần phục hồi, Xám đã đi lại được, dù hơi khập khiễng. Giờ bé là “anh cả” trong nhà chung, luôn đón các bạn mèo mới bằng những cái dụi đầu đầy thân thương.
+                Xám bị gãy chân do tai nạn, nằm run rẩy dưới gầm xe. Ai cũng nghĩ bé không qua nổi. Nhưng sau phẫu thuật và nhiều tuần phục hồi, Xám đã đi lại được, dù hơi khập khiễng. Giờ bé là "anh cả" trong nhà chung, luôn đón các bạn mèo mới bằng những cái dụi đầu đầy thân thương.
               </p>
             </div>
           </div>
@@ -408,12 +451,7 @@ export default function AboutUsPage() {
                 fontFamily: '"Varela Round", sans-serif',
               }}
             >
-              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                📧 <a href="mailto:pawmily.pet@gmail.com" style={{ color: '#FFF', textDecoration: 'none', transition: 'color 0.3s ease', ':hover': { color: '#F5A623' } }}>Liên Hệ Chúng Mình:  pawmily.pet@gmail.com</a>
-              </span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '5px', paddingLeft: '50px' }}>
-                📞 <a href="tel:1900xxxx" style={{ color: '#FFF', textDecoration: 'none', transition: 'color 0.3s ease', ':hover': { color: '#F5A623' } }}>1900xxxx</a>
-              </span>
+              {/* Đã chuyển liên hệ xuống footer */}
             </div>
           </div>
         </div>
