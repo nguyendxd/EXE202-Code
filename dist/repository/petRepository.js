@@ -20,6 +20,7 @@ const mongoose_1 = require("mongoose");
 const DEFAULT_PET_IMAGE_URL = "https://ik.imagekit.io/nguyenn120404/default-pet-image/download.png?updatedAt=1747539753753";
 // Tạo pet mới (upload ảnh nếu có, ngược lại dùng ảnh mặc định)
 const createPet = (data, files) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('files.images:', files === null || files === void 0 ? void 0 : files.images);
     const imageUrls = (files === null || files === void 0 ? void 0 : files.images) && files.images.length > 0
         ? (yield Promise.all(files.images.map(f => imagekit_1.default.upload({
             file: f.buffer.toString("base64"),
