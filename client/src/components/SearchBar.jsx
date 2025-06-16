@@ -1,6 +1,8 @@
 import "../styles/index.css";
+import { useEffect } from "react";
+import { searchPets } from "../services/petService";
 
-export default function SearchBar({ search, setSearch, filter, setFilter }) {
+export default function SearchBar({ search, setSearch, filter, setFilter, onSearchResults }) {
     const sharedInputStyle = {
         padding: "10px",
         borderRadius: "20px",
@@ -34,6 +36,33 @@ export default function SearchBar({ search, setSearch, filter, setFilter }) {
         ...sharedInputStyle,
         width: "200px",
     };
+
+    // Hàm xử lý tìm kiếm
+    const handleSearch = async () => {
+        try {
+            // Chuyển đổi filter sang định dạng phù hợp với API
+            const searchParams = {
+                breed: filter.loai,
+                gender: filter.gioiTinh === "Đực" ? "male" : filter.gioiTinh === "Cái" ? "female" : "",
+                color: filter.mauSac,
+                address: filter.viTri,
+                age: filter.doTuoi
+            };
+
+            // Gọi API tìm kiếm
+            const response = await searchPets(searchParams);
+            if (response.data.success) {
+                onSearchResults(response.data.data);
+            }
+        } catch (error) {
+            console.error("Lỗi khi tìm kiếm:", error);
+        }
+    };
+
+    // Thêm useEffect để tự động tìm kiếm khi filter thay đổi
+    useEffect(() => {
+        handleSearch();
+    }, [filter]);
 
     return (
         <div>

@@ -21,11 +21,14 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   'http://localhost:3000',
+  'http://103.28.32.101',
+  'http://pawmily.site',
+  'https://pawmily.site'
 
 ];
 
 app.use(cors({
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
