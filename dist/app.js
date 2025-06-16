@@ -23,7 +23,10 @@ app.use(express_1.default.json());
 app.use((0, helmet_1.default)());
 app.use((0, cookie_parser_1.default)());
 const allowedOrigins = [
-    'http://103.28.32.101'
+    'http://localhost:3000',
+    'http://103.28.32.101',
+    'http://pawmily.site',
+    'https://pawmily.site'
 ];
 app.use((0, cors_1.default)({
     origin: function (origin, callback) {
