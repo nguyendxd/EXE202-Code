@@ -7,7 +7,7 @@ const cardStyle = {
     overflow: 'hidden',
     maxWidth: '20rem',
     width: '100%',
-    height: '28rem',
+    height: '29rem',
     margin: 'auto',
     boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
     backgroundColor: '#fffdf9',
@@ -37,7 +37,7 @@ const imageStyle = {
 const bottomSectionStyle = {
     backgroundColor: '#f7e2b8',
     padding: '1rem',
-    paddingBottom: '2rem',
+    paddingBottom: '4rem',
     textAlign: 'center',
     color: '#4e2d14',
     fontSize: '0.9rem',
@@ -124,6 +124,7 @@ export default function PetCard({ pet, showUpdate = false, onUpdate }) {
                     <p style={boldText}>{pet.name}</p>
                     <p>Tuổi: {pet.age}</p>
                     <p>Giới tính: {pet.gender}</p>
+                    <p>Màu lông: {pet.color}</p>
                     <p>Giống: {pet.breed}</p>
                     <p>Nơi ở: {pet.location}</p>
                 </div>
