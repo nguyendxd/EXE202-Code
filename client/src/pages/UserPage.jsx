@@ -6,6 +6,8 @@ import Loading from '../components/Loading';
 import PetCard from '../components/PetCard';
 import Pagination from '../components/Pagination';
 import "../styles/index.css";
+import { db } from '../firebase';
+import { collection, query, getDocs } from 'firebase/firestore';
 
 export default function UserPage() {
     const { id } = useParams();
@@ -18,6 +20,7 @@ export default function UserPage() {
     const [petsError, setPetsError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 6;
+    const [canViewPrivateInfo, setCanViewPrivateInfo] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -39,7 +42,25 @@ export default function UserPage() {
             setPetsError(null);
             try {
                 const res = await getPetsByUserId(id);
-                setPets(res.data.data || []);
+                let petArray = [];
+                if (Array.isArray(res.data.data)) {
+                    petArray = res.data.data;
+                } else if (res.data.data && typeof res.data.data === 'object') {
+                    petArray = [res.data.data];
+                }
+                // Ensure all required fields are present, with fallbacks
+                const formattedPets = petArray.map(pet => ({
+                    _id: pet._id || `temp-id-${Math.random()}`, // Fallback for missing _id
+                    name: pet.name || 'Unknown', // Fallback for missing name
+                    age: pet.age || 'Not specified',
+                    gender: pet.gender || 'Not specified',
+                    breed: pet.breed || 'Not specified',
+                    color: pet.color || 'Không rõ',
+                    status: pet.temperament || pet.healthStatus?.join(', ') || 'Unknown',
+                    location: pet.address || 'Unknown location',
+                    image: pet.images?.[0] || defaultImage,
+                }));
+                setPets(formattedPets);
             } catch (err) {
                 setPetsError("Không thể tải danh sách thú cưng.");
             } finally {
@@ -47,6 +68,26 @@ export default function UserPage() {
             }
         };
         fetchPets();
+        // Kiểm tra đã có conversation chưa
+        const checkConversation = async () => {
+            const currentUserId = localStorage.getItem('userId');
+            if (!currentUserId || !id || currentUserId === id) {
+                setCanViewPrivateInfo(false);
+                return;
+            }
+            const conversationId1 = `${currentUserId}_${id}`;
+            const conversationId2 = `${id}_${currentUserId}`;
+            const q = query(collection(db, 'conversations'));
+            const snapshot = await getDocs(q);
+            let found = false;
+            snapshot.forEach(doc => {
+                if (doc.id === conversationId1 || doc.id === conversationId2) {
+                    found = true;
+                }
+            });
+            setCanViewPrivateInfo(found);
+        };
+        checkConversation();
     }, [id]);
 
     if (loading) return <Loading />;
@@ -84,8 +125,8 @@ export default function UserPage() {
                         <div style={{ borderTop: '2px solid #E5C299', marginBottom: 18 }}></div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 18, fontSize: 17 }}>
                             <div><b style={{ color: '#7A5F3C', minWidth: 120, display: 'inline-block' }}>Email:</b> {user.email || '[Chưa có email]'}</div>
-                            <div><b style={{ color: '#7A5F3C', minWidth: 120, display: 'inline-block' }}>Số điện thoại:</b> {user.phone || '[Chưa có số điện thoại]'}</div>
-                            <div><b style={{ color: '#7A5F3C', minWidth: 120, display: 'inline-block' }}>Địa chỉ:</b> {user.address || '[Chưa có địa chỉ]'}</div>
+                            <div><b style={{ color: '#7A5F3C', minWidth: 120, display: 'inline-block' }}>Số điện thoại:</b> {canViewPrivateInfo ? (user.phone || '[Chưa có số điện thoại]') : <i>Chỉ hiển thị khi đã nhắn tin</i>}</div>
+                            <div><b style={{ color: '#7A5F3C', minWidth: 120, display: 'inline-block' }}>Địa chỉ:</b> {canViewPrivateInfo ? (user.address || '[Chưa có địa chỉ]') : <i>Chỉ hiển thị khi đã nhắn tin</i>}</div>
                             <div><b style={{ color: '#7A5F3C', minWidth: 120, display: 'inline-block' }}>Link mạng xã hội:</b> {user.socialLink ? <a href={user.socialLink} target="_blank" rel="noopener noreferrer">{user.socialLink}</a> : '[Chưa có link]'}</div>
                         </div>
                         <div style={{ borderTop: '2px solid #E5C299', margin: '32px 0 0 0' }}></div>
@@ -132,6 +173,7 @@ export default function UserPage() {
                             marginTop: 8
                         }}>
                             {pagedPets.map(pet => (
+                                console.log(pet),
                                 <PetCard key={pet._id} pet={pet} />
                             ))}
                         </div>

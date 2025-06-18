@@ -89,9 +89,9 @@ export default function LandingPage() {
     }];
 
     const stories = [{
-        name: 'Luna', story: 'Rescued from the streets, Luna now enjoys a cozy home with her new family.', img: 'https://images.pexels.com/photos/31404259/pexels-photo-31404259/free-photo-of-c-n-c-nh-m-t-chu-meo-nha-th-gian-trong-nha.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        name: '🐱 Bé Miu – "Từ đống rác đến chiếc giường êm"', story: 'Miu được tìm thấy trong cơn mưa, lấm lem, yếu ớt nằm co ro bên đống rác. Sau nhiều ngày điều trị và chăm sóc, bé đã dần khỏe lại, mắt sáng hơn, ăn ngon miệng và biết kêu "meo" mỗi khi được gọi tên. Giờ đây, Miu nằm ngủ yên bình bên khung cửa sổ ngập nắng – nơi bắt đầu cuộc sống mới.', img: 'https://images.pexels.com/photos/31404259/pexels-photo-31404259/free-photo-of-c-n-c-nh-m-t-chu-meo-nha-th-gian-trong-nha.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
     }, {
-        name: 'Max', story: 'Once abandoned, Max is now a loyal companion to a loving couple.', img: 'https://images.pexels.com/photos/8882601/pexels-photo-8882601.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        name: '🐾 Bé Xám – "Chú mèo chiến binh nhỏ"', story: 'Xám bị gãy chân do tai nạn, nằm run rẩy dưới gầm xe. Ai cũng nghĩ bé không qua nổi. Nhưng sau phẫu thuật và nhiều tuần phục hồi, Xám đã đi lại được, dù hơi khập khiễng. Giờ bé là "anh cả" trong nhà chung, luôn đón các bạn mèo mới bằng những cái dụi đầu đầy thân thương.', img: 'https://images.pexels.com/photos/8882601/pexels-photo-8882601.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
     }];
 
     const arrowStyle = (side) => ({
@@ -142,7 +142,7 @@ export default function LandingPage() {
         backgroundColor: '#FFF8E7',
         borderRadius: '10px',
         boxShadow: hovered ? '0 8px 16px rgba(0,0,0,0.2)' : '0 4px 8px rgba(0,0,0,0.1)',
-        width: '300px',
+        width: '500px',
         padding: '20px',
         textAlign: 'left',
         transform: hovered ? 'translateY(-8px)' : 'translateY(0)',
@@ -334,7 +334,7 @@ export default function LandingPage() {
                             onMouseLeave={() => setHoveredButtons((prev) => ({ ...prev, about: false }))}
                             onClick={handleAboutClick}
                         >
-                            Về chúng tớ
+                            Xem thêm về chúng mình
                         </button>
                     </div>
 
@@ -357,7 +357,7 @@ export default function LandingPage() {
 
             {/* Featured Pets */}
             <section style={{ padding: '60px 20px', textAlign: 'center' }}>
-                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Thú cưng đang cần nhà</h2>
+                <h2 style={{ fontSize: '30px', color: '#A47148' }}> Những bạn nhỏ đang cần một mái ấm</h2>
                 {loading ? (
                     <div style={{ padding: '20px' }}>Đang tải danh sách thú cưng...</div>
                 ) : error ? (
@@ -455,7 +455,7 @@ export default function LandingPage() {
                         }}
                         onClick={() => navigate('/adopt')}
                     >
-                        Xem thêm thú cưng
+                        Xem thêm
                     </button>
                 </div>
                 <style>
@@ -511,7 +511,7 @@ export default function LandingPage() {
                             onMouseEnter={() => setHoveredCards(prev => ({ ...prev, [`story${index}`]: true }))}
                             onMouseLeave={() => setHoveredCards(prev => ({ ...prev, [`story${index}`]: false }))}
                         >
-                            <img src={story.img} alt={story.name} style={{ width: '100%', borderRadius: '10px', objectFit: 'cover', height: '180px', maxHeight: '180px' }} />
+                            <img src={story.img} alt={story.name} style={{ width: '100%', borderRadius: '10px', objectFit: 'cover', height: '200px', maxHeight: '180px' }} />
                             <h3 style={{ fontSize: '22px', margin: '10px 0', color: '#6D4C41' }}>{story.name}</h3>
                             <p style={{ fontSize: '16px', color: '#5D4037' }}>{story.story}</p>
                         </div>
@@ -521,7 +521,7 @@ export default function LandingPage() {
 
             {/* Chatbot Invitation Section */}
             <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#F5E8C7' }}>
-                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Bạn đang có khó khăn nhận nuôi thú cưng?</h2>
+                <h2 style={{ fontSize: '30px', color: '#A47148' }}>Bạn đang có khó khăn gì khi nuôi các bé?</h2>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -560,7 +560,7 @@ export default function LandingPage() {
 
             {/* Donation QR Code Section */}
             <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#C8A484' }}>
-                <h2 style={{ fontSize: '30px', color: '#fff4e1' }}>Hỗ trợ chúng tôi donate theo cách của bạn!</h2>
+                <h2 style={{ fontSize: '30px', color: '#fff4e1' }}>Bạn có thể hỗ trợ website bằng cách donate cho chúng mình tại đây!</h2>
                 <div style={{ maxWidth: '300px', margin: '20px auto' }}>
                     <img
                         src={qrCode}
