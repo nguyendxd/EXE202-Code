@@ -63,8 +63,12 @@ export default function PetCard({ pet, showUpdate = false, onUpdate }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
+        console.log('PetCard clicked:', pet._id, pet.name);
+        console.log('Navigating to:', `/pets/${pet._id}`);
         navigate(`/pets/${pet._id}`);
     };
+
+    console.log('PetCard rendering:', pet._id, pet.name);
 
     return (
         <>

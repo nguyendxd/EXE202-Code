@@ -46,7 +46,7 @@ export default function UserWishlist() {
     const confirmRemove = async () => {
         try {
             await removeFromWishlist(selectedPetId);
-            setWishlist((prev) => prev.filter(item => item.pet._id !== selectedPetId));
+            setWishlist((prev) => prev.filter(item => item.pet?._id !== selectedPetId));
             setShowConfirmModal(false);
             setSelectedPetId(null);
         } catch (err) {
@@ -281,16 +281,16 @@ export default function UserWishlist() {
                             const pet = item.pet;
                             return (
                                 <div
-                                    key={pet._id}
+                                    key={pet?._id}
                                     className="wishlist-card"
-                                    onClick={() => handleCardClick(pet._id)}
+                                    onClick={() => handleCardClick(pet?._id)}
                                     style={{ width: '100%', maxWidth: 260, minWidth: 0 }}
                                 >
                                     <div className="wishlist-img-wrapper">
-                                        <img src={pet?.images?.[0] || '/placeholder.svg'} alt={pet.name} className="wishlist-img" />
+                                        <img src={pet?.images?.[0] || '/placeholder.svg'} alt={pet?.name} className="wishlist-img" />
                                         <button
                                             className="heart-btn"
-                                            onClick={(e) => handleRemoveWishlist(e, pet._id)}
+                                            onClick={(e) => handleRemoveWishlist(e, pet?._id)}
                                             aria-label="Bỏ khỏi wishlist"
                                         >
                                             <svg width="22" height="22" viewBox="0 0 24 24" fill="#C94F4F" stroke="#C94F4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -298,13 +298,13 @@ export default function UserWishlist() {
                                             </svg>
                                         </button>
                                     </div>
-                                    <div className="pet-name">{pet.name}</div>
+                                    <div className="pet-name">{pet?.name || 'Unknown'}</div>
                                     <div className="pet-info">
-                                        Tuổi: {pet.age}<br />
-                                        Giới tính: {pet.gender}<br />
-                                        Giống: {pet.breed}<br />
-                                        Tình trạng: {pet.healthStatus?.join(', ') || 'Chưa rõ'}<br />
-                                        Nơi ở: {pet.address}
+                                        Tuổi: {pet?.age || 'Unknown'}<br />
+                                        Giới tính: {pet?.gender || 'Unknown'}<br />
+                                        Giống: {pet?.breed || 'Unknown'}<br />
+                                        Tình trạng: {pet?.healthStatus?.join(', ') || 'Chưa rõ'}<br />
+                                        Nơi ở: {pet?.address || 'Unknown'}
                                     </div>
                                 </div>
                             );

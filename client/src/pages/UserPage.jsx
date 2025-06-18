@@ -173,7 +173,6 @@ export default function UserPage() {
                             marginTop: 8
                         }}>
                             {pagedPets.map(pet => (
-                                console.log(pet),
                                 <PetCard key={pet._id} pet={pet} />
                             ))}
                         </div>

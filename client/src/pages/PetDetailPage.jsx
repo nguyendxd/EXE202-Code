@@ -33,7 +33,7 @@ export default function PetDetailPage() {
 
                 // Kiểm tra wishlist
                 const wishlistRes = await getWishlist();
-                const isInWishlist = wishlistRes.data.some(item => item.pet._id === id);
+                const isInWishlist = wishlistRes.data.some(item => item.pet?._id === id);
                 setIsWishlisted(isInWishlist);
             } catch (err) {
                 setError("Không tìm thấy thông tin thú cưng.");

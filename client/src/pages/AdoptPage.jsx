@@ -28,25 +28,41 @@ export default function AdoptPage() {
             setError(null);
             try {
                 const res = await getAllPets();
-                console.log(res.data.data);
+                console.log('API Response:', res.data);
+                console.log('Data structure:', res.data.data);
+                console.log('Data type:', typeof res.data.data);
+                console.log('Is array:', Array.isArray(res.data.data));
+
                 let petArray = [];
                 if (Array.isArray(res.data.data)) {
                     petArray = res.data.data;
+                    console.log('Pet array length:', petArray.length);
+                    console.log('First pet:', petArray[0]);
+                    console.log('All pets:', petArray);
                 } else if (res.data.data && typeof res.data.data === 'object') {
                     petArray = [res.data.data];
+                    console.log('Single pet object converted to array');
                 }
                 // Ensure all required fields are present, with fallbacks
-                const formattedPets = petArray.map(pet => ({
-                    _id: pet._id || `temp-id-${Math.random()}`, // Fallback for missing _id
-                    name: pet.name || 'Unknown', // Fallback for missing name
-                    age: pet.age || 'Not specified',
-                    gender: pet.gender || 'Not specified',
-                    breed: pet.breed || 'Not specified',
-                    color: pet.color || 'Không rõ',
-                    status: pet.temperament || pet.healthStatus?.join(', ') || 'Unknown',
-                    location: pet.address || 'Unknown location',
-                    image: pet.images?.[0] || defaultImage,
-                }));
+                const formattedPets = petArray.map((pet, index) => {
+                    console.log('Processing pet:', pet._id, pet.name);
+                    // Kiểm tra xem pet có _id hợp lệ không
+                    const validId = pet._id && typeof pet._id === 'string' && pet._id.length > 0;
+                    console.log('Valid ID:', validId, 'ID value:', pet._id);
+
+                    return {
+                        _id: validId ? pet._id : `temp-id-${Date.now()}-${index}`, // Better fallback for missing _id
+                        name: pet.name || 'Unknown', // Fallback for missing name
+                        age: pet.age || 'Not specified',
+                        gender: pet.gender || 'Not specified',
+                        breed: pet.breed || 'Not specified',
+                        color: pet.color || 'Không rõ',
+                        status: pet.temperament || pet.healthStatus?.join(', ') || 'Unknown',
+                        location: pet.address || 'Unknown location',
+                        image: pet.images?.[0] || defaultImage,
+                    };
+                });
+                console.log('Formatted pets:', formattedPets);
                 setPets(formattedPets);
             } catch (error) {
                 console.error("Lỗi khi fetch pets:", error);
@@ -67,7 +83,14 @@ export default function AdoptPage() {
         const matchLocation = !filter.viTri || (pet.location || "").toLowerCase().includes(filter.viTri.toLowerCase());
         const matchAge = !filter.doTuoi || (pet.age || "").toLowerCase().includes(filter.doTuoi.toLowerCase());
         // Có thể bổ sung matchTinhTrang nếu cần
-        return matchName && matchBreed && matchGender && matchColor && matchLocation && matchAge;
+        const isMatch = matchName && matchBreed && matchGender && matchColor && matchLocation && matchAge;
+        if (!isMatch) {
+            console.log('Pet filtered out:', pet.name, {
+                matchName, matchBreed, matchGender, matchColor, matchLocation, matchAge,
+                search, filter
+            });
+        }
+        return isMatch;
     });
 
     const petsPerPage = 8;
@@ -76,23 +99,31 @@ export default function AdoptPage() {
 
     const gridStyle = {
         display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
         gap: '30px',
         padding: '0 20px',
+        justifyContent: 'center',
+        alignItems: 'start',
     };
 
     const handleSearchResults = (results) => {
         // Format lại dữ liệu để đảm bảo có trường image
-        const formattedPets = (results || []).map(pet => ({
-            _id: pet._id || `temp-id-${Math.random()}`,
-            name: pet.name || 'Unknown',
-            age: pet.age || 'Not specified',
-            gender: pet.gender || 'Not specified',
-            breed: pet.breed || 'Not specified',
-            color: pet.color || 'Không rõ',
-            status: pet.temperament || (pet.healthStatus?.join(', ') || 'Unknown'),
-            location: pet.address || 'Unknown location',
-            image: (pet.images && pet.images[0]) ? pet.images[0] : defaultImage,
-        }));
+        const formattedPets = (results || []).map((pet, index) => {
+            const validId = pet._id && typeof pet._id === 'string' && pet._id.length > 0;
+            console.log('Search result pet ID:', pet._id, 'Valid:', validId);
+
+            return {
+                _id: validId ? pet._id : `temp-id-${Date.now()}-${index}`,
+                name: pet.name || 'Unknown',
+                age: pet.age || 'Not specified',
+                gender: pet.gender || 'Not specified',
+                breed: pet.breed || 'Not specified',
+                color: pet.color || 'Không rõ',
+                status: pet.temperament || (pet.healthStatus?.join(', ') || 'Unknown'),
+                location: pet.address || 'Unknown location',
+                image: (pet.images && pet.images[0]) ? pet.images[0] : defaultImage,
+            };
+        });
         setPets(formattedPets);
         setCurrentPage(1);
     };
@@ -114,10 +145,11 @@ export default function AdoptPage() {
                         <Loading />
                     ) : (
                         <div className="pet-grid" style={gridStyle}>
-                            {displayedPets.map((pet, idx) => (
-                                console.log(pet),
-                                <PetCard key={pet._id || idx} pet={pet} />
-                            ))}
+                            {displayedPets.map((pet, idx) => {
+                                console.log('Rendering pet:', pet._id, pet.name, 'Index:', idx);
+                                console.log('Pet object:', pet);
+                                return <PetCard key={pet._id || idx} pet={pet} />;
+                            })}
                         </div>
                     )}
 
