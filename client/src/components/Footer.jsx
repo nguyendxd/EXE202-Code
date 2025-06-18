@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import pawLogo from '../assets/paw-logo.png'; // Logo Pawmily
 
 function Footer() {
     const navigate = useNavigate();
     const location = useLocation();
+    const [feedback, setFeedback] = useState({
+        email: '',
+        message: ''
+    });
 
-    // Hàm xử lý điều hướng và scroll
     const handleFooterNav = (hash) => {
         if (location.pathname === '/about') {
             const el = document.getElementById(hash);
@@ -18,8 +23,45 @@ function Footer() {
         }
     };
 
+    const handleFeedbackChange = (e) => {
+        setFeedback({
+            ...feedback,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleFeedbackSubmit = (e) => {
+        e.preventDefault();
+        // Kiểm tra form
+        if (!feedback.email || !feedback.message) {
+            toast.error('Vui lòng điền đầy đủ thông tin!');
+            return;
+        }
+
+        // Xử lý gửi feedback ở đây
+        console.log('Feedback submitted:', feedback);
+        toast.success('Cảm ơn bạn đã gửi phản hồi!');
+
+        // Reset form
+        setFeedback({
+            email: '',
+            message: ''
+        });
+    };
+
     return (
         <>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
             <style>
                 {`
                 @media (max-width: 600px) {
@@ -65,6 +107,49 @@ function Footer() {
                   .footer-grid {
                     gap: 5px !important;
                   }
+                }
+                
+                .feedback-form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+                
+                .feedback-form input,
+                .feedback-form textarea {
+                    padding: 8px;
+                    border: 1px solid #FFD700;
+                    border-radius: 4px;
+                    background: rgba(255, 255, 255, 0.1);
+                    color: #FFF;
+                }
+                
+                .feedback-form input::placeholder,
+                .feedback-form textarea::placeholder {
+                    color: rgba(255, 255, 255, 0.7);
+                }
+                
+                .feedback-form button {
+                    background: #FFD700;
+                    color: #5A2E0A;
+                    border: none;
+                    padding: 8px 15px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    transition: all 0.3s ease;
+                }
+                
+                .feedback-form button:hover {
+                    background: #FFC107;
+                }
+                
+                @media (max-width: 600px) {
+                    .feedback-form {
+                        width: 100%;
+                        max-width: 250px;
+                        margin: 0 auto;
+                    }
                 }
                 `}
             </style>
@@ -112,7 +197,26 @@ function Footer() {
                             <span role="img" aria-label="email">📧</span> <a href="mailto:pawmily.pet@gmail.com" style={{ color: '#FFF', textDecoration: 'none' }}>pawmily.pet@gmail.com</a>
                         </p>
                         <p style={{ fontSize: '14px', marginBottom: '10px' }}>
-                            <span role="img" aria-label="phone">📞</span> <a href="tel:1900xxxx" style={{ color: '#FFF', textDecoration: 'none' }}>1900xxxx</a>
+                            <span role="img" aria-label="phone">📞</span> <a href="tel:0369545795" style={{ color: '#FFF', textDecoration: 'none' }}>0369545795</a>
+                        </p>
+                    </div>
+
+
+
+                    {/* Cột 3: Mạng xã hội */}
+                    <div className="footer-col" style={{ paddingLeft: '40px' }}>
+                        <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '15px', textTransform: 'uppercase' }}>
+                            Mạng Xã Hội
+                        </h4>
+                        <p style={{ fontSize: '14px', marginBottom: '10px' }}>
+                            <a href="https://www.facebook.com/profile.php?id=61576932205703" target="_blank" rel="noopener noreferrer" style={{ color: '#FFF', textDecoration: 'none', textTransform: 'capitalize' }}>
+                                FACEBOOK
+                            </a>
+                        </p>
+                        <p style={{ fontSize: '14px', marginBottom: '10px' }}>
+                            <a href="https://www.tiktok.com/@pawmily.pet" target="_blank" rel="noopener noreferrer" style={{ color: '#FFF', textDecoration: 'none', textTransform: 'capitalize' }}>
+                                TIKTOK
+                            </a>
                         </p>
                     </div>
 
@@ -143,21 +247,28 @@ function Footer() {
                         </p>
                     </div>
 
-                    {/* Cột 3: Mạng xã hội */}
+                    {/* Cột Feedback */}
                     <div className="footer-col" style={{ paddingLeft: '40px' }}>
                         <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '15px', textTransform: 'uppercase' }}>
-                            Mạng Xã Hội
+                            Gửi phản hồi
                         </h4>
-                        <p style={{ fontSize: '14px', marginBottom: '10px' }}>
-                            <a href="https://www.facebook.com/profile.php?id=61576932205703" target="_blank" rel="noopener noreferrer" style={{ color: '#FFF', textDecoration: 'none', textTransform: 'capitalize' }}>
-                                FACEBOOK
-                            </a>
-                        </p>
-                        <p style={{ fontSize: '14px', marginBottom: '10px' }}>
-                            <a href="https://www.tiktok.com/@pawmily.pet" target="_blank" rel="noopener noreferrer" style={{ color: '#FFF', textDecoration: 'none', textTransform: 'capitalize' }}>
-                                TIKTOK
-                            </a>
-                        </p>
+                        <form className="feedback-form" onSubmit={handleFeedbackSubmit}>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email của bạn"
+                                value={feedback.email}
+                                onChange={handleFeedbackChange}
+                            />
+                            <textarea
+                                name="message"
+                                placeholder="Nội dung phản hồi"
+                                rows="3"
+                                value={feedback.message}
+                                onChange={handleFeedbackChange}
+                            />
+                            <button type="submit">Gửi phản hồi</button>
+                        </form>
                     </div>
                 </div>
 

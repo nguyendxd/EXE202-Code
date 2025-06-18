@@ -39,67 +39,46 @@ export default function AboutUsPage() {
         {/* Header Section */}
         <h1
           style={{
-            fontSize: '36px',
+            fontSize: '26px',
             fontWeight: '600',
             color: '#F5A623',
-            marginBottom: '10px',
+            marginBottom: '30px',
             fontFamily: '"Varela Round", sans-serif',
           }}
         >
           VỀ CHÚNG MÌNH
         </h1>
-        <img
-          src={pawLogo}
-          alt="Pawmily Logo"
-          style={{ height: '80px', marginBottom: '40px' }}
-        />
+
 
         {/* Who We Are Section */}
         <div
           id="ve-pawmily"
           style={{
-            backgroundColor: '#FFF',
-            color: '#6B3A0F',
-            padding: '50px',
+            backgroundColor: '#fff',
+            border: '2px solid #FFF5E1',
+            borderRadius: '20px',
+            padding: '40px 30px',
             marginBottom: '40px',
-            borderRadius: '10px',
             display: 'flex',
-            flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'center',
-            gap: '20px',
+            justifyContent: 'space-between',
+            gap: '40px',
+            boxShadow: '0 2px 12px rgba(245,166,35,0.07)',
+            maxWidth: '1200px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
             flexWrap: 'wrap',
-            overflow: 'hidden',
           }}
         >
-          <style>{`
-            @media (max-width: 800px) {
-              #ve-pawmily {
-                flex-direction: column !important;
-                text-align: center !important;
-                padding: 30px !important;
-              }
-              #ve-pawmily img {
-                margin: 0 auto !important;
-                display: block !important;
-                max-width: 98vw !important;
-                width: 100% !important;
-                height: auto !important;
-                border-radius: 12px !important;
-              }
-              #ve-pawmily > div {
-                text-align: center !important;
-                max-width: 100% !important;
-              }
-            }
-          `}</style>
-          <div style={{ maxWidth: '500px', textAlign: 'left' }}>
+          <div style={{ flex: 1, minWidth: 280, maxWidth: 500, textAlign: 'center' }}>
             <h2
               style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                marginBottom: '10px',
+                fontSize: '20px',
+                fontWeight: '700',
+                marginBottom: '18px',
                 fontFamily: '"Varela Round", sans-serif',
+                color: '#6B3A0F',
+                textAlign: 'center',
               }}
             >
               CHÚNG MÌNH LÀ AI?
@@ -108,18 +87,29 @@ export default function AboutUsPage() {
               style={{
                 fontSize: '16px',
                 fontFamily: '"Varela Round", sans-serif',
+                color: '#6B3A0F',
+                lineHeight: 1.7,
+                textAlign: 'center',
+                padding: '0 10px',
               }}
             >
-              Pawmily là dự án cho môn học Khởi nghiệp do team 117 của Đại học FPT HCM thực hiện.
-              <br />
-              <br />
+              Pawmily là dự án cho môn học Khởi nghiệp do team 117 của Đại học FPT HCM thực hiện.<br /><br />
               Pawmily - website hỗ trợ các bạn trong việc tìm kiếm trạm cứu hộ, thú y gần bạn bằng tích hợp bản đồ. Ngoài ra, Pawmily còn đóng vai trò là nền tảng kết nối chủ nuôi, trạm cứu hộ và shelter trong việc nhận nuôi các bé chó mèo hoang.
             </p>
           </div>
           <img
             src={pawLogo}
-            alt="Team Photo"
-            style={{ width: '200px', height: '200px', borderRadius: '10px', maxWidth: '50%', objectFit: 'contain', display: 'block', margin: '0 auto', background: '#fff' }}
+            alt="Chó mèo trong dấu chân"
+            style={{
+              width: '230px',
+              height: 'auto',
+              borderRadius: '16px',
+              objectFit: 'contain',
+              background: '#fff',
+              display: 'block',
+              margin: '0 auto',
+
+            }}
           />
         </div>
 

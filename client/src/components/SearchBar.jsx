@@ -43,10 +43,11 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
             const searchParams = {
                 name: search,
                 breed: filter.loai,
-                gender: filter.gioiTinh === "Đực" ? "male" : filter.gioiTinh === "Cái" ? "female" : "",
+                gender: filter.gioiTinh === "Male" ? "male" : filter.gioiTinh === "Female" ? "female" : "",
                 color: filter.mauSac,
                 address: filter.viTri,
-                age: filter.doTuoi
+                age: filter.doTuoi,
+                status: filter.tinhTrang
             };
 
             // Nếu chọn đúng 'Chó' hoặc 'Mèo' thì fetch riêng, nếu không thì fetch tất cả
@@ -54,6 +55,31 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
                 searchParams.breed = filter.loai;
             } else {
                 searchParams.breed = "";
+            }
+
+            // Xử lý độ tuổi
+            if (filter.doTuoi) {
+                switch (filter.doTuoi) {
+                    case "Dưới 1 tuổi":
+                        searchParams.age = "Dưới 1 tuổi";
+                        break;
+                    case "1-3 tuổi":
+                        searchParams.age = "1-3 tuổi";
+                        break;
+                    case "3-5 tuổi":
+                        searchParams.age = "3-5 tuổi";
+                        break;
+                    case "Trên 5 tuổi":
+                        searchParams.age = "Trên 5 tuổi";
+                        break;
+                    default:
+                        searchParams.age = "";
+                }
+            }
+
+            // Xử lý giới tính
+            if (filter.gioiTinh) {
+                searchParams.gender = filter.gioiTinh === "Male" ? "male" : "female";
             }
 
             const response = await searchPets(searchParams);
@@ -127,17 +153,43 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
                 </select>
 
                 <select
+                    value={filter.mauSac || ""}
+                    onChange={(e) => setFilter({ ...filter, mauSac: e.target.value })}
+                    style={selectStyle}
+                >
+                    <option value="">Tất cả màu lông</option>
+                    <option value="Đen">Đen</option>
+                    <option value="Trắng">Trắng</option>
+                    <option value="Nâu">Nâu</option>
+                    <option value="Vàng">Vàng</option>
+                    <option value="Xám">Xám</option>
+                    <option value="Đốm">Đốm</option>
+                </select>
+
+                <select
                     value={filter.viTri || ""}
                     onChange={(e) => setFilter({ ...filter, viTri: e.target.value })}
                     style={selectStyle}
                 >
                     <option value="">Tất cả vị trí</option>
-                    <option value="Quận Thủ Đức">Quận Thủ Đức</option>
-                    <option value="Quận Bình Thạnh">Quận Bình Thạnh</option>
-                    <option value="Quận Gò Vấp">Quận Gò Vấp</option>
                     <option value="Quận 1">Quận 1</option>
                     <option value="Quận 2">Quận 2</option>
                     <option value="Quận 3">Quận 3</option>
+                    <option value="Quận 4">Quận 4</option>
+                    <option value="Quận 5">Quận 5</option>
+                    <option value="Quận 6">Quận 6</option>
+                    <option value="Quận 7">Quận 7</option>
+                    <option value="Quận 8">Quận 8</option>
+                    <option value="Quận 9">Quận 9</option>
+                    <option value="Quận 10">Quận 10</option>
+                    <option value="Quận 11">Quận 11</option>
+                    <option value="Quận 12">Quận 12</option>
+                    <option value="Quận Bình Thạnh">Quận Bình Thạnh</option>
+                    <option value="Quận Gò Vấp">Quận Gò Vấp</option>
+                    <option value="Quận Phú Nhuận">Quận Phú Nhuận</option>
+                    <option value="Quận Tân Bình">Quận Tân Bình</option>
+                    <option value="Quận Tân Phú">Quận Tân Phú</option>
+                    <option value="Quận Thủ Đức">Quận Thủ Đức</option>
                 </select>
 
                 <select
@@ -146,8 +198,10 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
                     style={selectStyle}
                 >
                     <option value="">Tất cả độ tuổi</option>
-                    <option value="Dưới 6 tháng">Dưới 6 tháng</option>
-                    <option value="Trưởng thành">Trên 6 tháng</option>
+                    <option value="Dưới 1 tuổi">Dưới 1 tuổi</option>
+                    <option value="1-3 tuổi">1-3 tuổi</option>
+                    <option value="3-5 tuổi">3-5 tuổi</option>
+                    <option value="Trên 5 tuổi">Trên 5 tuổi</option>
                 </select>
             </div>
         </div>
