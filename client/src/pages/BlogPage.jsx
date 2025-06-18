@@ -19,7 +19,7 @@ export default function BlogPage() {
     const fetchBlogs = async () => {
       setLoading(true)
       try {
-        const response = await axios.get('http://103.28.32.101:3000/api/blogs', {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/blogs`, {
           params: {
             status: "published",
           },
