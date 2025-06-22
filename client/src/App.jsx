@@ -25,6 +25,7 @@ import AdminBlog from './pages/AdminBlog';
 import BlogCreate from './pages/BlogCreate';
 import BlogEdit from './pages/BlogEdit';
 import AdminAdopt from './pages/AdminAdopt';
+import AdminCreatePet from './pages/AdminCreatePet';
 import ProfilePage from './pages/ProfilePage';
 
 // Components
@@ -137,6 +138,7 @@ function AppContent() {
           <Route path="/admin/blog/create" element={<AdminRoute><BlogCreate /></AdminRoute>} />
           <Route path="/admin/blog/edit/:id" element={<AdminRoute><BlogEdit /></AdminRoute>} />
           <Route path="/admin/adoption" element={<AdminRoute><AdminAdopt /></AdminRoute>} />
+          <Route path="/admin/adopt/create" element={<AdminRoute><AdminCreatePet /></AdminRoute>} />
         </Routes>
       </div>
       {!location.pathname.includes('/login') && !location.pathname.includes('/login-form') && !location.pathname.includes('/register') && <Footer />}

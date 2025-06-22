@@ -93,8 +93,8 @@ export default function AboutUsPage() {
                 padding: '0 10px',
               }}
             >
-              Pawmily là dự án cho môn học Khởi nghiệp do team 117 của Đại học FPT HCM thực hiện.<br /><br />
-              Pawmily - website hỗ trợ các bạn trong việc tìm kiếm trạm cứu hộ, thú y gần bạn bằng tích hợp bản đồ. Ngoài ra, Pawmily còn đóng vai trò là nền tảng kết nối chủ nuôi, trạm cứu hộ và shelter trong việc nhận nuôi các bé chó mèo hoang.
+              Vì sao lại có Pawmily?<br /><br />
+              Pawmily muốn hỗ trợ cứu giúp các bé chó mèo hoang không có cho mình một mái ấm riêng. Chúng mình còn muốn đưa những bạn chủ nuôi tới gần hơn với các bé chó mèo hoang. Để bạn hiểu thêm về những mảnh đời nhỏ từng lưu lạc mọi nẻo đường, mong yêu thương có thể lan toả và giúp ích thêm cho cộng đồng yêu động vật nói chung cùng chó mèo nói riêng.
             </p>
           </div>
           <img
