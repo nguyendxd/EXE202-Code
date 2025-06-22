@@ -264,7 +264,7 @@ export default function PetDetailPage() {
                                     <div><b style={{ fontWeight: 600 }}>Giống:</b> {pet.breed || 'Không rõ'}</div>
                                 </div>
                                 <div style={{ display: 'flex', flex: 0.5, flexDirection: 'column', gap: '8px' }}>
-                                    <div><b style={{ fontWeight: 600 }}>Giới tính:</b> {pet.gender || 'Không rõ'}</div>
+                                    <div><b style={{ fontWeight: 600 }}>Giới tính:</b> {pet.gender === 'male' ? 'Đực' : pet.gender === 'female' ? 'Cái' : pet.gender}</div>
                                     <div><b style={{ fontWeight: 600 }}>Cân nặng:</b> {pet.weight || 'Không rõ'}</div>
                                     <div><b style={{ fontWeight: 600 }}>Tính cách:</b> {pet.temperament
                                         ? pet.temperament.split(',').map(s => s.trim()).filter(Boolean).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' – ')
