@@ -121,7 +121,8 @@ export default function PetDetailPage() {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        zIndex: 1000
+                        zIndex: 1000,
+                        padding: '16px'
                     }}
                 >
                     <div
@@ -129,35 +130,36 @@ export default function PetDetailPage() {
                         onClick={e => e.stopPropagation()}
                         style={{
                             background: '#FAF3E0',
-                            padding: '24px',
+                            padding: '20px',
                             borderRadius: '12px',
                             border: '2px solid #C69447',
                             maxWidth: '400px',
-                            width: '90%',
+                            width: '100%',
                             textAlign: 'center'
                         }}
                     >
-                        <div style={{ color: '#5C4033', fontSize: '20px', fontWeight: 600, marginBottom: '16px' }}>
+                        <div style={{ color: '#5C4033', fontSize: '18px', fontWeight: 600, marginBottom: '16px' }}>
                             {modalAction === 'add' ? 'Thêm vào wishlist' : 'Xóa khỏi wishlist'}
                         </div>
-                        <div style={{ color: '#5C4033', fontSize: '16px', marginBottom: '24px' }}>
+                        <div style={{ color: '#5C4033', fontSize: '14px', marginBottom: '24px', lineHeight: '1.4' }}>
                             {modalAction === 'add'
                                 ? 'Bạn có chắc chắn muốn thêm thú cưng này vào danh sách yêu thích?'
                                 : 'Bạn có chắc chắn muốn xóa thú cưng này khỏi danh sách yêu thích?'}
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
                             <button
                                 onClick={handleCancelWishlist}
                                 style={{
-                                    padding: '8px 24px',
+                                    padding: '10px 20px',
                                     borderRadius: '8px',
-                                    fontSize: '16px',
+                                    fontSize: '14px',
                                     fontWeight: 500,
                                     cursor: 'pointer',
                                     background: '#F5E8C7',
                                     border: '2px solid #C69447',
                                     color: '#5C4033',
-                                    transition: 'all 0.2s'
+                                    transition: 'all 0.2s',
+                                    minWidth: '80px'
                                 }}
                             >
                                 Hủy
@@ -165,15 +167,16 @@ export default function PetDetailPage() {
                             <button
                                 onClick={handleConfirmWishlist}
                                 style={{
-                                    padding: '8px 24px',
+                                    padding: '10px 20px',
                                     borderRadius: '8px',
-                                    fontSize: '16px',
+                                    fontSize: '14px',
                                     fontWeight: 500,
                                     cursor: 'pointer',
                                     background: modalAction === 'add' ? '#C69447' : '#C94F4F',
                                     border: `2px solid ${modalAction === 'add' ? '#C69447' : '#C94F4F'}`,
                                     color: 'white',
-                                    transition: 'all 0.2s'
+                                    transition: 'all 0.2s',
+                                    minWidth: '80px'
                                 }}
                             >
                                 {modalAction === 'add' ? 'Thêm' : 'Xóa'}
@@ -188,36 +191,35 @@ export default function PetDetailPage() {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundAttachment: 'fixed',
-                    padding: '40px 20px',
+                    padding: '30px 16px',
                     textAlign: 'center',
                     color: '#5C4033',
                     textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
                     position: 'relative',
-                    minHeight: '100px',
+                    minHeight: '80px',
                     boxSizing: 'border-box',
                 }}
             >
-                <h1 style={{ fontSize: '24px', margin: 0, fontWeight: 600 }}>Thông tin về bé</h1>
-                <p style={{ fontSize: '19px', maxWidth: '700px', margin: '20px auto' }}>
+                <h1 style={{ fontSize: '20px', margin: 0, fontWeight: 600 }}>Thông tin về bé</h1>
+                <p style={{ fontSize: '16px', maxWidth: '700px', margin: '16px auto 0', lineHeight: '1.4' }}>
                     Tìm hiểu thêm về tính cách, sức khỏe và câu chuyện của boss
                 </p>
             </section>
-            <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 20px" }}>
-                <div style={{ background: "#fff", borderRadius: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.08)", padding: "24px" }}>
+            <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "20px 16px" }}>
+                <div style={{ background: "#fff", borderRadius: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.08)", padding: "20px" }}>
                     <div className="pet-detail-info-row">
                         {/* Ảnh và nút bên trái */}
                         <div className="pet-detail-avatar">
                             {/* Avatar */}
-                            <img src={pet.images?.[0] || 'https://via.placeholder.com/300'} alt={pet.name} style={{ width: "180px", height: "180px", objectFit: "cover", borderRadius: "50%", border: '2px solid #E5C299' }} />
+                            <img src={pet.images?.[0] || 'https://via.placeholder.com/300'} alt={pet.name} style={{ width: "150px", height: "150px", objectFit: "cover", borderRadius: "50%", border: '2px solid #E5C299' }} />
                             <div className="pet-name">{pet.name}</div>
-                            <div style={{ paddingTop: '30px', display: 'flex', alignItems: 'center', color: '#7A5F3C', fontSize: "16px", margin: '8px 0 12px 0' }}>
-                                Thêm vào wishlist
+                            <div style={{ paddingTop: '20px', display: 'flex', alignItems: 'center', color: '#7A5F3C', fontSize: "14px", margin: '8px 0 12px 0', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                <span style={{ marginRight: '8px' }}>Thêm vào wishlist</span>
                                 <button
                                     style={{
                                         background: 'none',
                                         border: 'none',
                                         cursor: 'pointer',
-                                        marginLeft: '8px',
                                         padding: '0',
                                         display: 'flex',
                                         alignItems: 'center',
@@ -251,33 +253,49 @@ export default function PetDetailPage() {
                         {/* Thông tin chi tiết bên phải */}
                         <div className="pet-detail-main">
                             <div
-                                style={{ fontWeight: 700, fontSize: "20px", marginBottom: "12px", cursor: 'pointer' }}
+                                style={{ fontWeight: 700, fontSize: "18px", marginBottom: "12px", cursor: 'pointer', wordBreak: 'break-word' }}
                                 onClick={handleNavigateToUserPage}
                             >
                                 Trại cứu hộ chó mèo
                             </div>
                             <hr style={{ border: "none", borderTop: "2px solid #E5C299", borderRadius: "2px", marginBottom: "16px" }} />
-                            <div style={{ fontSize: "16px", display: 'flex', marginBottom: "12px" }}>
-                                <div style={{ display: 'flex', flex: 0.5, flexDirection: 'column', gap: '8px' }}>
-                                    <div><b style={{ fontWeight: 600 }}>Tuổi:</b> {pet.age || 'Không rõ'}</div>
-                                    <div><b style={{ fontWeight: 600 }}>Màu sắc:</b> {pet.color || 'Không rõ'}</div>
-                                    <div><b style={{ fontWeight: 600 }}>Giống:</b> {pet.breed || 'Không rõ'}</div>
-                                </div>
-                                <div style={{ display: 'flex', flex: 0.5, flexDirection: 'column', gap: '8px' }}>
-                                    <div><b style={{ fontWeight: 600 }}>Giới tính:</b> {pet.gender === 'male' ? 'Đực' : pet.gender === 'female' ? 'Cái' : pet.gender}</div>
-                                    <div><b style={{ fontWeight: 600 }}>Cân nặng:</b> {pet.weight || 'Không rõ'}</div>
-                                    <div><b style={{ fontWeight: 600 }}>Tính cách:</b> {pet.temperament
-                                        ? pet.temperament.split(',').map(s => s.trim()).filter(Boolean).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' – ')
-                                        : 'Không rõ'}</div>
+                            <div style={{ fontSize: "14px", marginBottom: "12px" }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Tuổi:</b>
+                                        <span style={{ wordBreak: 'break-word' }}>{pet.age || 'Không rõ'}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Màu sắc:</b>
+                                        <span style={{ wordBreak: 'break-word' }}>{pet.color || 'Không rõ'}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Giống:</b>
+                                        <span style={{ wordBreak: 'break-word' }}>{pet.breed || 'Không rõ'}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Giới tính:</b>
+                                        <span style={{ wordBreak: 'break-word' }}>{pet.gender || 'Không rõ'}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Cân nặng:</b>
+                                        <span style={{ wordBreak: 'break-word' }}>{pet.weight || 'Không rõ'}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Tính cách:</b>
+                                        <span style={{ wordBreak: 'break-word' }}>{pet.temperament
+                                            ? pet.temperament.split(',').map(s => s.trim()).filter(Boolean).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' – ')
+                                            : 'Không rõ'}</span>
+                                    </div>
                                 </div>
                             </div>
                             <hr style={{ border: "none", borderTop: "2px solid #E5C299", borderRadius: "2px", marginBottom: "16px" }} />
-                            <div style={{ marginBottom: "8px", fontSize: "16px" }}>
+                            <div style={{ marginBottom: "12px", fontSize: "14px" }}>
                                 <b style={{ fontWeight: 600 }}>Tình trạng sức khỏe:</b><br />
                                 {pet.healthStatus && Array.isArray(pet.healthStatus) && pet.healthStatus.length > 0 ? (
                                     <ul style={{ margin: "4px 0 0 20px", padding: 0, listStyle: "none" }}>
                                         {pet.healthStatus.map((s, idx) => (
-                                            <li key={idx} style={{ marginBottom: 2 }}>
+                                            <li key={idx} style={{ marginBottom: 4, wordBreak: 'break-word' }}>
                                                 <span style={{ color: '#5C4033', fontWeight: 600 }}>–</span> {s.trim().charAt(0).toUpperCase() + s.trim().slice(1)}
                                             </li>
                                         ))}
@@ -286,23 +304,25 @@ export default function PetDetailPage() {
                                     <span>Không rõ</span>
                                 )}
                             </div>
-                            <div style={{ marginBottom: "8px", fontSize: "16px" }}>
-                                <b style={{ fontWeight: 600 }}>Địa chỉ:</b> {pet.address || 'Không rõ'}
+                            <div style={{ marginBottom: "12px", fontSize: "14px" }}>
+                                <b style={{ fontWeight: 600 }}>Địa chỉ:</b>
+                                <span style={{ wordBreak: 'break-word' }}> {pet.address || 'Không rõ'}</span>
                             </div>
-                            <div style={{ marginBottom: "8px", fontSize: "16px" }}>
-                                <b style={{ fontWeight: 600 }}>Số điện thoại:</b> {pet.contactPhone || 'Không rõ'}
+                            <div style={{ marginBottom: "12px", fontSize: "14px" }}>
+                                <b style={{ fontWeight: 600 }}>Số điện thoại:</b>
+                                <span style={{ wordBreak: 'break-all' }}> {pet.contactPhone || 'Không rõ'}</span>
                             </div>
-                            <div style={{ fontSize: "16px" }}>
+                            <div style={{ fontSize: "14px" }}>
                                 <b style={{ fontWeight: 600 }}>Câu chuyện:</b><br />
-                                <span>{pet.story || 'Chưa có câu chuyện.'}</span>
+                                <span style={{ wordBreak: 'break-word', lineHeight: '1.4' }}>{pet.story || 'Chưa có câu chuyện.'}</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 {/* Hiển thị gallery ảnh */}
                 {pet.images && pet.images.length > 1 && (
-                    <div style={{ marginTop: '32px', width: '100%' }}>
-                        <div style={{ fontWeight: 700, fontSize: 22, color: '#5C4033', marginBottom: 18 }}>Hình ảnh về bé</div>
+                    <div style={{ marginTop: '24px', width: '100%' }}>
+                        <div style={{ fontWeight: 700, fontSize: 18, color: '#5C4033', marginBottom: 16 }}>Hình ảnh về bé</div>
                         <div className="pet-gallery-grid">
                             {pet.images.slice(1).map((img, idx) => (
                                 <img
@@ -331,6 +351,7 @@ export default function PetDetailPage() {
                             alignItems: 'center',
                             justifyContent: 'center',
                             zIndex: 1000,
+                            padding: '16px'
                         }}
                         onClick={() => setZoomImgIdx(null)}
                     >
@@ -338,10 +359,9 @@ export default function PetDetailPage() {
                             src={pet.images[zoomImgIdx]}
                             alt="zoom-img"
                             style={{
-                                maxWidth: '95vw',
-                                maxHeight: '95vh',
-                                width: '700px',
-                                borderRadius: 18,
+                                maxWidth: '100%',
+                                maxHeight: '100%',
+                                borderRadius: 12,
                                 border: '3px solid #E5C299',
                                 background: '#fff',
                                 boxShadow: '0 4px 32px rgba(0,0,0,0.25)',
@@ -359,19 +379,22 @@ export default function PetDetailPage() {
                             onClick={() => setZoomImgIdx(null)}
                             style={{
                                 position: 'fixed',
-                                top: 32,
-                                right: 32,
+                                top: 16,
+                                right: 16,
                                 background: '#fff',
                                 color: '#5C4033',
                                 border: '2px solid #E5C299',
                                 borderRadius: '50%',
-                                width: 40,
-                                height: 40,
-                                fontSize: 28,
+                                width: 36,
+                                height: 36,
+                                fontSize: 24,
                                 fontWeight: 700,
                                 cursor: 'pointer',
                                 zIndex: 1001,
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.12)'
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
                             }}
                             aria-label="Đóng"
                         >×</button>

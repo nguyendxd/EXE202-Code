@@ -8,12 +8,20 @@
 @media (min-width: 768px) {
     .pet-gallery-grid {
         grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
     }
 }
 
 @media (min-width: 1200px) {
     .pet-gallery-grid {
         grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pet-gallery-grid {
+        gap: 12px;
     }
 }
 
@@ -28,6 +36,19 @@
     box-shadow: 1px 4px 24px rgba(0, 0, 0, 0.1);
 }
 
+@media (max-width: 480px) {
+    .pet-gallery-img {
+        border-radius: 10px;
+        border-width: 1px;
+    }
+}
+
 .pet-gallery-img:hover {
     transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .pet-gallery-img:hover {
+        transform: none;
+    }
 }

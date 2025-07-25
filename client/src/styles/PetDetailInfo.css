@@ -20,12 +20,38 @@
     margin: 0 auto;
 }
 
+@media (max-width: 768px) {
+    .pet-detail-avatar {
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pet-detail-avatar {
+        max-width: 240px;
+    }
+}
+
 .pet-detail-main {
     flex: 1;
     min-width: 0;
     font-size: 14px;
     color: #5C4033;
     padding: 12px 18px;
+}
+
+@media (max-width: 768px) {
+    .pet-detail-main {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pet-detail-main {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
 }
 
 .pet-register-btn {
@@ -38,6 +64,20 @@
     font-size: 16px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .pet-register-btn {
+        padding: 8px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pet-register-btn {
+        padding: 6px 16px;
+        font-size: 13px;
+    }
 }
 
 .pet-register-btn:hover {
@@ -53,8 +93,9 @@
     margin-top: 12px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .pet-name {
+        font-size: 20px;
         margin-bottom: 12px;
     }
 }
