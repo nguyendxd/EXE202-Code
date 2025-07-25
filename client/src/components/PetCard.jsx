@@ -127,7 +127,7 @@ export default function PetCard({ pet, showUpdate = false, onUpdate }) {
                 <div style={bottomSectionStyle}>
                     <p style={boldText}>{pet.name}</p>
                     <p>Tuổi: {pet.age}</p>
-                    <p>Giới tính: {pet.gender}</p>
+                    <p>Giới tính: {pet.gender === 'male' ? 'Đực' : pet.gender === 'female' ? 'Cái' : pet.gender}</p>
                     <p>Màu lông: {pet.color}</p>
                     <p>Giống: {pet.breed}</p>
                     <p>Nơi ở: {pet.location}</p>

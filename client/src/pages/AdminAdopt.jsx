@@ -335,9 +335,7 @@ export default function AdminAdopt() {
       >
         {[
           { title: "Tổng số thú cưng", value: stats.totalPets, color: "#2196F3", icon: "🐾" },
-          { title: "Có thể nhận nuôi", value: stats.availablePets, color: "#4CAF50", icon: "🏠" },
           { title: "Đã được nhận nuôi", value: stats.adoptedPets, color: "#9C27B0", icon: "❤️" },
-          { title: "Đang chờ nhận nuôi", value: stats.pendingAdoptions, color: "#FF9800", icon: "⏳" },
         ].map((stat, index) => (
           <div
             key={index}
