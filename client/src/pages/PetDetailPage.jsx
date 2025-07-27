@@ -206,13 +206,13 @@ export default function PetDetailPage() {
                 </p>
             </section>
             <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "20px 16px" }}>
-                <div style={{ background: "#fff", borderRadius: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.08)", padding: "20px" }}>
+                <div style={{ background: "#fff", borderRadius: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.08)", padding: "clamp(15px, 3vw, 20px)" }}>
                     <div className="pet-detail-info-row">
                         {/* Ảnh và nút bên trái */}
                         <div className="pet-detail-avatar">
                             {/* Avatar */}
-                            <img src={pet.images?.[0] || 'https://via.placeholder.com/300'} alt={pet.name} style={{ width: "150px", height: "150px", objectFit: "cover", borderRadius: "50%", border: '2px solid #E5C299' }} />
-                            <div className="pet-name">{pet.name}</div>
+                            <img src={pet.images?.[0] || 'https://via.placeholder.com/300'} alt={pet.name} style={{ width: "clamp(120px, 25vw, 150px)", height: "clamp(120px, 25vw, 150px)", objectFit: "cover", borderRadius: "50%", border: '2px solid #E5C299' }} />
+                            <div className="pet-name" style={{ fontSize: "clamp(18px, 4vw, 24px)", wordWrap: "break-word", overflowWrap: "break-word" }}>{pet.name}</div>
                             <div style={{ paddingTop: '20px', display: 'flex', alignItems: 'center', color: '#7A5F3C', fontSize: "14px", margin: '8px 0 12px 0', flexWrap: 'wrap', justifyContent: 'center' }}>
                                 <span style={{ marginRight: '8px' }}>Thêm vào wishlist</span>
                                 <button
@@ -253,49 +253,49 @@ export default function PetDetailPage() {
                         {/* Thông tin chi tiết bên phải */}
                         <div className="pet-detail-main">
                             <div
-                                style={{ fontWeight: 700, fontSize: "18px", marginBottom: "12px", cursor: 'pointer', wordBreak: 'break-word' }}
+                                style={{ fontWeight: 700, fontSize: "clamp(16px, 3.5vw, 18px)", marginBottom: "12px", cursor: 'pointer', wordBreak: 'break-word', overflowWrap: 'break-word' }}
                                 onClick={handleNavigateToUserPage}
                             >
                                 Trại cứu hộ chó mèo
                             </div>
                             <hr style={{ border: "none", borderTop: "2px solid #E5C299", borderRadius: "2px", marginBottom: "16px" }} />
-                            <div style={{ fontSize: "14px", marginBottom: "12px" }}>
+                            <div style={{ fontSize: "clamp(13px, 2.5vw, 14px)", marginBottom: "12px" }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Tuổi:</b>
-                                        <span style={{ wordBreak: 'break-word' }}>{pet.age || 'Không rõ'}</span>
+                                        <b style={{ fontWeight: 600, minWidth: 'clamp(60px, 15vw, 80px)' }}>Tuổi:</b>
+                                        <span style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>{pet.age || 'Không rõ'}</span>
                                     </div>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Màu sắc:</b>
-                                        <span style={{ wordBreak: 'break-word' }}>{pet.color || 'Không rõ'}</span>
+                                        <b style={{ fontWeight: 600, minWidth: 'clamp(60px, 15vw, 80px)' }}>Màu sắc:</b>
+                                        <span style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>{pet.color || 'Không rõ'}</span>
                                     </div>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Giống:</b>
-                                        <span style={{ wordBreak: 'break-word' }}>{pet.breed || 'Không rõ'}</span>
+                                        <b style={{ fontWeight: 600, minWidth: 'clamp(60px, 15vw, 80px)' }}>Giống:</b>
+                                        <span style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>{pet.breed || 'Không rõ'}</span>
                                     </div>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Giới tính:</b>
-                                        <span style={{ wordBreak: 'break-word' }}>{pet.gender || 'Không rõ'}</span>
+                                        <b style={{ fontWeight: 600, minWidth: 'clamp(60px, 15vw, 80px)' }}>Giới tính:</b>
+                                        <span style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>{pet.gender || 'Không rõ'}</span>
                                     </div>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Cân nặng:</b>
-                                        <span style={{ wordBreak: 'break-word' }}>{pet.weight || 'Không rõ'}</span>
+                                        <b style={{ fontWeight: 600, minWidth: 'clamp(60px, 15vw, 80px)' }}>Cân nặng:</b>
+                                        <span style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>{pet.weight || 'Không rõ'}</span>
                                     </div>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                                        <b style={{ fontWeight: 600, minWidth: '80px' }}>Tính cách:</b>
-                                        <span style={{ wordBreak: 'break-word' }}>{pet.temperament
+                                        <b style={{ fontWeight: 600, minWidth: 'clamp(60px, 15vw, 80px)' }}>Tính cách:</b>
+                                        <span style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>{pet.temperament
                                             ? pet.temperament.split(',').map(s => s.trim()).filter(Boolean).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' – ')
                                             : 'Không rõ'}</span>
                                     </div>
                                 </div>
                             </div>
                             <hr style={{ border: "none", borderTop: "2px solid #E5C299", borderRadius: "2px", marginBottom: "16px" }} />
-                            <div style={{ marginBottom: "12px", fontSize: "14px" }}>
+                            <div style={{ marginBottom: "12px", fontSize: "clamp(13px, 2.5vw, 14px)" }}>
                                 <b style={{ fontWeight: 600 }}>Tình trạng sức khỏe:</b><br />
                                 {pet.healthStatus && Array.isArray(pet.healthStatus) && pet.healthStatus.length > 0 ? (
                                     <ul style={{ margin: "4px 0 0 20px", padding: 0, listStyle: "none" }}>
                                         {pet.healthStatus.map((s, idx) => (
-                                            <li key={idx} style={{ marginBottom: 4, wordBreak: 'break-word' }}>
+                                            <li key={idx} style={{ marginBottom: 4, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                                                 <span style={{ color: '#5C4033', fontWeight: 600 }}>–</span> {s.trim().charAt(0).toUpperCase() + s.trim().slice(1)}
                                             </li>
                                         ))}
@@ -304,17 +304,17 @@ export default function PetDetailPage() {
                                     <span>Không rõ</span>
                                 )}
                             </div>
-                            <div style={{ marginBottom: "12px", fontSize: "14px" }}>
+                            <div style={{ marginBottom: "12px", fontSize: "clamp(13px, 2.5vw, 14px)" }}>
                                 <b style={{ fontWeight: 600 }}>Địa chỉ:</b>
-                                <span style={{ wordBreak: 'break-word' }}> {pet.address || 'Không rõ'}</span>
+                                <span style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}> {pet.address || 'Không rõ'}</span>
                             </div>
-                            <div style={{ marginBottom: "12px", fontSize: "14px" }}>
+                            <div style={{ marginBottom: "12px", fontSize: "clamp(13px, 2.5vw, 14px)" }}>
                                 <b style={{ fontWeight: 600 }}>Số điện thoại:</b>
-                                <span style={{ wordBreak: 'break-all' }}> {pet.contactPhone || 'Không rõ'}</span>
+                                <span style={{ wordBreak: 'break-all', overflowWrap: 'break-word' }}> {pet.contactPhone || 'Không rõ'}</span>
                             </div>
-                            <div style={{ fontSize: "14px" }}>
+                            <div style={{ fontSize: "clamp(13px, 2.5vw, 14px)" }}>
                                 <b style={{ fontWeight: 600 }}>Câu chuyện:</b><br />
-                                <span style={{ wordBreak: 'break-word', lineHeight: '1.4' }}>{pet.story || 'Chưa có câu chuyện.'}</span>
+                                <span style={{ wordBreak: 'break-word', overflowWrap: 'break-word', lineHeight: '1.4' }}>{pet.story || 'Chưa có câu chuyện.'}</span>
                             </div>
                         </div>
                     </div>

@@ -373,8 +373,8 @@ export default function ChatPage() {
   // Attachment icon SVG
   const attachmentIcon = (
     <svg
-      width="20"
-      height="20"
+      width="24"
+      height="24"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -903,13 +903,13 @@ export default function ChatPage() {
                       color: "white",
                       border: "none",
                       borderRadius: "50%",
-                      width: "40px",
-                      height: "40px",
+                      width: "48px",
+                      height: "48px",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: "18px",
+                      fontSize: "20px",
                       transition: "all 0.2s ease",
                       boxShadow: isHoveringAttachment ? "0 3px 8px rgba(0,0,0,0.2)" : "0 2px 5px rgba(0,0,0,0.1)",
                       transform: isHoveringAttachment ? "translateY(-2px)" : "translateY(0)",
@@ -925,13 +925,13 @@ export default function ChatPage() {
                       color: "white",
                       border: "none",
                       borderRadius: "50%",
-                      width: "40px",
-                      height: "40px",
+                      width: "48px",
+                      height: "48px",
                       cursor: message.trim() || selectedFile ? "pointer" : "not-allowed",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: "18px",
+                      fontSize: "20px",
                       transition: "background-color 0.2s ease",
                     }}
                   >

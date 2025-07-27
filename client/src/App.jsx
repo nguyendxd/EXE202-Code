@@ -32,6 +32,7 @@ import ProfilePage from './pages/ProfilePage';
 import Navbar from './components/Navbar';
 import AdminNavbar from './components/AdminNavbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 import { AuthProvider } from './contexts/AuthContext';
@@ -52,6 +53,7 @@ function AppContent() {
 
   return (
     <>
+      <ScrollToTop />
       {isAdminRoute ? <AdminNavbar key="admin-nav" /> : <Navbar key={user?.id || 'guest-nav'} />}
       <ToastContainer />
       <div style={{ paddingTop: '90px' }}>

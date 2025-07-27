@@ -489,6 +489,35 @@ export default function LandingPage() {
                     max-width: 100% !important;
                 }
             }
+            
+            /* Responsive spacing for chatbot section */
+            @media (max-width: 768px) {
+                .chatbot-section p {
+                    margin: 0 0 6px 0 !important;
+                    line-height: 1.4 !important;
+                }
+                .chatbot-section h2 {
+                    margin-bottom: 25px !important;
+                }
+                .chatbot-section > div {
+                    gap: 35px !important;
+                    margin: 35px auto !important;
+                }
+            }
+            @media (max-width: 480px) {
+                .chatbot-section p {
+                    margin: 0 0 4px 0 !important;
+                    line-height: 1.3 !important;
+                }
+                .chatbot-section h2 {
+                    margin-bottom: 20px !important;
+                    font-size: 24px !important;
+                }
+                .chatbot-section > div {
+                    gap: 25px !important;
+                    margin: 25px auto !important;
+                }
+            }
         `}
                 </style>
             </section>
@@ -520,7 +549,7 @@ export default function LandingPage() {
             </section>
 
             {/* Chatbot Invitation Section */}
-            <section style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#F5E8C7' }}>
+            <section className="chatbot-section" style={{ padding: '60px 20px', textAlign: 'center', backgroundColor: '#F5E8C7' }}>
                 <h2 style={{ fontSize: '30px', color: '#A47148' }}>Bạn đang có khó khăn gì khi nuôi các bé?</h2>
                 <div style={{
                     display: 'flex',
@@ -531,16 +560,16 @@ export default function LandingPage() {
                     flexWrap: 'wrap'
                 }}>
                     <div style={{ flex: '1', minWidth: '300px', textAlign: 'center', color: '#5D4037', fontSize: '18px' }}>
-                        <p style={{ fontSize: '19px' }}>Danh sách vật dụng cần thiết cho người nhận nuôi mới</p>
-                        <p style={{ fontSize: '16px' }}>Giúp quá trình nhận nuôi trở nên suôn sẻ nhất có thể.</p>
+                        <p style={{ fontSize: '19px', margin: '0 0 8px 0' }}>Danh sách vật dụng cần thiết cho người nhận nuôi mới</p>
+                        <p style={{ fontSize: '16px', margin: '0' }}>Giúp quá trình nhận nuôi trở nên suôn sẻ nhất có thể.</p>
                     </div>
                     <div style={{ flex: '1', minWidth: '300px', textAlign: 'center', color: '#5D4037', fontSize: '18px' }}>
-                        <p style={{ fontSize: '19px' }}>Các câu hỏi thường gặp về việc nhận nuôi thú cưng</p>
-                        <p style={{ fontSize: '16px' }}>Những câu trả lời cho tất cả những thắc mắc của bạn khi nhận nuôi thú cưng.</p>
+                        <p style={{ fontSize: '19px', margin: '0 0 8px 0' }}>Các câu hỏi thường gặp về việc nhận nuôi thú cưng</p>
+                        <p style={{ fontSize: '16px', margin: '0' }}>Những câu trả lời cho tất cả những thắc mắc của bạn khi nhận nuôi thú cưng.</p>
                     </div>
                     <div style={{ flex: '1', minWidth: '300px', textAlign: 'center', color: '#5D4037', fontSize: '18px' }}>
-                        <p style={{ fontSize: '19px' }}>Trang bị kiến thức cho việc nhận nuôi thú cưng</p>
-                        <p style={{ fontSize: '16px' }}>Những kiến thức cần thiết cho việc nuôi thú cưng lần đầu.</p>
+                        <p style={{ fontSize: '19px', margin: '0 0 8px 0' }}>Trang bị kiến thức cho việc nhận nuôi thú cưng</p>
+                        <p style={{ fontSize: '16px', margin: '0' }}>Những kiến thức cần thiết cho việc nuôi thú cưng lần đầu.</p>
                     </div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', marginTop: '80px' }}>
@@ -551,8 +580,9 @@ export default function LandingPage() {
                         style={mainButtonStyle('chat', hoveredButtons[2])}
                         onMouseEnter={() => setHoveredButtons(prev => ({ ...prev, [2]: true }))}
                         onMouseLeave={() => setHoveredButtons(prev => ({ ...prev, [2]: false }))}
+                        onClick={() => navigate('/blog')}
                     >
-                        Tìm câu trả lời ở FAQ
+                        Tìm câu trả lời ở đây
                     </button>
                 </div>
             </section>

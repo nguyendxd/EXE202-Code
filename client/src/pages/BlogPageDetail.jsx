@@ -168,16 +168,18 @@ export default function BlogDetailPage() {
       </div>
 
       {/* Main Content */}
-      <article style={{ maxWidth: "800px", margin: "0 auto" }}>
+      <article style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
         {/* Header */}
         <header style={{ marginBottom: "40px", textAlign: "center" }}>
           <h1
             style={{
-              fontSize: "36px",
+              fontSize: "clamp(24px, 5vw, 36px)",
               color: "#A47148",
               margin: "0 0 20px 0",
               fontWeight: "bold",
               lineHeight: "1.2",
+              wordWrap: "break-word",
+              overflowWrap: "break-word",
             }}
           >
             {blog.title}
@@ -248,7 +250,7 @@ export default function BlogDetailPage() {
         <div
           style={{
             backgroundColor: "#FFF8E7",
-            padding: "40px",
+            padding: "clamp(20px, 4vw, 40px)",
             borderRadius: "15px",
             boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             marginBottom: "60px",
@@ -257,10 +259,12 @@ export default function BlogDetailPage() {
         >
           <div
             style={{
-              fontSize: "18px",
+              fontSize: "clamp(16px, 3vw, 18px)",
               lineHeight: "1.8",
               color: "#5D4037",
               whiteSpace: "pre-wrap",
+              wordWrap: "break-word",
+              overflowWrap: "break-word",
             }}
             dangerouslySetInnerHTML={{ __html: blog.content || '' }} // Thêm fallback
           />
@@ -314,10 +318,10 @@ export default function BlogDetailPage() {
 
       {/* Related Blogs */}
       {relatedBlogs.length > 0 && (
-        <section style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
           <h3
             style={{
-              fontSize: "28px",
+              fontSize: "clamp(20px, 4vw, 28px)",
               color: "#A47148",
               marginBottom: "30px",
               textAlign: "center",
@@ -329,7 +333,7 @@ export default function BlogDetailPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
               gap: "30px",
               justifyItems: "center",
             }}

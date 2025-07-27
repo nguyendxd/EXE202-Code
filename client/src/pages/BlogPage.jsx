@@ -65,7 +65,8 @@ export default function BlogPage() {
     backgroundColor: "#FFF8E7",
     borderRadius: "15px",
     boxShadow: hovered ? "0 8px 16px rgba(0,0,0,0.2)" : "0 4px 8px rgba(0,0,0,0.1)",
-    width: "280px",
+    width: "100%",
+    maxWidth: "280px",
     height: "350px",
     overflow: "hidden",
     cursor: "pointer",
@@ -156,8 +157,8 @@ export default function BlogPage() {
           gap: "30px",
           maxWidth: "1400px",
           margin: "0 auto 60px auto",
-          justifyItems: "start",
-          paddingLeft: "60px",
+          justifyItems: "center",
+          padding: "0 20px",
         }}
       >
         {currentPosts.map((post) => (
