@@ -205,13 +205,19 @@ export default function RescueMapPage() {
         padding: "25px",
         borderRadius: "8px",
         boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-        fontSize: "20px",
+        fontSize: "16px",
         fontWeight: "500",
         color: "#333",
         zIndex: 1000,
-        border: "1px solid rgba(0,0,0,0.1)"
+        border: "1px solid rgba(0,0,0,0.1)",
+        maxWidth: "300px"
       }}>
-        Hãy thử reload lại trang nếu vị trí truy cập bị sai bạn nhé
+        <div style={{ marginBottom: "10px", fontWeight: "600" }}>
+          📍 Chỉ hiện vị trí các trạm trong vòng bán kính 30km tính từ vị trí của bạn
+        </div>
+        <div style={{ fontSize: "14px", color: "#666" }}>
+          Hãy thử reload lại trang nếu vị trí truy cập bị sai bạn nhé
+        </div>
       </div>
     </div>
   );
