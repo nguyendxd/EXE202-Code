@@ -311,6 +311,7 @@ export default function AdminNavbar() {
               { to: "/admin/account", icon: "👥", text: "QUẢN LÝ TÀI KHOẢN" },
               { to: "/admin/blog", icon: "📝", text: "QUẢN LÝ BLOG" },
               { to: "/admin/adoption", icon: "🐾", text: "QUẢN LÝ NHẬN NUÔI" },
+              { to: "/admin/feedback", text: "QUẢN LÝ FEEDBACK" },
             ].map((link, index) => (
               <Link
                 key={index}
@@ -343,7 +344,7 @@ export default function AdminNavbar() {
                   e.target.style.border = "1px solid transparent"
                 }}
               >
-                <span style={{ fontSize: "16px" }}>{link.icon}</span>
+                {link.icon && <span style={{ fontSize: "16px" }}>{link.icon}</span>}
                 {link.text}
               </Link>
             ))}
