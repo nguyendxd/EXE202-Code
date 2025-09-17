@@ -1,0 +1,119 @@
+.pet-detail-info-row {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+@media (min-width: 900px) {
+    .pet-detail-info-row {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.pet-detail-avatar {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .pet-detail-avatar {
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pet-detail-avatar {
+        max-width: 240px;
+    }
+}
+
+.pet-detail-main {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    color: #5C4033;
+    padding: 12px 18px;
+}
+
+@media (max-width: 768px) {
+    .pet-detail-main {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pet-detail-main {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+}
+
+.pet-register-btn {
+    background: #E5C299;
+    color: #5C4033;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .pet-register-btn {
+        padding: 8px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pet-register-btn {
+        padding: 6px 16px;
+        font-size: 13px;
+    }
+}
+
+.pet-register-btn:hover {
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(92, 64, 51, 0.12);
+    scale: 1.05;
+}
+
+.pet-name {
+    font-weight: 600;
+    font-size: 24px;
+    color: #5C4033;
+    margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+    .pet-name {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+}
+
+@media (max-width: 700px) {
+  .pet-detail-info-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 24px !important;
+  }
+  .pet-detail-avatar {
+    margin-bottom: 12px;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+  .pet-detail-main {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+}

@@ -31,11 +31,11 @@ const swaggerOptions = {
     security: [{ BearerAuth: [] }],
     servers: [
       {
-        url: "http://localhost:3000/api",
+        url: `${process.env.API_URL || 'http://localhost:3000'}/api`,
         description: "Development server",
       },
       {
-        url: "https://pawmilly.com/api",
+        url: "https://pawmilly.site/api",
         description: "Production server",
       },
     ],
@@ -50,5 +50,5 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 export const setupSwagger = (app: Express) => {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  console.log("Swagger Docs available at http://localhost:3000/api-docs");
+  console.log(`Swagger Docs available at ${process.env.API_URL || 'http://localhost:3000'}/api-docs`);
 };

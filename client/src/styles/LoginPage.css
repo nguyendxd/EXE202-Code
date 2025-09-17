@@ -1,85 +1,230 @@
 .login-container {
   display: flex;
   height: 100vh;
+  font-family: 'Arial', sans-serif;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.background-image-container {
-  flex: 1;
-  background-image: url('path/to/your/background-image.jpg'); /* Add your background image path here */
+.login-left {
+  flex: 2;
   background-size: cover;
   background-position: center;
   position: relative;
 }
 
-.back-link {
+.login-left .back-link {
   position: absolute;
   top: 20px;
   left: 20px;
-  color: #fff; /* Assuming white color for the back link */
+  color: #ffffff;
+  font-size: 1rem;
   text-decoration: none;
-  font-size: 1em;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background 0.2s;
 }
 
-.login-form-container {
+.login-left .back-link:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+
+.login-right {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 20px;
-  background-color: #fff; /* Assuming white background for the form */
+  justify-content: flex-start;
+  background-color: #fdf8f0;
+  padding: 0 40px;
+  animation: slideIn 0.3s ease-out;
 }
 
-.logo h2 {
-  color: #ff7f50; /* Assuming a peach/orange color for the logo text */
-  font-size: 2em;
-  margin-bottom: 10px;
+/* Logo */
+.login-logo img {
+  width: 180px;
+  /* hoặc giá trị bạn muốn */
+  height: auto;
+  /* giữ tỉ lệ */
+  display: block;
+  margin: 0 auto 24px auto;
 }
 
-.tagline p {
+.login-form-logo {
+  height: 200px;
+}
+
+/* Tagline */
+.login-tagline {
   text-align: center;
-  margin-bottom: 5px;
-  color: #333; /* Assuming a dark grey color for the text */
+  margin-bottom: 24px;
+}
+
+.login-tagline p {
+  margin: 2px 0;
+  font-size: 1.1rem;
+  color: #4d4d4d;
+}
+
+/* Nút đăng ký Google / Phone */
+.signup-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 20px;
 }
 
 .signup-buttons button {
-  display: block;
-  width: 250px; /* Example width, adjust as needed */
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc; /* Example border */
-  border-radius: 20px; /* Example border radius */
-  background-color: #ffdab9; /* Example light orange/peach background */
+  padding: 12px 0;
+  border: none;
+  border-radius: 999px;
+  font-size: 1rem;
   cursor: pointer;
-  font-size: 1em;
+  transition: opacity 0.2s;
+  font-weight: bold;
 }
 
+.signup-buttons .btn-google {
+  background-color: #ffab62;
+  color: #555;
+  border: 1px solid #ccc;
+}
+
+.signup-buttons .btn-google:hover {
+  opacity: 0.9;
+}
+
+.signup-buttons .btn-phone {
+  background-color: #ffab62;
+  color: white;
+  border: none;
+}
+
+.signup-buttons .btn-phone:hover {
+  opacity: 0.9;
+}
+
+/* Text điều khoản */
 .terms-text {
-  font-size: 0.8em;
+  font-size: 0.75rem;
+  color: #777;
   text-align: center;
-  margin-top: 20px;
-  color: #666; /* Assuming a medium grey color */
+  margin: 12px 0 24px 0;
+  line-height: 1.3;
 }
 
 .terms-text a {
-  color: #ff7f50; /* Assuming the same color as the logo for links */
+  color: #ff7f50;
   text-decoration: none;
 }
 
-.login-section {
-  margin-top: 30px;
-  text-align: center;
+.terms-text a:hover {
+  text-decoration: underline;
 }
 
-.login-section .login-button {
+/* Phần "Đã có tài khoản?" + nút đăng nhập */
+.already-login {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.already-login span {
   display: block;
-  width: 250px; /* Example width */
-  padding: 10px;
-  margin: 10px auto;
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.already-login .btn-login {
+  padding: 12px 0;
+  width: 100%;
+  max-width: 280px;
+  background-color: #ffab62;
+  color: white;
   border: none;
-  border-radius: 20px;
-  background-color: #ff7f50; /* Example peach/orange background */
-  color: #fff; /* White text */
+  border-radius: 999px;
+  font-size: 1rem;
   cursor: pointer;
-  font-size: 1em;
-} 
+  transition: opacity 0.2s;
+  font-weight: bold;
+}
+
+.already-login .btn-login:hover {
+  opacity: 0.9;
+}
+
+/* Đảm bảo responsive trên màn hình nhỏ */
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .login-container {
+    flex-direction: column;
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .login-left {
+    display: none !important;
+  }
+
+  .login-right {
+    width: 100vw;
+    min-height: 100vh;
+    height: auto;
+    padding: 40px 8px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(255, 245, 225, 0.5);
+    position: relative;
+  }
+
+  .login-right::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../assets/catdog.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    z-index: -1;
+  }
+
+  .terms-text {
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    text-align: center;
+    word-break: break-word;
+  }
+}

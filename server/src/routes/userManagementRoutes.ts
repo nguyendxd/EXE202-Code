@@ -6,7 +6,8 @@ import {
     getUserByEmailController, 
     getUserByIdController, 
     updateUserController, 
-    deleteUserController 
+    deleteUserController,
+    getAllUsersFull
 } from "../controller/userManagementController";
 
 const router = express.Router();
@@ -144,6 +145,30 @@ router.get('/', authenticateToken as RequestHandler, getAllUsers as RequestHandl
  *         description: Internal server error
  */
 router.post('/', authenticateToken as RequestHandler, addUser as RequestHandler);
+
+/**
+ * @swagger
+ * /users/all:
+ *   get:
+ *     summary: Get all users (full)
+ *     tags: [User Management]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Only admins can access this endpoint
+ */
+router.get('/all', authenticateToken as RequestHandler, getAllUsersFull as RequestHandler);
 
 /**
  * @swagger

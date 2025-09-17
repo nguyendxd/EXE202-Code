@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import Blog, { IBlog } from "../model/Blog";
-import { Types } from "mongoose";
+import mongoose, { Types, Mongoose } from "mongoose";
 import imagekit from "../config/imagekit";
+
 
 export interface AuthenticatedRequest extends Request {
     user?: {id: string; uid: string; role: string; email: string};
@@ -52,11 +53,12 @@ export const createBlog = async (req: AuthenticatedRequest, res: Response) => {
 // Get all blogs with optional filters
 export const getAllBlogs = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const { status, author } = req.query;
-        const query: any = {};
+        const { author } = req.query; 
+        const query: any = {
+            status: 'published' 
+        };
 
-        // Add filters if provided
-        if (status) query.status = status;
+        
         if (author) query.author = author;
 
         const blogs = await Blog.find(query)
@@ -75,23 +77,32 @@ export const getAllBlogs = async (req: AuthenticatedRequest, res: Response) => {
 
 // Get blog by ID
 export const getBlogById = async (req: AuthenticatedRequest, res: Response) => {
-    try {
-        const blogId = req.params.id;
-        const blog = await Blog.findById(blogId)
-            .populate('author', 'username avatar');
+  try {
+    const { id } = req.params;
 
-        if (!blog) {
-            return res.status(404).json({ message: 'Blog not found' });
-        }
-
-        res.json(blog);
-    } catch (error) {
-        console.error('Error fetching blog:', error);
-        res.status(500).json({ 
-            message: 'Error fetching blog', 
-            error: error instanceof Error ? error.message : error 
-        });
+    // Kiểm tra xem id có hợp lệ không (phải là ObjectId hợp lệ của MongoDB)
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'ID không hợp lệ' });
     }
+
+    const blog = await Blog.findById(id).populate('author', 'username avatar');
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog không tìm thấy' });
+    }
+
+    // Chỉ trả về blog nếu status là 'published'
+    if (blog.status !== 'published') {
+      return res.status(403).json({ message: 'Blog chưa được xuất bản' });
+    }
+
+    res.json(blog);
+  } catch (error) {
+    console.error('Error fetching blog by id:', error);
+    res.status(500).json({ 
+      message: 'Error fetching blog', 
+      error: error instanceof Error ? error.message : error 
+    });
+  }
 };
 
 // Update blog
@@ -195,6 +206,54 @@ export const deleteBlog = async (req: AuthenticatedRequest, res: Response) => {
         console.error('Error deleting blog:', error);
         res.status(500).json({ 
             message: 'Error deleting blog', 
+            error: error instanceof Error ? error.message : error 
+        });
+    }
+};
+
+// Search blogs with pagination
+export const searchBlogs = async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        const { query, page = 1, limit = 10, status } = req.query;
+        const skip = (Number(page) - 1) * Number(limit);
+
+        // Build search query
+        const searchQuery: any = {};
+        
+        if (query) {
+            searchQuery.$or = [
+                { title: { $regex: query, $options: 'i' } },
+                { content: { $regex: query, $options: 'i' } }
+            ];
+        }
+
+        if (status) {
+            searchQuery.status = status;
+        }
+
+        // Execute search with pagination
+        const [blogs, total] = await Promise.all([
+            Blog.find(searchQuery)
+                .populate('author', 'username avatar')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(Number(limit)),
+            Blog.countDocuments(searchQuery)
+        ]);
+
+        res.json({
+            blogs,
+            pagination: {
+                total,
+                page: Number(page),
+                limit: Number(limit),
+                totalPages: Math.ceil(total / Number(limit))
+            }
+        });
+    } catch (error) {
+        console.error('Error searching blogs:', error);
+        res.status(500).json({ 
+            message: 'Error searching blogs', 
             error: error instanceof Error ? error.message : error 
         });
     }

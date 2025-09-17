@@ -1,7 +1,15 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": false,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

@@ -2,7 +2,10 @@
   "scripts": {
     "client": "cd client && npm run dev",
     "server": "cd server && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build && cd ../server && npm run build",
+  "merge-dist": "powershell -Command \"Remove-Item -Recurse -Force dist-all; New-Item -ItemType Directory -Path dist-all/client; New-Item -ItemType Directory -Path dist-all/server; Copy-Item client/dist/* dist-all/client -Recurse; Copy-Item server/dist/* dist-all/server -Recurse\"",
+  "build-all": "npm run build && npm run merge-dist"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",

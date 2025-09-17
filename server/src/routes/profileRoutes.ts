@@ -1,12 +1,39 @@
-import express, { RequestHandler } from 'express';
+import express, { RequestHandler, Request, Response, NextFunction } from 'express';
 import { 
     getAllProfile,
     getProfile,
     updateProfile,    
 } from "../controller/userProfile";
 import { authenticateToken } from '../middleware/auth';
+import multer from 'multer';
 
 const router = express.Router();
+
+// Configure multer for file upload
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { 
+        fileSize: 5 * 1024 * 1024, // 5MB limit
+        files: 1 // Only allow 1 file
+    },
+    fileFilter: (req, file, cb) => {
+        // Accept only image files
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only image files are allowed'));
+        }
+    }
+});
+
+// Error handling middleware for multer
+const handleMulterError: RequestHandler = (req: Request, res: Response, next: NextFunction): void => {
+    if ((req as any).fileValidationError) {
+        res.status(400).json({ error: (req as any).fileValidationError });
+        return;
+    }
+    next();
+};
 
 /**
  * @swagger
@@ -102,7 +129,7 @@ router.get('/:id', authenticateToken as RequestHandler, getProfile as RequestHan
  * @swagger
  * /profiles/{id}:
  *   put:
- *     summary: Update a profile
+ *     summary: Update a profile (only one avatar picture allowed)
  *     tags: [Profiles]
  *     security:
  *       - BearerAuth: []
@@ -116,18 +143,29 @@ router.get('/:id', authenticateToken as RequestHandler, getProfile as RequestHan
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
- *               fullName:
+ *               username:
  *                 type: string
+ *                 description: User's display name
  *               phone:
  *                 type: string
+ *                 description: User's phone number
  *               address:
  *                 type: string
- *               bio:
+ *                 description: User's address
+ *               socialLink:
  *                 type: string
+ *                 description: User's social media link
+ *               description:
+ *                 type: string
+ *                 description: User's description or bio
+ *               avatar:
+ *                 type: string
+ *                 format: binary
+ *                 description: Single avatar image file (JPEG, PNG, or GIF only, max 5MB)
  *     responses:
  *       200:
  *         description: The updated profile
@@ -135,14 +173,23 @@ router.get('/:id', authenticateToken as RequestHandler, getProfile as RequestHan
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Profile'
+ *       400:
+ *         description: Invalid file type or size
  *       401:
  *         description: Unauthorized
  *       403:
  *         description: Forbidden - Not authorized to update this profile
  *       404:
  *         description: Profile not found
+ *       500:
+ *         description: Server error or upload failed
  */
-router.put('/:id', authenticateToken as RequestHandler, updateProfile as RequestHandler);
+router.put('/:id', 
+    authenticateToken as RequestHandler, 
+    upload.single('avatar'), 
+    handleMulterError,
+    updateProfile as RequestHandler
+);
 
 export default router;
 
